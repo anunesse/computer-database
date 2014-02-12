@@ -35,6 +35,27 @@ public class ComputerDAO {
 		myComputers.clear();
 	}
 	
+	public int getTotalComputer(){
+		DAOFactory.getInstance();
+		myCon = DAOFactory.getConnection();
+		
+		String query = "SELECT COUNT(*) FROM computer";
+		
+		try{
+			myStatement = myCon.createStatement();
+			//System.out.println(myStatement);
+			myResults = myStatement.executeQuery(query);
+			if(myResults.first())
+			{
+				return myResults.getInt(1);
+			}
+		}catch(SQLException SQLe){
+			System.out.println("[SQLEXCEPTION GET_COMPUTERS]");
+			SQLe.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public Computer getComputerById(long id){
 		DAOFactory.getInstance();
 		myCon = DAOFactory.getConnection();
@@ -61,6 +82,44 @@ public class ComputerDAO {
 		return null;
 	}
 	
+	public boolean existComputerId(long id)
+	{
+		DAOFactory.getInstance();
+		myCon = DAOFactory.getConnection();
+		String query = "SELECT id FROM computer WHERE id = "+id;
+		try{
+			myStatement = myCon.createStatement();
+			myResults = myStatement.executeQuery(query);
+		}catch(SQLException SQLe){
+			System.out.println("[SQLEXCEPTION GET_COMPUTERS]");
+			SQLe.printStackTrace();
+		}
+		
+		try {
+			if(myResults.first())
+				return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean deleteComputerId(long id)
+	{
+		DAOFactory.getInstance();
+		myCon = DAOFactory.getConnection();
+		String query = "DELETE FROM computer WHERE id = "+id;
+		boolean b = false;
+		try{
+			myStatement = myCon.createStatement();
+			b = (myStatement.executeUpdate(query) != 0);
+		}catch(SQLException SQLe){
+			System.out.println("[SQLEXCEPTION DEL_COMPUTERS]");
+			SQLe.printStackTrace();
+		}
+		return b;
+	}
+	
 	public void getComputersByName(int max, String name){
 		DAOFactory.getInstance();
 		myCon = DAOFactory.getConnection();
@@ -81,10 +140,14 @@ public class ComputerDAO {
 			try {
 				while(myResults.next())
 				{
+					Date d1;
+					d1=(myResults.getTimestamp(3) == null)?new Date(258969856):Converter.dateFromTimestamp(myResults.getTimestamp(3));
+					Date d2;
+					d2=(myResults.getTimestamp(4) == null)?new Date(258969856):Converter.dateFromTimestamp(myResults.getTimestamp(4));
 					myComputers.add(new Computer(myResults.getInt(1),
 							myResults.getString(2),
-							(Date)myResults.getTimestamp(3),
-							(Date)myResults.getTimestamp(4),
+							d1,
+							d2,
 							myResults.getInt(5),
 							new Company(myResults.getInt(5),myResults.getString(6))));
 				}
@@ -149,7 +212,7 @@ public class ComputerDAO {
 		String query = "UPDATE computer SET name ='"+myComp.getName()
 				+"', introduced ='"+Converter.timestampFromDate(myComp.getIntroduced())
 				+"', discontinued='"+Converter.timestampFromDate(myComp.getDiscontinued())
-				+", company_id ='"+myComp.getCompany_id()+"WHERE id = '"+myComp.getId()+"';";
+				+"', company_id ='"+myComp.getCompany_id()+"' WHERE id = '"+myComp.getId()+"';";
 		
 		System.out.println("Data  : "+query);
 		try {

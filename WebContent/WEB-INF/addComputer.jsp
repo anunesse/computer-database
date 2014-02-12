@@ -2,9 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.excilys.formation.projet.DAO.*"%>
 <%@ page import="com.excilys.formation.projet.OM.*"%>
-<section id="main">
-
-	
+<section id="main">	
 	<c:choose>
 		<c:when test="${computer=='1'}">
 			<h1>Add Computer</h1>
@@ -54,6 +52,11 @@
 		<c:otherwise>
 			<h1>Edit Computer</h1>
 			<form action="SelectComputerServlet" method="POST">
+				<input type="hidden" name="mode" value="del"/>
+				<input type="hidden" name="computer" value="${computer.id }"/>
+				<input type="submit" value="Delete" class="btn btn-danger">
+			</form>
+			<form action="SelectComputerServlet" method="POST">
 				<input type="hidden" name="mode" value="edit"/>
 				<input type="text" name="id" value="${computer.id }" readonly/>
 				<fieldset>
@@ -93,11 +96,28 @@
 				</fieldset>
 				<div class="actions">
 					<input type="submit" value="Edit" class="btn primary">
-					or <a href="SelectDataServlet" class="btn">Cancel</a>
+					<a href="SelectDataServlet" class="btn">Cancel</a>
+					
 				</div>
 			</form>
 		</c:otherwise>
-	</c:choose>
+	</c:choose>	
 </section>
-
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+<script>
+/*$(function(){
+  $.datepicker.setDefaults(
+    $.extend($.datepicker.regional[''])
+  );
+  $('#datepicker').datepicker();
+});*/
+// When the document is ready
+$(document).ready(function () { 
+    $('.input-daterange').datepicker({
+        todayBtn: "linked"
+    });
+});
+</script>
 <jsp:include page="../include/footer.jsp" />

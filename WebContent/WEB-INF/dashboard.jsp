@@ -2,9 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.excilys.formation.projet.DAO.*"%>
 <%@ page import="com.excilys.formation.projet.OM.*"%>
+<%@ page import="com.excilys.formation.projet.services.*"%>
 
 <section id="main">
-	<h1 id="homeTitle">456 Computers found</h1>
+	<h1 id="homeTitle"><%=CountDataService.CountComputers() %> Computers found</h1>
 	<div id="actions">
 		<form action="" method="GET">
 			<input type="search" id="searchbox" name="search"

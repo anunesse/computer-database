@@ -8,7 +8,7 @@ public class DAOFactory {
 	private static CompanyDAO myCompanyDAO;
 	private static ComputerDAO myComputerDAO;
 	
-	private static String url = "jdbc:mysql://localhost:3306/computer-database-db";
+	private static String url = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	private static String user = "jee-cdb";
 	private static String passwd = "password";
 	
@@ -35,10 +35,7 @@ public class DAOFactory {
 	public static DAOFactory getInstance(){
 		if(myDAO == null){
 			myDAO = new DAOFactory();
-			System.out.println("DAO/CONNEXION/DRIVER CREATED.");
 		}
-		else
-			System.out.println("DAO/CONNEXION/DRIVER ALREADY CREATED!!!!");
 		try {
 			myCon = DriverManager.getConnection(url,user,passwd);
 			return myDAO;

@@ -8,27 +8,9 @@ import java.util.Date;
 
 public class Converter {
 	public static Date dateFromTimestamp(Timestamp date){
-		String str_date = date.toString();
-		DateFormat formatter; 
-		Date dateFormatted = null; 
-		formatter = new SimpleDateFormat("YYYY-mm-dd");
-		try {
-			dateFormatted = (Date)formatter.parse(str_date);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-		return new Date(dateFormatted.getTime());
+		return new Date(date.getTime());
 	}
 	public static Timestamp timestampFromDate(Date date){
-		String str_date = date.toString();
-		DateFormat formatter; 
-		Date dateFormatted = null; 
-		formatter = new SimpleDateFormat("YYYY-mm-dd");
-		try {
-			dateFormatted = (Date)formatter.parse(str_date);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		} 
-		return new Timestamp(dateFormatted.getTime());
+		return new Timestamp(date.getTime());
 	}
 }

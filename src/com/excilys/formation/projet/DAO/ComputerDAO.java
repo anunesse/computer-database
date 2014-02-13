@@ -160,7 +160,7 @@ public class ComputerDAO {
 	public void getComputers(int max){
 		DAOFactory.getInstance();
 		myCon = DAOFactory.getConnection();
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id LIMIT "+max;
+		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id ORDER BY c.name LIMIT "+max;
 		
 		System.out.println(query);
 		ResultSet myResults = null;
@@ -191,21 +191,23 @@ public class ComputerDAO {
 		}
 	}
 	
-	public void addComputer(Computer myComp){
+	public boolean addComputer(Computer myComp){
 		DAOFactory.getInstance();
 		myCon = DAOFactory.getConnection();
-		String query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES('"+myComp.getName()+"','"+myComp.getIntroduced()+"', '"+myComp.getDiscontinued()+"', '"+myComp.getCompany_id()+"');";
+		String query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES('"+myComp.getName()+"','"+new Timestamp(myComp.getIntroduced().getTime())+"', '"+new Timestamp(myComp.getDiscontinued().getTime())+"', '"+myComp.getCompany_id()+"');";
 		System.out.println("Data  : "+query);
 		try {
 			myStatement = myCon.createStatement();
 			myStatement.executeUpdate(query);
 			System.out.println("Data inserted!");
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
-	public void editComputer(Computer myComp){
+	public boolean editComputer(Computer myComp){
 		System.out.println("EDITING COMPUTER! OK");
 		DAOFactory.getInstance();
 		myCon = DAOFactory.getConnection();
@@ -219,9 +221,11 @@ public class ComputerDAO {
 			myStatement = myCon.createStatement();
 			myStatement.executeUpdate(query);
 			System.out.println("Data edited!");
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	public List<Computer> getMyComputers() {

@@ -7,10 +7,11 @@ public class Company {
 	}
 	private long id;
 	private String name;
+	
 	public Company() {
 		super();
 	}
-	public Company(int id, String name) {
+	public Company(long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

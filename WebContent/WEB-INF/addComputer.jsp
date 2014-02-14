@@ -6,49 +6,10 @@
 <section id="main">
 
 	<c:choose>
-		<c:when test="${computer=='1'}">
+		<c:when test="${answer==0}">
 			<h1>Add Computer</h1>
 			<form class="myForm" action="SelectComputerServlet" method="POST">
 				<input type="hidden" name="mode" value="add"/>
-				<fieldset>
-					<div class="clearfix">
-						<label for="name">Computer name:</label>
-						<div class="input">
-							<input type="text" name="name" data-validation="length" data-validation-length="1-255"/>
-							<span class="help-inline">Required</span>
-						</div>
-					</div>
-			
-					<div class="clearfix">
-						<label for="introduced">Introduced date:</label>
-						<div class="input">
-							<input type="date" name="introduced"  data-validation="date" data-validation-format="dd/mm/yyyy"/>
-							<span class="help-inline">YYYY-MM-DD</span>
-						</div>
-					</div>
-					<div class="clearfix">
-						<label for="discontinued">Discontinued date:</label>
-						<div class="input">
-							<input type="date" name="discontinued" data-validation="date" data-validation-format="dd/mm/yyyy"/>
-							<span class="help-inline">YYYY-MM-DD</span>
-						</div>
-					</div>
-					<div class="clearfix">
-						<label for="company">Company Name:</label>
-						<div class="input">
-							<select name="company">
-								<c:forEach var="comp" items="${options}">
-									<option value="${comp.id }">${comp.name }</option>
-								</c:forEach>
-							</select>
-						</div>
-					</div>
-				</fieldset>
-				<div class="actions">
-					<input type="submit" value="Add" class="btn primary">
-					or <a href="SelectDataServlet" class="btn">Cancel</a>
-				</div>
-			</form>
 		</c:when>
 		
 		<c:otherwise>
@@ -60,9 +21,11 @@
 				<input type="submit" value="Delete" class="btn btn-danger">
 			</form>
 			
-			<form class="myForm2" action="SelectComputerServlet" method="POST">
+			<form class="myForm" action="SelectComputerServlet" method="POST">
 				<input type="hidden" name="mode" value="edit"/>
 				<input type="text" name="id" value="${computer.id }" readonly/>
+		</c:otherwise>
+	</c:choose>	
 				<fieldset>
 					<div class="clearfix">
 						<label for="name">Computer name:</label>
@@ -104,8 +67,7 @@
 					
 				</div>
 			</form>
-		</c:otherwise>
-	</c:choose>	
+		
 </section>
 <script>
 	$.validate();

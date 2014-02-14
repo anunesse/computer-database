@@ -47,35 +47,34 @@ public class SelectComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.debug("Http Get request catched.");
-		DAOFactory.getInstance();
-		myCompanyDAO = DAOFactory.getMyCompanyDAO();
-		myComputerDAO = DAOFactory.getMyComputerDAO();
-		myCompanyDAO.clearCompanys();
-		myCompanyDAO.getCompanys(45);
-		request.setAttribute("options", myCompanyDAO.getMyCompanys());
-
-		if(request.getParameter("computer") == null || request.getParameter("computer").equals(""))
+		System.out.println("Http Get request catched.");
+		CompanyDAO myCompanyDAO = DAOFactory.getInstance().getMyCompanyDAO();
+		ComputerDAO myComputerDAO = DAOFactory.getInstance().getMyComputerDAO();
+		
+		
+		
+		if(request.getParameterMap().isEmpty())
 		{
-			//request.getRequestDispatcher("WEB-INF/dasboard.jsp").forward(request, response);
+			request.setAttribute("options", myCompanyDAO.read());
 			logger.error("The computer id could not be found on request.");
-			request.setAttribute("computer", 1);
-		}	
+			request.setAttribute("answer", 0);
+			request.getRequestDispatcher("WEB-INF/addComputer.jsp").forward(request, response);
+			return;
+		}
 		else
 		{
-			DAOFactory.getInstance();
-			myComputerDAO = DAOFactory.getMyComputerDAO();
-			Computer myComp = myComputerDAO.getComputerById(Long.parseLong(request.getParameter("computer")));
+			request.setAttribute("options", myCompanyDAO.read());
+			Computer myComp = myComputerDAO.read(Long.parseLong(request.getParameter("computer")));
 			if(myComp == null)
 			{
 				logger.error("The computer id could not be found on database.");
-				request.setAttribute("computer", 1);
+				request.setAttribute("answer", 0);
 			}
 			else
-			{
 				request.setAttribute("computer", myComp);
-			}
+			request.getRequestDispatcher("WEB-INF/addComputer.jsp").forward(request, response);
+			return;
 		}
-		request.getRequestDispatcher("WEB-INF/addComputer.jsp").forward(request, response);
 	}
 
 	/**
@@ -83,9 +82,10 @@ public class SelectComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.debug("Http Post request catched.");
-		DAOFactory.getInstance();
-		myCompanyDAO = DAOFactory.getMyCompanyDAO();
-		myComputerDAO = DAOFactory.getMyComputerDAO();
+		CompanyDAO myCompanyDAO = DAOFactory.getInstance().getMyCompanyDAO();
+		ComputerDAO myComputerDAO = DAOFactory.getInstance().getMyComputerDAO();
+		
+		request.setAttribute("computers", myComputerDAO.readAll());
 		
 		if(request.getParameter("mode") == null || request.getParameter("mode").equals("")){
 			System.out.println("[POSTED] error cant find mode!");
@@ -95,7 +95,7 @@ public class SelectComputerServlet extends HttpServlet {
 		else if(request.getParameter("mode").equals("del"))
 		{
 			System.out.println("DELETING : "+request.getParameter("computer"));
-			if(myComputerDAO.deleteComputerId(Long.parseLong(request.getParameter("computer")))){
+			if(myComputerDAO.delete(Long.parseLong(request.getParameter("computer")))){
 				System.out.println("Computer Deleted!");
 				request.setAttribute("error", "success");
 				request.setAttribute("title", "Computer deleted");
@@ -139,7 +139,7 @@ public class SelectComputerServlet extends HttpServlet {
 		    }
 		    
 		    System.out.println(ts_introduced+" __ "+ts_discontinued+"company id = "+request.getParameter("company")+" id2 = "+Long.parseLong(request.getParameter("company")));
-			if(myCompanyDAO.existCompanyId(Long.parseLong(request.getParameter("company")))){
+			if(myCompanyDAO.exist(Long.parseLong(request.getParameter("company")))){
 				DateFormat formatter;
 				Date dateFormattedIntroduced = null;
 				Date dateFormattedDiscontinued = null;
@@ -150,10 +150,11 @@ public class SelectComputerServlet extends HttpServlet {
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 				}
-				myComp = new Computer(request.getParameter("name"), dateFormattedIntroduced, dateFormattedDiscontinued, Long.parseLong(request.getParameter("company")));
+				myComp = new Computer(request.getParameter("name"), dateFormattedIntroduced, dateFormattedDiscontinued, new Company(Long.parseLong(request.getParameter("company"))));
+				
 			}
 			
-			if(myComputerDAO.addComputer(myComp))
+			if(myComputerDAO.add(myComp))
 			{
 				request.setAttribute("error", "success");
 				request.setAttribute("title", "Computer added");
@@ -217,9 +218,9 @@ public class SelectComputerServlet extends HttpServlet {
 					request.getParameter("name"),
 					dateFormattedIntroduced,
 					dateFormattedDiscontinued,
-					Long.parseLong(request.getParameter("company")));
+					myCompanyDAO.read(Long.parseLong(request.getParameter("company"))));
 			
-			if(myComputerDAO.editComputer(myComp))
+			if(myComputerDAO.edit(myComp))
 			{
 				request.setAttribute("error", "success");
 				request.setAttribute("title", "Computer edited");

@@ -13,7 +13,6 @@ public class DAOFactory {
 	private static String passwd = "password";
 	
 	private static DAOFactory myDAO;
-	private static Connection myCon;
 	
 	private DAOFactory(){
 		myCompanyDAO = new CompanyDAO();
@@ -33,19 +32,12 @@ public class DAOFactory {
 	}
 	
 	public static DAOFactory getInstance(){
-		if(myDAO == null){
+		if(myDAO == null)
 			myDAO = new DAOFactory();
-		}
-		try {
-			myCon = DriverManager.getConnection(url,user,passwd);
-			return myDAO;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return myDAO;
 	}
 
-	public static CompanyDAO getMyCompanyDAO() {			// TODO Auto-generated catch block
+	public static CompanyDAO getMyCompanyDAO() {
 		return myCompanyDAO;
 	}
 
@@ -53,8 +45,13 @@ public class DAOFactory {
 		return myComputerDAO;
 	}
 	
-	public static Connection getConnection() {
-		return myCon;
+	public Connection getConnection() {
+		try {
+			return DriverManager.getConnection(url,user,passwd);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

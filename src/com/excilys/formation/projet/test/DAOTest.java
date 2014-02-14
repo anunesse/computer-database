@@ -2,8 +2,10 @@ package com.excilys.formation.projet.test;
 
 import java.sql.Timestamp;
 import java.util.Date;
+
 import com.excilys.formation.projet.util.*;
 import com.excilys.formation.projet.DAO.ComputerDAO;
+import com.excilys.formation.projet.DAO.DAOFactory;
 import com.excilys.formation.projet.OM.Computer;
 import com.excilys.formation.projet.util.Converter;
 
@@ -29,8 +31,12 @@ public class DAOTest {
 		System.out.println("TS 2 = "+myTimestamp2.toLocaleString());
 		System.out.println("TS 2 = "+myTimestamp2.getTime());*/
 		
-		String myStr="MacBook 13-inch Core 2 Duo 2.13GHz (MC240LL/A) DDR2 Model";
-		System.out.println(Validation.validateString(myStr));
+		//String myStr="MacBook 13-inch Core 2 Duo 2.13GHz (MC240LL/A) DDR2 Model";
+		//System.out.println(Validation.validateString(myStr));
+		
+		DAOFactory.getInstance();
+		ComputerDAO myComputerDAO = DAOFactory.getMyComputerDAO();
+		
 	}
 
 }

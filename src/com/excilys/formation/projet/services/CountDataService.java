@@ -4,13 +4,11 @@ import com.excilys.formation.projet.DAO.CompanyDAO;
 import com.excilys.formation.projet.DAO.ComputerDAO;
 import com.excilys.formation.projet.DAO.DAOFactory;
 
-public class CountDataService {
-	private static ComputerDAO myComputerDAO;
-	private static CompanyDAO myCompanyDAO;
+public class CountDataService {	
 	public static int CountComputers(){
-		DAOFactory.getInstance();
-		myComputerDAO = DAOFactory.getMyComputerDAO();
-		return myComputerDAO.getTotalComputer();
+		ComputerDAO myComputerDAO = DAOFactory.getInstance().getMyComputerDAO();
+		//myComputerDAO.
+		return 580;
 	}
 	public static int CountCompanys(){
 		return 43;

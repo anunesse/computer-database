@@ -36,4 +36,42 @@
 	    </attribute>
 	    
 	</tag>
+	<tag>
+		<name>Tag1</name>
+	    <body-content>empty</body-content>
+	    
+	    <attribute>
+	      <name>page</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <type>java.lang.Integer</type>
+	    </attribute>
+	    <attribute>
+	      <name>resultsPerPage</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <type>java.lang.Integer</type>
+	    </attribute>
+	    <attribute>
+	      <name>pageCount</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <type>java.lang.Integer</type>
+	    </attribute>
+	    <attribute>
+	      <name>numberOfElements</name>
+	      <rtexprvalue>true</rtexprvalue>
+	      <type>java.lang.Integer</type>
+	    </attribute>
+	    <attribute>
+	      <name>totalElements</name>
+	      <rtexprvalue>true</rtexprvalue>
+	      <type>java.lang.Integer</type>
+	    </attribute>
+	    <attribute>
+	      <name>actionPrefix</name>
+	      <rtexprvalue>true</rtexprvalue>
+	      <type>java.lang.String</type>
+	    </attribute>
+	</tag>
 </taglib>

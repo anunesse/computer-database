@@ -1,51 +1,66 @@
 <jsp:include page="../include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@taglib prefix="Page" uri="/WEB-INF/tld/LinkDescriptor.tld"%>
+<%@ taglib prefix="Page" uri="/WEB-INF/tld/LinkDescriptor.tld"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="h" %>
 
 <section id="main">
-	<h1 id="homeTitle"> Computers found</h1>
+	<h1 id="homeTitle">${pageData.totalNumberOfRecords } Computers found</h1>
 	
 	<c:if test="${not empty error}">
 	   <jsp:include page="../include/info.jsp" />  
 	</c:if>
 	
-	<c:url var="searchUri" value="/searchResults.html?s=la&page=##" />
-	<!-- <paginator:display maxLinks="10" currPage="${page}" totalPages="${totalPages}" uri="${searchUri}" /> 
-	<paginator:display maxLinks="10" currPage="4" totalPages="10"/>-->
+	<!-- pageData
+	results
+	resultsOrderedBy
+	orderDirection
+	pageNumber
+	pageSize
+	recordsOnThisPage
+	totalNumberOfRecords
+	numberOfPages
+	-->
 	
 	<div id="actions">
 		<form action="SelectDataServlet" method="GET">
-			<input type="search" id="dispbox" name="display" value="${display }" placeholder="20">
+			<input type="hidden" name="pageNumber" value="${pageData.pageNumber}">
+			<input type="hidden" name="resultsOrderedBy" value="${pageData.resultsOrderedBy }">
+			<input type="search" id="dispbox" name="recordsOnThisPage" value="${pageData.recordsOnThisPage }" placeholder="20">
 			<input type="submit" id="dispsubmit" value="Displayed by page" class="btn primary">
 		<a class="btn success" id="add" href="SelectComputerServlet">Add Computer</a>
 	</div>
 	
-	<c:if test="${not empty currentPage}">
-	<Page:LinkDescriptor maxLinks="10" currPage="${currentPage}" totalPages="10" uri="3" />
-		<input type="hidden" name="page" value="${currentPage}">
+	<h:Links numberOfPages="10" orderDirection="ASC" pageNumber="1" pageSize="10" recordsOnThisPage="20" resultsOrderedBy="name" totalNumberOfRecords="574"></h:Links>
+	
+	
+	<c:if test="${not empty pageData.pageNumber}">
+	<Page:LinkDescriptor maxLinks="10" currPage="${pageData.pageNumber}" totalPages="10" uri="3" />
+		<input type="hidden" name="page" value="${pageData.pageNumber}">
 	</c:if>
 	
 		<table class="computers zebra-striped">
 			<thead>
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
-					<th><a class="btn">Computer Name
+					<th>
+						<h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="computer" value="Computer Name"></h:Link>
 						<input type="search" id="searchbox" name="search"
 							value="${search }" placeholder="Search name">
 						<input type="submit" id="searchsubmit"
 							value="Filter by name"
 							class="btn primary">
-					</a></th>
-					<th><a class="btn">Introduced Date</a></th>
-					<th><a class="btn">Discontinued Date</a></th>
-					<th><a class="btn">Company
+					</th>
+					<th><h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="introduced" value="Introduced Date"></h:Link></th>
+					<th><h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="discontinued" value="Discontinued Date"></h:Link></th>
+					<th>
+						<h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="company" value="Company Name"></h:Link>
 						<input type="search" id="dispbox" name="company"
 							value="${company }" placeholder="Search Company Name">
 						<input type="submit" id="compsubmit"
 							value="Filter by company"
 							class="btn primary">
-					</a></th>
+					</th>
 				</tr>
 			</thead>
 				
@@ -57,7 +72,7 @@
 					<p>No computers were found.</p>
 				</c:when>
 				<c:otherwise>
-				<c:forEach var="comp" items="${computers}">
+				<c:forEach var="comp" items="${pageData.results}">
 					<tr>
 						<td><a href="SelectComputerServlet?computer=${comp.id}">${comp.name }</a></td>
 						<td><fmt:formatDate value="${comp.introduced}" pattern="yyyy/MM/dd"/></td>

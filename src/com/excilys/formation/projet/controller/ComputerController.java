@@ -2,14 +2,13 @@ package com.excilys.formation.projet.controller;
 
 import java.util.List;
 
-import com.excilys.formation.projet.DAO.CompanyDAO;
-import com.excilys.formation.projet.DAO.ComputerDAO;
-import com.excilys.formation.projet.DAO.DAOFactory;
-import com.excilys.formation.projet.OM.Computer;
+import com.excilys.formation.projet.dao.DAOFactory;
+import com.excilys.formation.projet.dao.IComputerDAO;
+import com.excilys.formation.projet.om.Computer;
 
 public class ComputerController {
 	private List<Computer> myComputers;
-	ComputerDAO myComputerDAO = DAOFactory.getInstance().getMyComputerDAO();
+	IComputerDAO myComputerDAO = DAOFactory.getInstance().getMyComputerDAO();
 	
 	public ComputerController() {
 		super();

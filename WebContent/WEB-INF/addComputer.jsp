@@ -1,8 +1,8 @@
 <jsp:include page="../include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="com.excilys.formation.projet.DAO.*"%>
-<%@ page import="com.excilys.formation.projet.OM.*"%>
+<%@ page import="com.excilys.formation.projet.dao.*"%>
+<%@ page import="com.excilys.formation.projet.om.*"%>
 <section id="main">
 
 	<c:choose>
@@ -18,7 +18,7 @@
 			<form action="SelectComputerServlet" method="POST">
 				<input type="hidden" name="mode" value="del"/>
 				<input type="hidden" name="computer" value="${computer.id }"/>
-				<input type="submit" value="Delete" class="btn btn-danger">
+				<input type="submit" value="Delete" onclick="return confirm('You are about to delete this computer, are you sure?')" class="btn btn-danger">
 			</form>
 			
 			<form class="myForm" action="SelectComputerServlet" method="POST">

@@ -1,8 +1,6 @@
 package com.excilys.formation.projet.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,137 +8,164 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.formation.projet.DAO.CompanyDAO;
-import com.excilys.formation.projet.DAO.ComputerDAO;
-import com.excilys.formation.projet.DAO.DAOFactory;
-import com.excilys.formation.projet.OM.Computer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.formation.projet.dao.DAOFactory;
+import com.excilys.formation.projet.dao.IComputerDAO;
+import com.excilys.formation.projet.servlet.wrapper.Page;
 
 /**
  * Servlet implementation class SelectDataServlet
  */
 @WebServlet("/SelectDataServlet")
 public class SelectDataServlet extends HttpServlet {
-	private ComputerDAO myComputerDAO;
-	
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SelectDataServlet() {
-        super();
-    }
+	private IComputerDAO myComputerDAO;
+	static final Logger LOG = LoggerFactory.getLogger(SelectDataServlet.class);
 
-    
+	private static final long serialVersionUID = 1L;
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public SelectDataServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		DAOFactory.getInstance();
 		myComputerDAO = DAOFactory.getMyComputerDAO();
-		
-		if(request.getParameterMap().isEmpty())
-		{
-			request.setAttribute("computers", myComputerDAO.readAll());
-			request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request, response);
+		Page myPage = new Page();
+
+		if (request.getParameterMap().isEmpty()) {
+			myPage.results = myComputerDAO.readAll();
+			myPage.totalNumberOfRecords = myComputerDAO.readTotal();
+			myPage.pageNumber = 1;
+			request.setAttribute("pageData", myPage);
+			request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
+					request, response);
 			return;
-		}		
+		}
+
 		int page = 1;
 		int limit = 20;
 		int offset = 0;
 		String searchComputer = "";
 		String searchCompany = "";
 		String sortResult = "";
-		
-		if(request.getParameter("page")==null || "".equals(request.getParameter("page")))
+		String orderDir = "DESC";
+
+		if (request.getParameter("pageNumber") == null
+				|| "".equals(request.getParameter("pageNumber")))
 			page = 1;
-		else{
-			page = Integer.parseInt(request.getParameter("page"));
-			offset = (page-1)*limit;
+		else {
+			page = Integer.parseInt(request.getParameter("pageNumber"));
+			offset = (page - 1) * limit;
 		}
-			
-		if(request.getParameter("display")==null || "".equals(request.getParameter("display"))){
+
+		if (request.getParameter("recordsOnThisPage") == null
+				|| "".equals(request.getParameter("recordsOnThisPage"))) {
 			limit = 20;
-		}
-		else{
-			System.out.println(request.getParameter("display"));
-			if(!request.getParameter("display").matches("\\d+") || Integer.parseInt(request.getParameter("display"))<=0)
-				limit = Integer.parseInt(request.getParameter("display"));
+		} else {
+			System.out.println(request.getParameter("recordsOnThisPage"));
+			if (!request.getParameter("recordsOnThisPage").matches("\\d+")
+					|| Integer.parseInt(request
+							.getParameter("recordsOnThisPage")) <= 0)
+				limit = Integer.parseInt(request
+						.getParameter("recordsOnThisPage"));
 			else
 				limit = 20;
 		}
-		
-		if(request.getParameter("search")==null || "".equals(request.getParameter("search")))
+		/*
+		 * resultsOrderedBy orderDirection
+		 */
+		if (request.getParameter("orderDirection") == null
+				|| "".equals(request.getParameter("orderDirection")))
+			orderDir = "DESC";
+		else
+			orderDir = request.getParameter("orderDirection");
+
+		if (request.getParameter("search") == null
+				|| "".equals(request.getParameter("search")))
 			searchComputer = "";
 		else
 			searchComputer = request.getParameter("search");
-		
-		if(request.getParameter("company")==null || "".equals(request.getParameter("company")))
+
+		if (request.getParameter("company") == null
+				|| "".equals(request.getParameter("company")))
 			searchCompany = "";
 		else
 			searchCompany = request.getParameter("company");
-		
-		if(request.getParameter("sort")==null || "".equals(request.getParameter("sort")))
+
+		if (request.getParameter("resultsOrderedBy") == null
+				|| "".equals(request.getParameter("resultsOrderedBy")))
 			sortResult = "";
-		else
-		{
-			if("computer".equals(request.getParameter("sort")))
-				sortResult = "computer ";
-			else if("company".equals(request.getParameter("sort")))
-				sortResult = "company";
-			else if("introduced".equals(request.getParameter("sort")))
-				sortResult = "introduced";
-			else if("discontinued".equals(request.getParameter("sort")))
-				sortResult = "discontinued";
+		else {
+			if ("computer".equals(request.getParameter("resultsOrderedBy")))
+				sortResult = "c.name";
+			else if ("company".equals(request.getParameter("resultsOrderedBy")))
+				sortResult = "b.name";
+			else if ("introduced".equals(request
+					.getParameter("resultsOrderedBy")))
+				sortResult = "c.introduced";
+			else if ("discontinued".equals(request
+					.getParameter("resultsOrderedBy")))
+				sortResult = "c.discontinued";
 		}
-		
-		request.setAttribute("currentPage", page);
-		System.out.println(offset+"/"+limit);
-		request.setAttribute("computers", myComputerDAO.readRanged(offset, limit));
-		
-		request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request, response);
-		
+
+		System.out.println(offset + "/" + limit);
+
+		myPage.pageNumber = page;
+		myPage.resultsOrderedBy = sortResult;
+		myPage.orderDirection = orderDir;
+		myPage.results = myComputerDAO.readRangedOrdered(limit, offset,
+				orderDir, sortResult);
+		request.setAttribute("pageData", myPage);
+		LOG.debug(myPage.toString());
+		request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request,
+				response);
 		return;
-		
-		//request.setAttribute("answer", 0);
-		//request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request, response);
+
+		// request.setAttribute("answer", 0);
+		// request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request,
+		// response);
 		/*
-		if("".equals(request.getParameter("display")) || !request.getParameter("display").matches("\\d+") || Integer.parseInt(request.getParameter("display"))<=0)
-		{
-			if("".equals(request.getParameter("search")))
-			{
-				myComputerDAO.clearMyComputers();
-				myComputerDAO.getComputers(toDisplay);
-				request.setAttribute("computers", myComputerDAO.getMyComputers());
-			}
-			else
-			{
-				myComputerDAO.clearMyComputers();
-				myComputerDAO.getComputersByName(toDisplay, request.getParameter("search"));
-				request.setAttribute("computers", myComputerDAO.getMyComputers());
-			}
-		}
-		else
-		{
-			toDisplay = Integer.parseInt(request.getParameter("display"));
-			if(request.getParameter("search") == null || request.getParameter("search").equals("")){
-				myComputerDAO.clearMyComputers();
-				myComputerDAO.getComputers(toDisplay);
-				request.setAttribute("computers", myComputerDAO.getMyComputers());
-			}
-			else
-			{
-				myComputerDAO.clearMyComputers();
-				myComputerDAO.getComputersByName(toDisplay, request.getParameter("search"));
-				request.setAttribute("computers", myComputerDAO.getMyComputers());
-			}/SelectDataServlet
-			
-		}	
-		request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request, response);
-		*/
+		 * if("".equals(request.getParameter("display")) ||
+		 * !request.getParameter("display").matches("\\d+") ||
+		 * Integer.parseInt(request.getParameter("display"))<=0) {
+		 * if("".equals(request.getParameter("search"))) {
+		 * myComputerDAO.clearMyComputers();
+		 * myComputerDAO.getComputers(toDisplay);
+		 * request.setAttribute("computers", myComputerDAO.getMyComputers()); }
+		 * else { myComputerDAO.clearMyComputers();
+		 * myComputerDAO.getComputersByName(toDisplay,
+		 * request.getParameter("search")); request.setAttribute("computers",
+		 * myComputerDAO.getMyComputers()); } } else { toDisplay =
+		 * Integer.parseInt(request.getParameter("display"));
+		 * if(request.getParameter("search") == null ||
+		 * request.getParameter("search").equals("")){
+		 * myComputerDAO.clearMyComputers();
+		 * myComputerDAO.getComputers(toDisplay);
+		 * request.setAttribute("computers", myComputerDAO.getMyComputers()); }
+		 * else { myComputerDAO.clearMyComputers();
+		 * myComputerDAO.getComputersByName(toDisplay,
+		 * request.getParameter("search")); request.setAttribute("computers",
+		 * myComputerDAO.getMyComputers()); }/SelectDataServlet
+		 * 
+		 * }
+		 * request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request
+		 * , response);
+		 */
 	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
 	}
 
 }

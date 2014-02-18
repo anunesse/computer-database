@@ -1,38 +1,60 @@
 package com.excilys.formation.projet.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
 
 public class DAOFactory {
 	private static ICompanyDAO myCompanyDAO;
-	private static ComputerDAO myComputerDAO;
-	
+	private static IComputerDAO myComputerDAO;
+	private static BoneCP connectionPool;
+
+	static final Logger LOG = LoggerFactory.getLogger(DAOFactory.class);
+
 	private static String url = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	private static String user = "jee-cdb";
 	private static String passwd = "password";
-	
+
 	private static DAOFactory myDAO;
-	
-	private DAOFactory(){
+
+	private DAOFactory() {
 		myCompanyDAO = new CompanyDAO();
 		myComputerDAO = new ComputerDAO();
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			System.out.println("Connection successfully openned");
-		} 
-		catch (ClassNotFoundException CNFe) {
-			System.out.println("[CLASSNFEXCEPTION INIT]");
+			LOG.info("[BONECP]Connection successfully openned");
+		} catch (ClassNotFoundException CNFe) {
+			LOG.error("[CLASSNFEXCEPTION]");
 			CNFe.printStackTrace();
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		BoneCPConfig config = new BoneCPConfig();
+
+		config.setJdbcUrl(url);
+		config.setUsername(user);
+		config.setPassword(passwd);
+
+		config.setMinConnectionsPerPartition(5);
+		config.setMaxConnectionsPerPartition(10);
+		config.setPartitionCount(1);
+		try {
+			connectionPool = new BoneCP(config);
+		} catch (SQLException e) {
+			LOG.error("[SQLEXCEPTION]");
+			e.printStackTrace();
+		}
 	}
-	
-	public static DAOFactory getInstance(){
-		if(myDAO == null)
+
+	public static DAOFactory getInstance() {
+		if (myDAO == null)
 			myDAO = new DAOFactory();
 		return myDAO;
 	}
@@ -41,17 +63,19 @@ public class DAOFactory {
 		return myCompanyDAO;
 	}
 
-	public static ComputerDAO getMyComputerDAO() {
+	public static IComputerDAO getMyComputerDAO() {
 		return myComputerDAO;
 	}
-	
+
 	public Connection getConnection() {
 		try {
-			return DriverManager.getConnection(url,user,passwd);
+			LOG.info("[BONECP] RETURNING CONNECTION");
+			return connectionPool.getConnection();
 		} catch (SQLException e) {
+			LOG.error("[UNABLE TO GET CONNECTION]");
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 }

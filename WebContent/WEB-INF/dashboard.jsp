@@ -1,74 +1,136 @@
 <jsp:include page="../include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="Page" uri="/WEB-INF/tld/LinkDescriptor.tld"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="h" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="at" %>
 
 <section id="main">
-	<h1 id="homeTitle">${pageData.totalNumberOfRecords } Computers found</h1>
+	<h1 id="homeTitle">${pageData.totalNumberOfRecords} Computers found</h1>
 	
 	<c:if test="${not empty error}">
 	   <jsp:include page="../include/info.jsp" />  
 	</c:if>
 	
-	<!-- pageData
-	results
-	resultsOrderedBy
-	orderDirection
-	pageNumber
-	pageSize
-	recordsOnThisPage
-	totalNumberOfRecords
-	numberOfPages
-	-->
-	
 	<div id="actions">
 		<form action="SelectDataServlet" method="GET">
-			<input type="hidden" name="pageNumber" value="${pageData.pageNumber}">
-			<input type="hidden" name="resultsOrderedBy" value="${pageData.resultsOrderedBy }">
-			<input type="search" id="dispbox" name="recordsOnThisPage" value="${pageData.recordsOnThisPage }" placeholder="20">
-			<input type="submit" id="dispsubmit" value="Displayed by page" class="btn primary">
+		<c:choose>
+			<c:when test="${pageData.recordsOnThisPage > 0}">
+				<input type="search" id="dispbox" name="display" value="${pageData.recordsOnThisPage}" placeholder="10, 20, 50, ...">
+			</c:when>
+			<c:otherwise>
+				<input type="search" id="dispbox" name="display" value="" placeholder="10, 20, 50, ...">
+			</c:otherwise>
+		</c:choose>
+			<input type="search" id="search" name="search" value="${search }" placeholder="Computer or company...">
+			<input type="submit" value="Find it" class="btn primary">
+		</form>
 		<a class="btn success" id="add" href="SelectComputerServlet">Add Computer</a>
 	</div>
-	
-	<h:Links numberOfPages="10" orderDirection="ASC" pageNumber="1" pageSize="10" recordsOnThisPage="20" resultsOrderedBy="name" totalNumberOfRecords="574"></h:Links>
-	
-	
-	<c:if test="${not empty pageData.pageNumber}">
-	<Page:LinkDescriptor maxLinks="10" currPage="${pageData.pageNumber}" totalPages="10" uri="3" />
-		<input type="hidden" name="page" value="${pageData.pageNumber}">
+
+	<c:if test="${not empty pageData.pageNumber && pageData.recordsOnThisPage>0}">
+		<at:Pagination orderDirection="${pageData.orderDirection}" elementsByPage="${pageData.recordsOnThisPage}" search="${search }" page="${pageData.pageNumber }" orderField="${pageData.resultsOrderedBy}" numberOfPages="${pageData.numberOfPages}"></at:Pagination>
 	</c:if>
 	
 		<table class="computers zebra-striped">
 			<thead>
 				<tr>
-					<!-- Variable declarations for passing labels as parameters -->
 					<th>
-						<h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="computer" value="Computer Name"></h:Link>
-						<input type="search" id="searchbox" name="search"
-							value="${search }" placeholder="Search name">
-						<input type="submit" id="searchsubmit"
-							value="Filter by name"
-							class="btn primary">
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'computer' }">
+								<c:if test="${pageData.orderDirection == 'DESC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=computer
+										&order=ASC" class="btn active">Computer DOWN</a>
+									<!--  -->
+								</c:if>
+								<c:if test="${pageData.orderDirection == 'ASC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=computer
+										&order=DESC" class="btn active">Computer UP</a>
+								</c:if>
+							</c:when>
+							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=computer
+										&order=ASC" class="btn">Computer</a></c:otherwise>
+						</c:choose>
 					</th>
-					<th><h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="introduced" value="Introduced Date"></h:Link></th>
-					<th><h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="discontinued" value="Discontinued Date"></h:Link></th>
 					<th>
-						<h:Link pageNumber="${pageData.pageNumber}" resultsOrderedBy="company" value="Company Name"></h:Link>
-						<input type="search" id="dispbox" name="company"
-							value="${company }" placeholder="Search Company Name">
-						<input type="submit" id="compsubmit"
-							value="Filter by company"
-							class="btn primary">
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'introduced' }">
+								<c:if test="${pageData.orderDirection == 'DESC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=introduced
+										&order=ASC" class="btn active">Introduced DOWN</a>
+									<!--  -->
+								</c:if>
+								<c:if test="${pageData.orderDirection == 'ASC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=introduced
+										&order=DESC" class="btn active">Introduced UP</a>
+								</c:if>
+							</c:when>
+							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=introduced
+										&order=ASC" class="btn">Introduced</a></c:otherwise>
+						</c:choose>
+					</th>
+					<th>
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'discontinued' }">
+								<c:if test="${pageData.orderDirection == 'DESC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=discontinued
+										&order=ASC" class="btn active">Discontinued DOWN</a>
+									<!--  -->
+								</c:if>
+								<c:if test="${pageData.orderDirection == 'ASC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=discontinued
+										&order=DESC" class="btn active">Discontinued UP</a>
+								</c:if>
+							</c:when>
+							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=discontinued
+										&order=ASC" class="btn">Discontinued</a></c:otherwise>
+						</c:choose>
+					</th>
+					<th>
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'company' }">
+								<c:if test="${pageData.orderDirection == 'DESC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=company
+										&order=ASC" class="btn active">Company DOWN</a>
+									<!--  -->
+								</c:if>
+								<c:if test="${pageData.orderDirection == 'ASC' }">
+									<a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=company
+										&order=DESC" class="btn active">Company UP</a>
+								</c:if>
+							</c:when>
+							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+										&search=${search}&display=${pageData.recordsOnThisPage}
+										&orderField=company
+										&order=ASC" class="btn">Company</a></c:otherwise>
+						</c:choose>
 					</th>
 				</tr>
 			</thead>
-				
-		</form>
 			<tbody>
 
 			<c:choose>
-				<c:when test="${answer==0}">
+				<c:when test="${pageData.totalNumberOfRecords==0}">
 					<p>No computers were found.</p>
 				</c:when>
 				<c:otherwise>

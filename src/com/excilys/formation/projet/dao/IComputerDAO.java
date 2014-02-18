@@ -8,6 +8,8 @@ public interface IComputerDAO {
 
 	public abstract int readTotal();
 
+	public abstract int readTotal(String search);
+
 	public abstract Computer read(long id);
 
 	public abstract boolean exist(long id);
@@ -18,8 +20,8 @@ public interface IComputerDAO {
 
 	public abstract List<Computer> readRanged(int min, int max);
 
-	public abstract List<Computer> readRangedOrderedSearchComputer(int min,
-			int max, boolean type, String field, String search);
+	public abstract List<Computer> read(int min, int max, String type,
+			String field, String search);
 
 	public abstract List<Computer> readAll();
 

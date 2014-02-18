@@ -21,6 +21,7 @@ import com.excilys.formation.projet.dao.ICompanyDAO;
 import com.excilys.formation.projet.dao.IComputerDAO;
 import com.excilys.formation.projet.om.Company;
 import com.excilys.formation.projet.om.Computer;
+import com.excilys.formation.projet.servlet.wrapper.Page;
 import com.excilys.formation.projet.util.Validation;
 
 /**
@@ -97,20 +98,19 @@ public class SelectComputerServlet extends HttpServlet {
 					request, response);
 			return;
 		} else if (request.getParameter("mode").equals("del")) {
-			System.out
-					.println("DELETING : " + request.getParameter("computer"));
 			if (myComputerDAO.delete(Long.parseLong(request
 					.getParameter("computer")))) {
-				System.out.println("Computer Deleted!");
 				request.setAttribute("error", "success");
 				request.setAttribute("title", "Computer deleted");
 				request.setAttribute("message",
 						"The computer was successfully deleted from the database.");
+				LOG.info("Computer successfully deleted!");
 			} else {
 				request.setAttribute("error", "danger");
 				request.setAttribute("title", "Fail to delete computer");
 				request.setAttribute("message",
 						"The computer was not deleted to the database please try again.");
+				LOG.info("The computer can not be delete.");
 			}
 			request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
 					request, response);
@@ -140,13 +140,16 @@ public class SelectComputerServlet extends HttpServlet {
 			}
 			error.append(")");
 			if (has_errors) {
+
 				request.setAttribute("error", "danger");
 				request.setAttribute("title", "Fail to add computer");
 				request.setAttribute("message",
 						"The computer was not added to the database please try again. "
 								+ error);
-				request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
-						request, response);
+				request.setAttribute("mode", request.getParameter("mode"));
+				request.getRequestDispatcher("WEB-INF/addComputer.jsp")
+						.forward(request, response);
+				LOG.info("The computer can not be add.");
 				return;
 			}
 
@@ -180,47 +183,52 @@ public class SelectComputerServlet extends HttpServlet {
 				request.setAttribute("title", "Computer added");
 				request.setAttribute("message",
 						"Congratulations, the computer has been added to the database.");
+				request.getRequestDispatcher("WEB-INF/addComputer.jsp")
+						.forward(request, response);
+				LOG.info("A computer has been add to the database.");
+				return;
 			} else {
 				request.setAttribute("error", "danger");
 				request.setAttribute("title", "Fail to add computer");
 				request.setAttribute("message",
 						"The computer was not added to the database please try again.");
+				request.setAttribute("mode", request.getParameter("mode"));
+				request.getRequestDispatcher("WEB-INF/addComputer.jsp")
+						.forward(request, response);
+				LOG.info("The computer can not be add.");
+				return;
 			}
 		} else if (request.getParameter("mode").equals("edit")) {
-			System.out.println("POSTED : " + request.getParameter("name")
-					+ " compnay = " + request.getParameter("company") + " "
-					+ request.getParameter("introduced")
-					+ request.getParameter("discontinued"));
-
 			boolean has_errors = false;
-			String error_params = "(Errors : ";
+			StringBuilder error_params = new StringBuilder("(Errors : ");
 
 			if (!Validation.validateString(request.getParameter("name"))) {
-				error_params += "\nComputer name failed / ";
+				error_params.append("\nComputer name failed / ");
 				has_errors = true;
 			}
 			if (!Validation.validateString(request.getParameter("company"))) {
-				error_params += "\nCompany name failed / ";
+				error_params.append("\nCompany name failed / ");
 				has_errors = true;
 			}
 			if (!Validation.validateString(request.getParameter("introduced"))) {
-				error_params += "\nIntroduced date failed / ";
+				error_params.append("\nIntroduced date failed / ");
 				has_errors = true;
 			}
 			if (!Validation
 					.validateString(request.getParameter("discontinued"))) {
-				error_params += "\nDiscontinued date failed";
+				error_params.append("\nDiscontinued date failed");
 				has_errors = true;
 			}
-			error_params += ")";
+			error_params.append(")");
 			if (has_errors) {
 				request.setAttribute("error", "danger");
 				request.setAttribute("title", "Fail to edit computer");
 				request.setAttribute("message",
-						"The computer was not edited to the database please try again. "
+						"The computer was not edited please try again. "
 								+ error_params);
-				request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
-						request, response);
+				LOG.info("Fail to access edit computer.");
+				request.getRequestDispatcher("WEB-INF/addComputer.jsp")
+						.forward(request, response);
 				return;
 			}
 
@@ -243,7 +251,7 @@ public class SelectComputerServlet extends HttpServlet {
 			}
 
 			Computer myComp = new Computer(Long.parseLong(request
-					.getParameter("id")), request.getParameter("name"),
+					.getParameter("comp_id")), request.getParameter("name"),
 					dateFormattedIntroduced, dateFormattedDiscontinued,
 					myCompanyDAO.read(Long.parseLong(request
 							.getParameter("company"))));
@@ -253,14 +261,29 @@ public class SelectComputerServlet extends HttpServlet {
 				request.setAttribute("title", "Computer edited");
 				request.setAttribute("message",
 						"Congratulations, the computer has been edited and data overwritten.");
+				LOG.info("Computer successfully edited.");
+				Page<Computer> myPage = new Page<Computer>();
+				myPage.results = myComputerDAO.readAll();
+				myPage.totalNumberOfRecords = myComputerDAO.readTotal();
+				request.setAttribute("pageData", myPage);
+				request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
+						request, response);
+				return;
 			} else {
+				request.setAttribute("computer", request.getParameter("id"));
 				request.setAttribute("error", "danger");
 				request.setAttribute("title", "Fail to edit computer");
 				request.setAttribute("message",
 						"The computer was not updated, please try again.");
+				LOG.info("Fail to edit computer.");
+				request.getRequestDispatcher(
+						"WEB-INF/addComputer.jsp?computer="
+								+ request.getParameter("comp_id")).forward(
+						request, response);
+
+				return;
 			}
 		}
-		request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request,
-				response);
+
 	}
 }

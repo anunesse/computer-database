@@ -88,11 +88,6 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#exist(long)
-	 */
 	@Override
 	public boolean exist(long id) {
 		int page = 1;
@@ -129,11 +124,6 @@ public class ComputerDAO implements IComputerDAO {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#delete(long)
-	 */
 	@Override
 	public boolean delete(long id) {
 		PreparedStatement myStatement = null;
@@ -156,12 +146,6 @@ public class ComputerDAO implements IComputerDAO {
 		return b;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#readName(int,
-	 * java.lang.String)
-	 */
 	@Override
 	public List<Computer> readName(int max, String name) {
 		ResultSet myResults = null;
@@ -209,11 +193,6 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#readRanged(int, int)
-	 */
 	@Override
 	public List<Computer> readRanged(int min, int max) {
 		ResultSet myResults = null;
@@ -253,12 +232,6 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#readRangedOrdered(int, int,
-	 * boolean, java.lang.String)
-	 */
 	@Override
 	public List<Computer> readRangedOrdered(int min, int max, String type,
 			String field) {
@@ -306,34 +279,36 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Classic read function.
 	 * 
-	 * @see
-	 * com.excilys.formation.projet.dao.IDAO#readRangedOrderedSearchComputer
-	 * (int, int, boolean, java.lang.String, java.lang.String)
+	 * @param limit
+	 * @param offset
+	 * @param type
+	 * @param field
+	 * @param search
+	 * @return
 	 */
-	@Override
-	public List<Computer> readRangedOrderedSearchComputer(int min, int max,
-			boolean type, String field, String search) {
+	public List<Computer> read(int limit, int offset, String type,
+			String field, String search) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
 
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
+		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ? ORDER BY "
+				+ type + " " + field + " LIMIT ? OFFSET ?";
 
 		System.out.println(query);
 		try {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, "%" + search + "%");
-			myStatement.setString(2, field);
-			myStatement.setString(3, (type) ? "ASC" : "DESC");
-			myStatement.setInt(4, max);
-			myStatement.setInt(5, min);
+			myStatement.setString(2, "%" + search + "%");
+			myStatement.setInt(3, limit);
+			myStatement.setInt(4, offset);
 			myResults = myStatement.executeQuery();
 		} catch (SQLException SQLe) {
-			LOG.error("[SQLEXCEPTION]");
+			LOG.error("[SQLEXCEPTION");
 			SQLe.printStackTrace();
 		}
 		if (myResults != null) {
@@ -346,7 +321,7 @@ public class ComputerDAO implements IComputerDAO {
 				}
 				return myComputers;
 			} catch (SQLException e) {
-				LOG.error("[SQLEXCEPTION]");
+				System.out.println("[SQLEXCEPTION PRINT_COMPUTERS]");
 				e.printStackTrace();
 			} finally {
 				CloseResults(myResults);
@@ -357,11 +332,6 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#readAll()
-	 */
 	@Override
 	public List<Computer> readAll() {
 		ResultSet myResults = null;
@@ -400,13 +370,39 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.excilys.formation.projet.dao.IDAO#add(com.excilys.formation.projet
-	 * .om.Computer)
-	 */
+	public int readTotal(String search) {
+		ResultSet myResults = null;
+		PreparedStatement myStatement = null;
+		Connection myCon = DAOFactory.getInstance().getConnection();
+
+		String query = "SELECT COUNT(*) FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
+
+		System.out.println(query);
+		try {
+			myStatement = myCon.prepareStatement(query);
+			myStatement.setString(1, "%" + search + "%");
+			myStatement.setString(2, "%" + search + "%");
+			myResults = myStatement.executeQuery();
+		} catch (SQLException SQLe) {
+			LOG.error("[SQLEXCEPTION]");
+			SQLe.printStackTrace();
+		}
+		if (myResults != null) {
+			try {
+				if (myResults.first())
+					return myResults.getInt(1);
+			} catch (SQLException e) {
+				System.out.println("[SQLEXCEPTION PRINT_COMPUTERS]");
+				e.printStackTrace();
+			} finally {
+				CloseResults(myResults);
+				CloseStatement(myStatement);
+				CloseConnection(myCon);
+			}
+		}
+		return 0;
+	}
+
 	@Override
 	public boolean add(Computer myComp) {
 		PreparedStatement myStatement = null;
@@ -432,16 +428,8 @@ public class ComputerDAO implements IComputerDAO {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.excilys.formation.projet.dao.IDAO#edit(com.excilys.formation.projet
-	 * .om.Computer)
-	 */
 	@Override
 	public boolean edit(Computer myComp) {
-		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
@@ -470,13 +458,12 @@ public class ComputerDAO implements IComputerDAO {
 
 			myStatement.executeUpdate();
 			LOG.debug("DATA EDITED");
-			return true;
+			return false;
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");
 			LOG.debug("DATA NOT EDITED");
 			e.printStackTrace();
 		} finally {
-			CloseResults(myResults);
 			CloseStatement(myStatement);
 			CloseConnection(myCon);
 		}

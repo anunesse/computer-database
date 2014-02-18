@@ -4,7 +4,10 @@
 <%@ page import="com.excilys.formation.projet.dao.*"%>
 <%@ page import="com.excilys.formation.projet.om.*"%>
 <section id="main">
-
+	<c:if test="${not empty error}">
+	   <jsp:include page="../include/info.jsp" />  
+	</c:if>
+	
 	<c:choose>
 		<c:when test="${answer==0}">
 			<h1>Add Computer</h1>
@@ -23,7 +26,7 @@
 			
 			<form class="myForm" action="SelectComputerServlet" method="POST">
 				<input type="hidden" name="mode" value="edit"/>
-				<input type="text" name="id" value="${computer.id }" readonly/>
+				<input type="text" name="comp_id" value="${computer.id }" readonly/>
 		</c:otherwise>
 	</c:choose>	
 				<fieldset>

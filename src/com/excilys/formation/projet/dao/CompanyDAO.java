@@ -19,50 +19,8 @@ public class CompanyDAO implements ICompanyDAO {
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.ICompanyDAO#readString(long)
-	 */
-	@Override
-	public String readString(long id) {
-		ResultSet myResults = null;
-		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
-
-		String query = "SELECT name FROM company WHERE id = " + id;
-		try {
-			myStatement = myCon.createStatement();
-			myResults = myStatement.executeQuery(query);
-		} catch (SQLException SQLe) {
-			LOG.error("[SQLEXCEPTION GET_COMPUTERS]");
-			SQLe.printStackTrace();
-		}
-
-		try {
-			if (myResults.first()) {
-				try {
-					return myResults.getString("name");
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return "Unknow company";
-				}
-			}
-		} catch (SQLException e) {
-			LOG.error("[SQLEXCEPTION]");
-			e.printStackTrace();
-		} finally {
-			CloseResults(myResults);
-			CloseStatement(myStatement);
-			CloseConnection(myCon);
-		}
-		return "Unknown company";
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.ICompanyDAO#read(long)
+	/**
+	 * Retrieve single Company on ID
 	 */
 	@Override
 	public Company read(long id) {
@@ -74,6 +32,7 @@ public class CompanyDAO implements ICompanyDAO {
 		try {
 			myStatement = myCon.createStatement();
 			myResults = myStatement.executeQuery(query);
+			LOG.info("Companies retrieved.");
 		} catch (SQLException SQLe) {
 			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
@@ -99,10 +58,8 @@ public class CompanyDAO implements ICompanyDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.ICompanyDAO#read(int)
+	/**
+	 * Retrieve all companies with max limit for convenient output.
 	 */
 	@Override
 	public List<Company> read(int max) {
@@ -126,6 +83,7 @@ public class CompanyDAO implements ICompanyDAO {
 					myCompanies.add(new Company(myResults.getInt(1), myResults
 							.getString(2)));
 				}
+				LOG.info("Companies retrieved.");
 				return myCompanies;
 			} catch (SQLException e) {
 				LOG.error("[SQLEXCEPTION]");
@@ -139,10 +97,8 @@ public class CompanyDAO implements ICompanyDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.ICompanyDAO#read()
+	/**
+	 * Default companies retriever.
 	 */
 	@Override
 	public List<Company> read() {
@@ -165,6 +121,7 @@ public class CompanyDAO implements ICompanyDAO {
 					myCompanies.add(new Company(myResults.getInt(1), myResults
 							.getString(2)));
 				}
+				LOG.info("Companies retrieved.");
 				return myCompanies;
 			} catch (SQLException e) {
 				LOG.error("[SQLEXCEPTION]");
@@ -178,10 +135,8 @@ public class CompanyDAO implements ICompanyDAO {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.ICompanyDAO#exist(long)
+	/**
+	 * Test if ID exist on table.
 	 */
 	@Override
 	public boolean exist(long id) {
@@ -222,7 +177,6 @@ public class CompanyDAO implements ICompanyDAO {
 			LOG.error("[CLOSE NPEXCEPTION]");
 			e.printStackTrace();
 		}
-		LOG.debug("Connection successfully closed");
 	}
 
 	public void CloseResults(ResultSet myResults) {

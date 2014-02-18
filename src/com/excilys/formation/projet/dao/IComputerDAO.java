@@ -16,10 +16,6 @@ public interface IComputerDAO {
 
 	public abstract boolean delete(long id);
 
-	public abstract List<Computer> readName(int max, String name);
-
-	public abstract List<Computer> readRanged(int min, int max);
-
 	public abstract List<Computer> read(int min, int max, String type,
 			String field, String search);
 

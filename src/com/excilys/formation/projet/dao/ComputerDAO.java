@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.formation.projet.om.Company;
 import com.excilys.formation.projet.om.Computer;
-import com.excilys.formation.projet.util.Converter;
 
 public class ComputerDAO implements IComputerDAO {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDAO.class);
@@ -24,10 +22,8 @@ public class ComputerDAO implements IComputerDAO {
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#readTotal()
+	/**
+	 * Return COUNT(*)
 	 */
 	@Override
 	public int readTotal() {
@@ -36,11 +32,12 @@ public class ComputerDAO implements IComputerDAO {
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
 		String query = "SELECT COUNT(*) FROM computer";
-		LOG.debug(query);
 		try {
 			myStatement = myCon.createStatement();
 			myResults = myStatement.executeQuery(query);
 			if (myResults.first()) {
+				LOG.info("Reading number of fields from computer : "
+						+ myResults.getInt(1));
 				return myResults.getInt(1);
 			}
 		} catch (SQLException SQLe) {
@@ -54,10 +51,8 @@ public class ComputerDAO implements IComputerDAO {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.formation.projet.dao.IDAO#read(long)
+	/**
+	 * Read single computer on ID
 	 */
 	@Override
 	public Computer read(long id) {
@@ -72,6 +67,7 @@ public class ComputerDAO implements IComputerDAO {
 			myStatement.setLong(1, id);
 			myResults = myStatement.executeQuery();
 			if (myResults.first()) {
+				LOG.info("Computer retrieved.");
 				return new Computer(myResults.getInt(1),
 						myResults.getString(2), myResults.getTimestamp(3),
 						myResults.getTimestamp(4), new Company(
@@ -88,14 +84,11 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
+	/**
+	 * Check if ID exist
+	 */
 	@Override
 	public boolean exist(long id) {
-		int page = 1;
-		int limit = 20;
-		int offset = 0;
-		String searchComputer = "";
-		String searchCompany = "";
-		String sortResult = "";
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
@@ -124,6 +117,9 @@ public class ComputerDAO implements IComputerDAO {
 		return false;
 	}
 
+	/**
+	 * delete Computer on ID
+	 */
 	@Override
 	public boolean delete(long id) {
 		PreparedStatement myStatement = null;
@@ -134,8 +130,8 @@ public class ComputerDAO implements IComputerDAO {
 		try {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setLong(1, id);
-
 			b = (myStatement.executeUpdate() != 0);
+			LOG.info("Computer deleted : " + id);
 		} catch (SQLException SQLe) {
 			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
@@ -144,92 +140,6 @@ public class ComputerDAO implements IComputerDAO {
 			CloseConnection(myCon);
 		}
 		return b;
-	}
-
-	@Override
-	public List<Computer> readName(int max, String name) {
-		ResultSet myResults = null;
-		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
-		List<Computer> myComputers = new ArrayList<Computer>();
-
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? LIMIT ?;";
-
-		System.out.println(query);
-		try {
-			myStatement = myCon.prepareStatement(query);
-			myStatement.setString(1, "%" + name + "%");
-			myStatement.setInt(2, max);
-			myResults = myStatement.executeQuery();
-		} catch (SQLException SQLe) {
-			System.out.println("[SQLEXCEPTION]");
-			SQLe.printStackTrace();
-		}
-		if (myResults != null) {
-			try {
-				while (myResults.next()) {
-					Date d1;
-					d1 = (myResults.getTimestamp(3) == null) ? new Date(
-							258969856) : Converter.dateFromTimestamp(myResults
-							.getTimestamp(3));
-					Date d2;
-					d2 = (myResults.getTimestamp(4) == null) ? new Date(
-							258969856) : Converter.dateFromTimestamp(myResults
-							.getTimestamp(4));
-					myComputers.add(new Computer(myResults.getInt(1), myResults
-							.getString(2), d1, d2, new Company(myResults
-							.getInt(5), myResults.getString(6))));
-				}
-				return myComputers;
-			} catch (SQLException e) {
-				LOG.error("[SQLEXCEPTION]");
-				e.printStackTrace();
-			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
-				CloseConnection(myCon);
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public List<Computer> readRanged(int min, int max) {
-		ResultSet myResults = null;
-		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
-		List<Computer> myComputers = new ArrayList<Computer>();
-
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id ORDER BY c.name LIMIT ? OFFSET ?";
-		System.out.println(query);
-		try {
-			myStatement = myCon.prepareStatement(query);
-			myStatement.setInt(1, min);
-			myStatement.setInt(2, max);
-			myResults = myStatement.executeQuery();
-		} catch (SQLException SQLe) {
-			LOG.error("[SQLEXCEPTION]");
-			SQLe.printStackTrace();
-		}
-		if (myResults != null) {
-			try {
-				while (myResults.next()) {
-					myComputers.add(new Computer(myResults.getInt(1), myResults
-							.getString(2), myResults.getTimestamp(3), myResults
-							.getTimestamp(4), new Company(myResults.getInt(5),
-							myResults.getString(6))));
-				}
-				return myComputers;
-			} catch (SQLException e) {
-				LOG.error("[SQLEXCEPTION]");
-				e.printStackTrace();
-			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
-				CloseConnection(myCon);
-			}
-		}
-		return null;
 	}
 
 	@Override
@@ -242,7 +152,6 @@ public class ComputerDAO implements IComputerDAO {
 
 		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id ORDER BY ? ? LIMIT ? OFFSET ?";
 
-		System.out.println(query);
 		try {
 			myStatement = myCon.prepareStatement(query);
 
@@ -251,8 +160,9 @@ public class ComputerDAO implements IComputerDAO {
 			myStatement.setInt(3, min);
 			myStatement.setInt(4, max);
 			myResults = myStatement.executeQuery();
+			LOG.info("Computers retrieved.");
 		} catch (SQLException SQLe) {
-			System.out.println("[SQLEXCEPTION GET_COMPUTERS]");
+			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
 		}
 		if (myResults != null) {
@@ -264,7 +174,6 @@ public class ComputerDAO implements IComputerDAO {
 							new Company(myResults.getInt(5), myResults
 									.getString(6)));
 					myComputers.add(my);
-					// LOG.debug(my.toString());
 				}
 				return myComputers;
 			} catch (SQLException e) {
@@ -280,7 +189,7 @@ public class ComputerDAO implements IComputerDAO {
 	}
 
 	/**
-	 * Classic read function.
+	 * Default read function.
 	 * 
 	 * @param limit
 	 * @param offset
@@ -298,8 +207,6 @@ public class ComputerDAO implements IComputerDAO {
 
 		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ? ORDER BY "
 				+ type + " " + field + " LIMIT ? OFFSET ?";
-
-		System.out.println(query);
 		try {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, "%" + search + "%");
@@ -307,46 +214,9 @@ public class ComputerDAO implements IComputerDAO {
 			myStatement.setInt(3, limit);
 			myStatement.setInt(4, offset);
 			myResults = myStatement.executeQuery();
+			LOG.info("Computers retrieved.");
 		} catch (SQLException SQLe) {
 			LOG.error("[SQLEXCEPTION");
-			SQLe.printStackTrace();
-		}
-		if (myResults != null) {
-			try {
-				while (myResults.next()) {
-					myComputers.add(new Computer(myResults.getInt(1), myResults
-							.getString(2), myResults.getTimestamp(3), myResults
-							.getTimestamp(4), new Company(myResults.getInt(5),
-							myResults.getString(6))));
-				}
-				return myComputers;
-			} catch (SQLException e) {
-				System.out.println("[SQLEXCEPTION PRINT_COMPUTERS]");
-				e.printStackTrace();
-			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
-				CloseConnection(myCon);
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public List<Computer> readAll() {
-		ResultSet myResults = null;
-		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
-		List<Computer> myComputers = new ArrayList<Computer>();
-
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id ORDER BY c.name";
-
-		System.out.println(query);
-		try {
-			myStatement = myCon.createStatement();
-			myResults = myStatement.executeQuery(query);
-		} catch (SQLException SQLe) {
-			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
 		}
 		if (myResults != null) {
@@ -370,14 +240,55 @@ public class ComputerDAO implements IComputerDAO {
 		return null;
 	}
 
+	/**
+	 * Default read function, used to retrieve all data
+	 */
+	@Override
+	public List<Computer> readAll() {
+		ResultSet myResults = null;
+		Statement myStatement = null;
+		Connection myCon = DAOFactory.getInstance().getConnection();
+		List<Computer> myComputers = new ArrayList<Computer>();
+
+		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id ORDER BY c.name";
+		try {
+			myStatement = myCon.createStatement();
+			myResults = myStatement.executeQuery(query);
+		} catch (SQLException SQLe) {
+			LOG.error("[SQLEXCEPTION]");
+			SQLe.printStackTrace();
+		}
+		if (myResults != null) {
+			try {
+				while (myResults.next()) {
+					myComputers.add(new Computer(myResults.getInt(1), myResults
+							.getString(2), myResults.getTimestamp(3), myResults
+							.getTimestamp(4), new Company(myResults.getInt(5),
+							myResults.getString(6))));
+				}
+				LOG.info("Computers retrieved.");
+				return myComputers;
+			} catch (SQLException e) {
+				LOG.error("[SQLEXCEPTION]");
+				e.printStackTrace();
+			} finally {
+				CloseResults(myResults);
+				CloseStatement(myStatement);
+				CloseConnection(myCon);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Retrieves number of results for research
+	 */
 	public int readTotal(String search) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
 		String query = "SELECT COUNT(*) FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
-
-		System.out.println(query);
 		try {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, "%" + search + "%");
@@ -392,7 +303,7 @@ public class ComputerDAO implements IComputerDAO {
 				if (myResults.first())
 					return myResults.getInt(1);
 			} catch (SQLException e) {
-				System.out.println("[SQLEXCEPTION PRINT_COMPUTERS]");
+				LOG.error("[SQLEXCEPTION]");
 				e.printStackTrace();
 			} finally {
 				CloseResults(myResults);
@@ -428,36 +339,26 @@ public class ComputerDAO implements IComputerDAO {
 		return false;
 	}
 
+	/**
+	 * Default editor.
+	 */
 	@Override
 	public boolean edit(Computer myComp) {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
 		String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-
-		System.out.println("Data  : " + query);
 		try {
 			myStatement = myCon.prepareStatement(query);
-
 			myStatement.setString(1, myComp.getName());
-			System.out.println(myComp.getName());
-
 			myStatement.setTimestamp(2, new Timestamp(myComp.getIntroduced()
 					.getTime()));
-			System.out.println(new Timestamp(myComp.getIntroduced().getTime()));
-
 			myStatement.setTimestamp(3, new Timestamp(myComp.getDiscontinued()
 					.getTime()));
-			System.out.println(new Timestamp(myComp.getIntroduced().getTime()));
-
 			myStatement.setLong(4, myComp.getCompany().getId());
-			System.out.println(myComp.getCompany().getId());
-
 			myStatement.setLong(5, myComp.getId());
-			System.out.println(myComp.getId());
-
 			myStatement.executeUpdate();
-			LOG.debug("DATA EDITED");
+			LOG.debug("Computer edited : " + myComp.getId());
 			return false;
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");
@@ -480,7 +381,6 @@ public class ComputerDAO implements IComputerDAO {
 			LOG.error("[NPEXCEPTION]");
 			e.printStackTrace();
 		}
-		System.out.println("Connection successfully closed");
 	}
 
 	public void CloseResults(ResultSet myResults) {

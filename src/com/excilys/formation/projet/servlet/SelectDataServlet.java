@@ -130,7 +130,7 @@ public class SelectDataServlet extends HttpServlet {
 		// myComputerDAO.re
 		myPage.numberOfPages = (int) Math.ceil(myPage.totalNumberOfRecords
 				/ myPage.recordsOnThisPage) + 1;
-		// LOG.debug(myPage.toString());
+		LOG.debug(myPage.toString());
 		request.setAttribute("pageData", myPage);
 
 		// System.out.println(myPage);

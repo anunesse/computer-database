@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="at" %>
 
+
 <section id="main">
 	<h1 id="homeTitle">${pageData.totalNumberOfRecords} Computers found</h1>
 	
@@ -40,20 +41,20 @@
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
-										&order=ASC" class="btn active">Computer DOWN</a>
+										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Computer</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
-										&order=DESC" class="btn active">Computer UP</a>
+										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Computer</a>
 								</c:if>
 							</c:when>
 							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
-										&order=ASC" class="btn">Computer</a></c:otherwise>
+										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Computer</a></c:otherwise>
 						</c:choose>
 					</th>
 					<th>
@@ -63,20 +64,20 @@
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=introduced
-										&order=ASC" class="btn active">Introduced DOWN</a>
+										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Introduced</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=introduced
-										&order=DESC" class="btn active">Introduced UP</a>
+										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Introduced UP</a>
 								</c:if>
 							</c:when>
 							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=introduced
-										&order=ASC" class="btn">Introduced</a></c:otherwise>
+										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Introduced</a></c:otherwise>
 						</c:choose>
 					</th>
 					<th>
@@ -86,20 +87,20 @@
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=discontinued
-										&order=ASC" class="btn active">Discontinued DOWN</a>
+										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Discontinued</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=discontinued
-										&order=DESC" class="btn active">Discontinued UP</a>
+										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Discontinued</a>
 								</c:if>
 							</c:when>
 							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=discontinued
-										&order=ASC" class="btn">Discontinued</a></c:otherwise>
+										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Discontinued</a></c:otherwise>
 						</c:choose>
 					</th>
 					<th>
@@ -109,20 +110,20 @@
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=company
-										&order=ASC" class="btn active">Company DOWN</a>
+										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Company</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=company
-										&order=DESC" class="btn active">Company UP</a>
+										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Company</a>
 								</c:if>
 							</c:when>
 							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=company
-										&order=ASC" class="btn">Company</a></c:otherwise>
+										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Company</a></c:otherwise>
 						</c:choose>
 					</th>
 				</tr>

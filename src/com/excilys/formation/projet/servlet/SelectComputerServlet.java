@@ -51,7 +51,6 @@ public class SelectComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		LOG.debug("Http Get request catched.");
-		System.out.println("Http Get request catched.");
 		ICompanyDAO myCompanyDAO = DAOFactory.getInstance().getMyCompanyDAO();
 		IComputerDAO myComputerDAO = DAOFactory.getInstance()
 				.getMyComputerDAO();
@@ -93,7 +92,7 @@ public class SelectComputerServlet extends HttpServlet {
 
 		if (request.getParameter("mode") == null
 				|| request.getParameter("mode").equals("")) {
-			System.out.println("[POSTED] error cant find mode!");
+			LOG.warn("Undefined computer handle mode.");
 			request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
 					request, response);
 			return;
@@ -152,11 +151,6 @@ public class SelectComputerServlet extends HttpServlet {
 				LOG.info("The computer can not be add.");
 				return;
 			}
-
-			System.out.println(ts_introduced + " __ " + ts_discontinued
-					+ "company id = " + request.getParameter("company")
-					+ " id2 = "
-					+ Long.parseLong(request.getParameter("company")));
 			if (myCompanyDAO.exist(Long.parseLong(request
 					.getParameter("company")))) {
 				DateFormat formatter;
@@ -169,6 +163,7 @@ public class SelectComputerServlet extends HttpServlet {
 					dateFormattedDiscontinued = (Date) formatter.parse(request
 							.getParameter("discontinued"));
 				} catch (ParseException e1) {
+					LOG.error("Adding computer parse exception catch.");
 					e1.printStackTrace();
 				}
 				myComp = new Computer(request.getParameter("name"),
@@ -246,6 +241,7 @@ public class SelectComputerServlet extends HttpServlet {
 				request.setAttribute("title", "Fail to edit computer");
 				request.setAttribute("message",
 						"The computer was not updated, please try again.");
+				LOG.error("Editing computer parse exception catch.");
 				e1.printStackTrace();
 				return;
 			}

@@ -6,8 +6,6 @@ import com.excilys.formation.projet.om.Company;
 
 public interface ICompanyDAO {
 
-	public abstract String readString(long id);
-
 	public abstract Company read(long id);
 
 	public abstract List<Company> read(int max);

@@ -11,9 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.formation.projet.dao.DAOFactory;
-import com.excilys.formation.projet.dao.IComputerDAO;
 import com.excilys.formation.projet.om.Computer;
+import com.excilys.formation.projet.services.ComputerService;
 import com.excilys.formation.projet.servlet.wrapper.Page;
 
 /**
@@ -21,7 +20,10 @@ import com.excilys.formation.projet.servlet.wrapper.Page;
  */
 @WebServlet("/SelectDataServlet")
 public class SelectDataServlet extends HttpServlet {
-	private IComputerDAO myComputerDAO;
+
+	private ComputerService computerService = new ComputerService();
+
+	// private IComputerDAO myComputerDAO;
 	static final Logger LOG = LoggerFactory.getLogger(SelectDataServlet.class);
 
 	private static final long serialVersionUID = 1L;
@@ -39,13 +41,16 @@ public class SelectDataServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		DAOFactory.getInstance();
-		myComputerDAO = DAOFactory.getMyComputerDAO();
+
+		/*
+		 * DAOFactory.getInstance(); myComputerDAO =
+		 * DAOFactory.getMyComputerDAO();
+		 */
 		Page<Computer> myPage = new Page<Computer>();
 
 		if (request.getParameterMap().isEmpty()) {
-			myPage.results = myComputerDAO.readAll();
-			myPage.totalNumberOfRecords = myComputerDAO.readTotal();
+			myPage.results = computerService.readAll();
+			myPage.totalNumberOfRecords = computerService.readTotal();
 			request.setAttribute("pageData", myPage);
 			request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
 					request, response);
@@ -82,10 +87,10 @@ public class SelectDataServlet extends HttpServlet {
 		if (request.getParameter("search") == null
 				|| "".equals(request.getParameter("search"))) {
 			search = "";
-			myPage.totalNumberOfRecords = myComputerDAO.readTotal();
+			myPage.totalNumberOfRecords = computerService.readTotal();
 		} else {
 			search = request.getParameter("search");
-			myPage.totalNumberOfRecords = myComputerDAO.readTotal(search);
+			myPage.totalNumberOfRecords = computerService.readTotal(search);
 		}
 
 		String sortMode = "ASC";
@@ -125,7 +130,7 @@ public class SelectDataServlet extends HttpServlet {
 
 		request.setAttribute("search", search);
 		LOG.debug(sortResult + "/" + sortMode);
-		myPage.results = myComputerDAO.read(limit, offset, sortResult,
+		myPage.results = computerService.read(limit, offset, sortResult,
 				sortMode, search);
 		// myComputerDAO.re
 		myPage.numberOfPages = (int) Math.ceil(myPage.totalNumberOfRecords

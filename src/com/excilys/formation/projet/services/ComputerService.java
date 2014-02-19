@@ -1,6 +1,5 @@
 package com.excilys.formation.projet.services;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -27,34 +26,49 @@ public class ComputerService {
 	}
 
 	public int readTotal() {
-		return myComputerDAO.readTotal();
+		DAOFactory.startTransaction();
+		int i = myComputerDAO.readTotal();
+		DAOFactory.closeTransaction();
+		return i;
 	}
 
 	public int readTotal(String search) {
-		return myComputerDAO.readTotal(search);
+		DAOFactory.startTransaction();
+		int i = myComputerDAO.readTotal(search);
+		DAOFactory.closeTransaction();
+		return i;
 	}
 
 	public Computer read(long id) {
-		return myComputerDAO.read(id);
+		DAOFactory.startTransaction();
+		Computer c = myComputerDAO.read(id);
+		DAOFactory.closeTransaction();
+		return c;
 	}
 
 	public boolean exist(long id) {
-		return myComputerDAO.exist(id);
+		DAOFactory.startTransaction();
+		boolean b = myComputerDAO.exist(id);
+		DAOFactory.closeTransaction();
+		return b;
 	}
 
 	public boolean delete(long id) {
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		// Connection myCon = DAOFactory.getInstance().getConnection();
 		boolean b = false;
 		try {
-			myCon.setAutoCommit(false);
+			DAOFactory.startTransaction();
 			StringBuilder str = new StringBuilder(
 					"Field computer deleted on ID : ");
 			str.append(id);
 			str.append(";");
-			b = myComputerDAO.delete(id, myCon);
+			b = myComputerDAO.delete(id);
 			myLogDAO.create(new Log("DELETE", new Date(), str.toString()));
-			myCon.commit();
-			myCon.setAutoCommit(true);
+			if (b)
+				DAOFactory.getInstance().getConnection().commit();
+			else
+				DAOFactory.getInstance().getConnection().rollback();
+			DAOFactory.closeTransaction();
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");
 			e.printStackTrace();
@@ -65,25 +79,34 @@ public class ComputerService {
 
 	public List<Computer> read(int min, int max, String type, String field,
 			String search) {
-		return myComputerDAO.read(min, max, type, field, search);
+		DAOFactory.startTransaction();
+		List<Computer> lc = myComputerDAO.read(min, max, type, field, search);
+		DAOFactory.closeTransaction();
+		return lc;
 	}
 
 	public List<Computer> readAll() {
-		return myComputerDAO.readAll();
+		DAOFactory.startTransaction();
+		List<Computer> lc = myComputerDAO.readAll();
+		DAOFactory.closeTransaction();
+		return lc;
 	}
 
 	public long add(Computer myComp) {
-		Connection myCon = DAOFactory.getInstance().getConnection();
+
 		long b = 0;
 		try {
-			myCon.setAutoCommit(false);
+			DAOFactory.startTransaction();
 			StringBuilder str = new StringBuilder("Field computer added, ID ");
-			b = myComputerDAO.add(myComp, myCon);
+			b = myComputerDAO.add(myComp);
 			str.append(b);
 			str.append(";");
 			myLogDAO.create(new Log("CREATE", new Date(), str.toString()));
-			myCon.commit();
-			myCon.setAutoCommit(true);
+			if (b > 0)
+				DAOFactory.getInstance().getConnection().commit();
+			else
+				DAOFactory.getInstance().getConnection().rollback();
+			DAOFactory.closeTransaction();
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");
 			e.printStackTrace();
@@ -92,19 +115,20 @@ public class ComputerService {
 	}
 
 	public boolean edit(Computer myComp) {
-		// return myComputerDAO.edit(myComp, null);
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		DAOFactory.startTransaction();
 		boolean b = false;
 		try {
-			myCon.setAutoCommit(false);
 			StringBuilder str = new StringBuilder(
 					"Field computer edited, ID : ");
 			str.append(myComp.getId());
 			str.append(";");
-			b = myComputerDAO.edit(myComp, myCon);
+			b = myComputerDAO.edit(myComp);
 			myLogDAO.create(new Log("UPDATE", new Date(), str.toString()));
-			myCon.commit();
-			myCon.setAutoCommit(true);
+			if (b)
+				DAOFactory.getInstance().getConnection().commit();
+			else
+				DAOFactory.getInstance().getConnection().rollback();
+			DAOFactory.closeTransaction();
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");
 			e.printStackTrace();
@@ -114,18 +138,10 @@ public class ComputerService {
 
 	public List<Computer> readRangedOrdered(int min, int max, String type,
 			String field) {
-		return myComputerDAO.readRangedOrdered(min, max, type, field);
-	}
-
-	public void CloseConnection(Connection myCon) {
-		try {
-			myCon.close();
-		} catch (SQLException e) {
-			LOG.error("[SQLEXCEPTION]");
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			LOG.error("[NPEXCEPTION]");
-			e.printStackTrace();
-		}
+		DAOFactory.startTransaction();
+		List<Computer> lc = myComputerDAO.readRangedOrdered(min, max, type,
+				field);
+		DAOFactory.closeTransaction();
+		return lc;
 	}
 }

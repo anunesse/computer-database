@@ -48,7 +48,6 @@ public class ComputerDAO implements IComputerDAO {
 		} finally {
 			CloseResults(myResults);
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return 0;
 	}
@@ -62,7 +61,7 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id WHERE c.id = ?";
+		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.id = ?";
 
 		try {
 			myStatement = myCon.prepareStatement(query);
@@ -81,7 +80,6 @@ public class ComputerDAO implements IComputerDAO {
 		} finally {
 			CloseResults(myResults);
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return null;
 	}
@@ -114,7 +112,6 @@ public class ComputerDAO implements IComputerDAO {
 		} finally {
 			CloseResults(myResults);
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return false;
 	}
@@ -123,13 +120,14 @@ public class ComputerDAO implements IComputerDAO {
 	 * delete Computer on ID
 	 */
 	@Override
-	public boolean delete(long id, Connection con) {
+	public boolean delete(long id) {
 		PreparedStatement myStatement = null;
+		Connection myCon = DAOFactory.getInstance().getConnection();
 
 		String query = "DELETE FROM computer WHERE id = ?";
 		boolean b = false;
 		try {
-			myStatement = con.prepareStatement(query);
+			myStatement = myCon.prepareStatement(query);
 			myStatement.setLong(1, id);
 			b = (myStatement.executeUpdate() != 0);
 			LOG.info("Computer deleted : " + id);
@@ -150,7 +148,7 @@ public class ComputerDAO implements IComputerDAO {
 		Connection myCon = DAOFactory.getInstance().getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
 
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id ORDER BY ? ? LIMIT ? OFFSET ?";
+		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id ORDER BY ? ? LIMIT ? OFFSET ?";
 
 		try {
 			myStatement = myCon.prepareStatement(query);
@@ -182,7 +180,6 @@ public class ComputerDAO implements IComputerDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
-				CloseConnection(myCon);
 			}
 		}
 		return null;
@@ -205,7 +202,7 @@ public class ComputerDAO implements IComputerDAO {
 		Connection myCon = DAOFactory.getInstance().getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
 
-		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ? ORDER BY "
+		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ? ORDER BY "
 				+ type + " " + field + " LIMIT ? OFFSET ?";
 		try {
 			myStatement = myCon.prepareStatement(query);
@@ -234,7 +231,6 @@ public class ComputerDAO implements IComputerDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
-				CloseConnection(myCon);
 			}
 		}
 		return null;
@@ -250,7 +246,7 @@ public class ComputerDAO implements IComputerDAO {
 		Connection myCon = DAOFactory.getInstance().getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
 
-		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c JOIN company b ON c.company_id = b.id ORDER BY c.name";
+		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id ORDER BY c.name";
 		try {
 			myStatement = myCon.createStatement();
 			myResults = myStatement.executeQuery(query);
@@ -274,7 +270,6 @@ public class ComputerDAO implements IComputerDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
-				CloseConnection(myCon);
 			}
 		}
 		return null;
@@ -288,7 +283,7 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
-		String query = "SELECT COUNT(*) FROM computer c JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
+		String query = "SELECT COUNT(*) FROM computer c JOIN company b LEFT ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
 		try {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, "%" + search + "%");
@@ -297,6 +292,8 @@ public class ComputerDAO implements IComputerDAO {
 		} catch (SQLException SQLe) {
 			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
+		} finally {
+			CloseStatement(myStatement);
 		}
 		if (myResults != null) {
 			try {
@@ -307,15 +304,13 @@ public class ComputerDAO implements IComputerDAO {
 				e.printStackTrace();
 			} finally {
 				CloseResults(myResults);
-				CloseStatement(myStatement);
-				CloseConnection(myCon);
 			}
 		}
 		return 0;
 	}
 
 	@Override
-	public long add(Computer myComp, Connection con) {
+	public long add(Computer myComp) {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
@@ -338,7 +333,6 @@ public class ComputerDAO implements IComputerDAO {
 			e.printStackTrace();
 		} finally {
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return 0;
 	}
@@ -347,7 +341,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * Default editor.
 	 */
 	@Override
-	public boolean edit(Computer myComp, Connection con) {
+	public boolean edit(Computer myComp) {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
 
@@ -370,21 +364,8 @@ public class ComputerDAO implements IComputerDAO {
 			e.printStackTrace();
 		} finally {
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return false;
-	}
-
-	public void CloseConnection(Connection myCon) {
-		try {
-			myCon.close();
-		} catch (SQLException e) {
-			LOG.error("[SQLEXCEPTION]");
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			LOG.error("[NPEXCEPTION]");
-			e.printStackTrace();
-		}
 	}
 
 	public void CloseResults(ResultSet myResults) {

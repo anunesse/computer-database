@@ -50,7 +50,6 @@ public class LogDAO implements ILogDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
-				CloseConnection(myCon);
 			}
 		}
 		return null;
@@ -76,20 +75,8 @@ public class LogDAO implements ILogDAO {
 			e.printStackTrace();
 		} finally {
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return false;
-	}
-
-	public void CloseConnection(Connection myCon) {
-		try {
-			myCon.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			LOG.error("UNABLE TO CLOSE CONNECTION");
-			e.printStackTrace();
-		}
 	}
 
 	public void CloseResults(ResultSet myResults) {

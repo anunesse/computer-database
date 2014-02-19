@@ -55,7 +55,6 @@ public class CompanyDAO implements ICompanyDAO {
 		} finally {
 			CloseResults(myResults);
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return null;
 	}
@@ -93,7 +92,6 @@ public class CompanyDAO implements ICompanyDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
-				CloseConnection(myCon);
 			}
 		}
 		return null;
@@ -131,7 +129,6 @@ public class CompanyDAO implements ICompanyDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
-				CloseConnection(myCon);
 			}
 		}
 		return null;
@@ -164,22 +161,16 @@ public class CompanyDAO implements ICompanyDAO {
 		} finally {
 			CloseResults(myResults);
 			CloseStatement(myStatement);
-			CloseConnection(myCon);
 		}
 		return false;
 	}
 
-	public void CloseConnection(Connection myCon) {
-		try {
-			myCon.close();
-		} catch (SQLException e) {
-			LOG.error("[CLOSE SQLEXCEPTION]");
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			LOG.error("[CLOSE NPEXCEPTION]");
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * public void CloseConnection(Connection myCon) { try { myCon.close(); }
+	 * catch (SQLException e) { LOG.error("[CLOSE SQLEXCEPTION]");
+	 * e.printStackTrace(); } catch (NullPointerException e) {
+	 * LOG.error("[CLOSE NPEXCEPTION]"); e.printStackTrace(); } }
+	 */
 
 	public void CloseResults(ResultSet myResults) {
 		try {

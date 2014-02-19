@@ -20,6 +20,8 @@ public class DAOFactory {
 
 	private static BoneCP connectionPool;
 
+	private static ThreadLocal<Connection> localConnection;
+
 	static final Logger LOG = LoggerFactory.getLogger(DAOFactory.class);
 
 	private static String url = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
@@ -32,6 +34,8 @@ public class DAOFactory {
 		myCompanyDAO = new CompanyDAO();
 		myComputerDAO = new ComputerDAO();
 		myLogDAO = new LogDAO();
+
+		localConnection = new ThreadLocal<Connection>();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -80,14 +84,39 @@ public class DAOFactory {
 	}
 
 	public Connection getConnection() {
-		try {
-			LOG.info("[BONECP] RETURNING CONNECTION");
-			return connectionPool.getConnection();
-		} catch (SQLException e) {
-			LOG.error("[UNABLE TO GET CONNECTION]");
-			e.printStackTrace();
+
+		if (localConnection.get() == null) {
+			try {
+				LOG.debug("[BONECP] RETURNING CONNECTION");
+				localConnection.set(connectionPool.getConnection());
+				return localConnection.get();
+			} catch (SQLException e) {
+				LOG.error("[UNABLE TO GET CONNECTION]");
+				e.printStackTrace();
+			}
+		} else {
+			LOG.debug("[RETURNING THREAD CONNECTION]");
+			return localConnection.get();
 		}
 		return null;
+	}
+
+	public static void startTransaction() {
+		try {
+			localConnection.set(connectionPool.getConnection());
+			localConnection.get().setAutoCommit(false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void closeTransaction() {
+		try {
+			localConnection.get().setAutoCommit(true);
+			localConnection.get().close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

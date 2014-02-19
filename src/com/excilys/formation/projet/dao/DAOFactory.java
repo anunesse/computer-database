@@ -6,12 +6,18 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.formation.projet.dao.impl.CompanyDAO;
+import com.excilys.formation.projet.dao.impl.ComputerDAO;
+import com.excilys.formation.projet.dao.impl.LogDAO;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
 public class DAOFactory {
+
 	private static ICompanyDAO myCompanyDAO;
 	private static IComputerDAO myComputerDAO;
+	private static ILogDAO myLogDAO;
+
 	private static BoneCP connectionPool;
 
 	static final Logger LOG = LoggerFactory.getLogger(DAOFactory.class);
@@ -25,6 +31,8 @@ public class DAOFactory {
 	private DAOFactory() {
 		myCompanyDAO = new CompanyDAO();
 		myComputerDAO = new ComputerDAO();
+		myLogDAO = new LogDAO();
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			LOG.info("[BONECP]Connection successfully openned");
@@ -65,6 +73,10 @@ public class DAOFactory {
 
 	public static IComputerDAO getMyComputerDAO() {
 		return myComputerDAO;
+	}
+
+	public static ILogDAO getMyLogDAO() {
+		return myLogDAO;
 	}
 
 	public Connection getConnection() {

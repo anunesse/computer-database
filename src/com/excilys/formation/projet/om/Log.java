@@ -5,7 +5,7 @@ import java.util.Date;
 public class Log {
 
 	private long id;
-	private Enum operationType;
+	private String operationType;
 	private Date operationDate;
 	private String description;
 
@@ -17,11 +17,11 @@ public class Log {
 		this.id = id;
 	}
 
-	public Enum getOperationType() {
+	public String getOperationType() {
 		return operationType;
 	}
 
-	public void setOperationType(Enum operationType) {
+	public void setOperationType(String operationType) {
 		this.operationType = operationType;
 	}
 
@@ -45,10 +45,17 @@ public class Log {
 		super();
 	}
 
-	public Log(long id, Enum operationType, Date operationDate,
+	public Log(long id, String operationType, Date operationDate,
 			String description) {
 		super();
 		this.id = id;
+		this.operationType = operationType;
+		this.operationDate = operationDate;
+		this.description = description;
+	}
+
+	public Log(String operationType, Date operationDate, String description) {
+		super();
 		this.operationType = operationType;
 		this.operationDate = operationDate;
 		this.description = description;

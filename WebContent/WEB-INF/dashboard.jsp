@@ -24,6 +24,7 @@
 			<input type="search" id="search" name="search" value="${search }" placeholder="Computer or company...">
 			<input type="submit" value="Find it" class="btn primary">
 		</form>
+		
 		<a class="btn success" id="add" href="SelectComputerServlet">Add Computer</a>
 	</div>
 
@@ -149,6 +150,6 @@
 		</table>
 		
 </section>
-
+<a class="btn" id="add" href="SelectLogsServlet">View Logs</a>
 
 <jsp:include page="../include/footer.jsp" />

@@ -14,18 +14,30 @@ public class CompanyService {
 	}
 
 	public Company read(long id) {
-		return myCompanyDAO.read(id);
+		DAOFactory.startTransaction();
+		Company c = myCompanyDAO.read(id);
+		DAOFactory.closeTransaction();
+		return c;
 	}
 
 	public List<Company> read(int max) {
-		return myCompanyDAO.read(max);
+		DAOFactory.startTransaction();
+		List<Company> lc = myCompanyDAO.read(max);
+		DAOFactory.closeTransaction();
+		return lc;
 	}
 
 	public List<Company> read() {
-		return myCompanyDAO.read();
+		DAOFactory.startTransaction();
+		List<Company> lc = myCompanyDAO.read();
+		DAOFactory.closeTransaction();
+		return lc;
 	}
 
 	public boolean exist(long id) {
-		return myCompanyDAO.exist(id);
+		DAOFactory.startTransaction();
+		boolean b = myCompanyDAO.exist(id);
+		DAOFactory.closeTransaction();
+		return b;
 	}
 }

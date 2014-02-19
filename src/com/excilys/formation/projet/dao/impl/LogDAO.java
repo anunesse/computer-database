@@ -24,12 +24,14 @@ public class LogDAO implements ILogDAO {
 	public List<Log> readAll() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+
 		List<Log> myLogs = new ArrayList<Log>();
 
 		String query = "SELECT * FROM log";
 
 		try {
+			DAOFactory.startTransaction();
+			Connection myCon = DAOFactory.getInstance().getConnection();
 			myStatement = myCon.createStatement();
 			myResults = myStatement.executeQuery(query);
 		} catch (SQLException SQLe) {
@@ -50,6 +52,7 @@ public class LogDAO implements ILogDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
+				DAOFactory.closeTransaction();
 			}
 		}
 		return null;
@@ -59,10 +62,11 @@ public class LogDAO implements ILogDAO {
 	public boolean create(Log log) {
 		LOG.debug("[SQLEXCEPTION 2]");
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
 
 		String query = "INSERT INTO log (optype, opdate, description) VALUES(?,?,?);";
 		try {
+			DAOFactory.startTransaction();
+			Connection myCon = DAOFactory.getInstance().getConnection();
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, log.getOperationType());
 			myStatement.setTimestamp(2, new Timestamp(log.getOperationDate()
@@ -75,6 +79,7 @@ public class LogDAO implements ILogDAO {
 			e.printStackTrace();
 		} finally {
 			CloseStatement(myStatement);
+			DAOFactory.closeTransaction();
 		}
 		return false;
 	}

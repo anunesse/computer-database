@@ -22,17 +22,17 @@
 			</c:otherwise>
 		</c:choose>
 			<input type="search" id="search" name="search" value="${search }" placeholder="Computer or company...">
-			<input type="submit" value="Find it" class="btn primary">
+			<input type="submit" value="Find it" class="btn btn-primary">
 		</form>
 		
-		<a class="btn success" id="add" href="SelectComputerServlet">Add Computer</a>
+		<a class="btn btn-success" id="add" href="SelectComputerServlet">Add Computer</a>
 	</div>
 
 	<c:if test="${not empty pageData.pageNumber && pageData.recordsOnThisPage>0}">
 		<at:Pagination orderDirection="${pageData.orderDirection}" elementsByPage="${pageData.recordsOnThisPage}" search="${search }" page="${pageData.pageNumber }" orderField="${pageData.resultsOrderedBy}" numberOfPages="${pageData.numberOfPages}"></at:Pagination>
 	</c:if>
 	
-		<table class="computers zebra-striped">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>
@@ -42,20 +42,20 @@
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
-										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Computer</a>
+										&order=ASC" class="btn">Computer</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
 									<a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
-										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Computer</a>
+										&order=DESC" class="btn">Computer</a>
 								</c:if>
 							</c:when>
 							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
-										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Computer</a></c:otherwise>
+										&order=ASC" class="btn">Computer</a></c:otherwise>
 						</c:choose>
 					</th>
 					<th>
@@ -150,6 +150,6 @@
 		</table>
 		
 </section>
-<a class="btn" id="add" href="SelectLogsServlet">View Logs</a>
+
 
 <jsp:include page="../include/footer.jsp" />

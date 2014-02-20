@@ -103,7 +103,7 @@ public class DAOFactory {
 
 	public static void startTransaction() {
 		try {
-			localConnection.set(connectionPool.getConnection());
+			localConnection.set(myDAO.getConnection());
 			localConnection.get().setAutoCommit(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,6 +114,7 @@ public class DAOFactory {
 		try {
 			localConnection.get().setAutoCommit(true);
 			localConnection.get().close();
+			localConnection.remove();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

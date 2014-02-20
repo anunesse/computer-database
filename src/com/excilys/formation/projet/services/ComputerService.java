@@ -74,7 +74,6 @@ public class ComputerService {
 			e.printStackTrace();
 		}
 		return b;
-
 	}
 
 	public List<Computer> read(int min, int max, String type, String field,

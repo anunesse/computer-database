@@ -41,14 +41,14 @@
 					<div class="clearfix">
 						<label for="introduced">Introduced date:</label>
 						<div class="input">
-							<input type="date" name="introduced"  data-validation="date" data-validation-format="yyyy-mm-dd" value=<fmt:formatDate value="${computer.introduced}" pattern="yyyy-MM-dd"/>>
+							<input type="date" name="introduced" data-validation-optional="true" data-validation="date" data-validation-format="yyyy-mm-dd" value=<fmt:formatDate value="${computer.introduced}" pattern="yyyy-MM-dd"/>>
 							<span class="help-inline">YYYY-MM-DD</span>
 						</div>
 					</div>
 					<div class="clearfix">
 						<label for="discontinued">Discontinued date:</label>
 						<div class="input">
-							<input type="date" name="discontinued" data-validation="date" data-validation-format="yyyy-mm-dd" value=<fmt:formatDate value="${computer.discontinued}" pattern="yyyy-MM-dd"/>>
+							<input type="date" name="discontinued" data-validation-optional="true" data-validation="date" data-validation-format="yyyy-mm-dd" value=<fmt:formatDate value="${computer.discontinued}" pattern="yyyy-MM-dd"/>>
 							<span class="help-inline">YYYY-MM-DD</span>
 					</div>
 					</div>

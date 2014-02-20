@@ -124,19 +124,16 @@ public class SelectComputerServlet extends HttpServlet {
 				error.append("\nComputer name failed / ");
 				has_errors = true;
 			}
-			if (!Validation.validateString(request.getParameter("company"))) {
-				error.append("\nCompany name failed / ");
-				has_errors = true;
-			}
-			if (!Validation.validateString(request.getParameter("introduced"))) {
-				error.append("\nIntroduced date failed / ");
-				has_errors = true;
-			}
-			if (!Validation
-					.validateString(request.getParameter("discontinued"))) {
-				error.append("\nDiscontinued date failed");
-				has_errors = true;
-			}
+			/*
+			 * if (!Validation.validateString(request.getParameter("company")))
+			 * { error.append("\nCompany name failed / "); has_errors = true; }
+			 * if
+			 * (!Validation.validateString(request.getParameter("introduced")))
+			 * { error.append("\nIntroduced date failed / "); has_errors = true;
+			 * } if (!Validation
+			 * .validateString(request.getParameter("discontinued"))) {
+			 * error.append("\nDiscontinued date failed"); has_errors = true; }
+			 */
 			error.append(")");
 			if (has_errors) {
 				request.setAttribute("error",
@@ -205,19 +202,17 @@ public class SelectComputerServlet extends HttpServlet {
 				error_params.append("\nComputer name failed / ");
 				has_errors = true;
 			}
-			if (!Validation.validateString(request.getParameter("company"))) {
-				error_params.append("\nCompany name failed / ");
-				has_errors = true;
-			}
-			if (!Validation.validateString(request.getParameter("introduced"))) {
-				error_params.append("\nIntroduced date failed / ");
-				has_errors = true;
-			}
-			if (!Validation
-					.validateString(request.getParameter("discontinued"))) {
-				error_params.append("\nDiscontinued date failed");
-				has_errors = true;
-			}
+			/*
+			 * if (!Validation.validateString(request.getParameter("company")))
+			 * { error_params.append("\nCompany name failed / "); has_errors =
+			 * true; } if
+			 * (!Validation.validateString(request.getParameter("introduced")))
+			 * { error_params.append("\nIntroduced date failed / "); has_errors
+			 * = true; } if (!Validation
+			 * .validateString(request.getParameter("discontinued"))) {
+			 * error_params.append("\nDiscontinued date failed"); has_errors =
+			 * true; }
+			 */
 			error_params.append(")");
 			if (has_errors) {
 				request.setAttribute("error",
@@ -233,31 +228,34 @@ public class SelectComputerServlet extends HttpServlet {
 				return;
 			}
 
+			Computer myComp = null;
+
 			DateFormat formatter;
 			Date dateFormattedIntroduced = null;
 			Date dateFormattedDiscontinued = null;
 			formatter = new SimpleDateFormat("yyyy-mm-dd");
-			try {
-				dateFormattedIntroduced = (Date) formatter.parse(request
-						.getParameter("introduced"));
-				dateFormattedDiscontinued = (Date) formatter.parse(request
-						.getParameter("discontinued"));
-			} catch (ParseException e1) {
-				request.setAttribute(
-						"error",
-						new com.excilys.formation.projet.servlet.wrapper.Error(
-								"danger", "Fail to edit computer",
-								"The computer was not updated, please try again."));
-				request.getRequestDispatcher(
-						"WEB-INF/addComputer.jsp?computer="
-								+ request.getParameter("comp_id")).forward(
-						request, response);
-				LOG.error("Editing computer parse exception catch.");
-				e1.printStackTrace();
-				return;
+			if (!"".equals(request.getParameter("introduced"))) {
+				try {
+					dateFormattedIntroduced = (Date) formatter.parse(request
+							.getParameter("introduced"));
+				} catch (ParseException e1) {
+					LOG.error("Introduced date parse exception catch.");
+					e1.printStackTrace();
+					return;
+				}
+			}
+			if (!"".equals(request.getParameter("discontinued"))) {
+				try {
+					dateFormattedDiscontinued = (Date) formatter.parse(request
+							.getParameter("discontinued"));
+				} catch (ParseException e1) {
+					LOG.error("Discontinued date parse exception catch.");
+					e1.printStackTrace();
+					return;
+				}
 			}
 
-			Computer myComp = new Computer(Long.parseLong(request
+			myComp = new Computer(Long.parseLong(request
 					.getParameter("comp_id")), request.getParameter("name"),
 					dateFormattedIntroduced, dateFormattedDiscontinued,
 					companyService.read(Long.parseLong(request

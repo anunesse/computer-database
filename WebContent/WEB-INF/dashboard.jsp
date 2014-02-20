@@ -35,7 +35,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>
+					<th class="col-sm-1">
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'computer' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">
@@ -58,7 +58,7 @@
 										&order=ASC" class="btn">Computer</a></c:otherwise>
 						</c:choose>
 					</th>
-					<th>
+					<th class="col-sm-1">
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'introduced' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">
@@ -81,7 +81,7 @@
 										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Introduced</a></c:otherwise>
 						</c:choose>
 					</th>
-					<th>
+					<th class="col-sm-1">
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'discontinued' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">
@@ -104,7 +104,7 @@
 										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Discontinued</a></c:otherwise>
 						</c:choose>
 					</th>
-					<th>
+					<th class="col-sm-1">
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'company' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">

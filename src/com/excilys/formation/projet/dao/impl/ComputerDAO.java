@@ -319,10 +319,18 @@ public class ComputerDAO implements IComputerDAO {
 			myStatement = myCon.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
 			myStatement.setString(1, myComp.getName());
-			myStatement.setTimestamp(2, new Timestamp(myComp.getIntroduced()
-					.getTime()));
-			myStatement.setTimestamp(3, new Timestamp(myComp.getDiscontinued()
-					.getTime()));
+			if (myComp.getIntroduced() == null)
+				myStatement.setNull(2, java.sql.Types.TIMESTAMP);
+			else {
+				myStatement.setTimestamp(2, new Timestamp(myComp
+						.getIntroduced().getTime()));
+			}
+			if (myComp.getDiscontinued() == null)
+				myStatement.setNull(3, java.sql.Types.TIMESTAMP);
+			else {
+				myStatement.setTimestamp(3, new Timestamp(myComp
+						.getDiscontinued().getTime()));
+			}
 			myStatement.setLong(4, myComp.getCompany().getId());
 			myStatement.executeUpdate();
 			// return myStatement.getGeneratedKeys().getLong(1);
@@ -349,10 +357,18 @@ public class ComputerDAO implements IComputerDAO {
 		try {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, myComp.getName());
-			myStatement.setTimestamp(2, new Timestamp(myComp.getIntroduced()
-					.getTime()));
-			myStatement.setTimestamp(3, new Timestamp(myComp.getDiscontinued()
-					.getTime()));
+			if (myComp.getIntroduced() == null)
+				myStatement.setNull(2, java.sql.Types.TIMESTAMP);
+			else {
+				myStatement.setTimestamp(2, new Timestamp(myComp
+						.getIntroduced().getTime()));
+			}
+			if (myComp.getDiscontinued() == null)
+				myStatement.setNull(3, java.sql.Types.TIMESTAMP);
+			else {
+				myStatement.setTimestamp(3, new Timestamp(myComp
+						.getDiscontinued().getTime()));
+			}
 			myStatement.setLong(4, myComp.getCompany().getId());
 			myStatement.setLong(5, myComp.getId());
 			myStatement.executeUpdate();

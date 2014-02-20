@@ -30,7 +30,6 @@ public class LogDAO implements ILogDAO {
 		String query = "SELECT * FROM log";
 
 		try {
-			DAOFactory.startTransaction();
 			Connection myCon = DAOFactory.getInstance().getConnection();
 			myStatement = myCon.createStatement();
 			myResults = myStatement.executeQuery(query);
@@ -52,7 +51,6 @@ public class LogDAO implements ILogDAO {
 			} finally {
 				CloseResults(myResults);
 				CloseStatement(myStatement);
-				DAOFactory.closeTransaction();
 			}
 		}
 		return null;
@@ -65,7 +63,6 @@ public class LogDAO implements ILogDAO {
 
 		String query = "INSERT INTO log (optype, opdate, description) VALUES(?,?,?);";
 		try {
-			DAOFactory.startTransaction();
 			Connection myCon = DAOFactory.getInstance().getConnection();
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, log.getOperationType());
@@ -79,7 +76,6 @@ public class LogDAO implements ILogDAO {
 			e.printStackTrace();
 		} finally {
 			CloseStatement(myStatement);
-			DAOFactory.closeTransaction();
 		}
 		return false;
 	}

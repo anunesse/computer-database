@@ -51,6 +51,7 @@ public class SelectDataServlet extends HttpServlet {
 		if (request.getParameterMap().isEmpty()) {
 			myPage.results = computerService.readAll();
 			myPage.totalNumberOfRecords = computerService.readTotal();
+			myPage.pageNumber = 1;
 			request.setAttribute("pageData", myPage);
 			request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
 					request, response);

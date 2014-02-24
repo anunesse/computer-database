@@ -10,30 +10,37 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
+import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.services.ComputerService;
+import com.excilys.formation.projet.servlet.context.ContextGetter;
 import com.excilys.formation.projet.servlet.wrapper.Page;
 
 /**
  * Servlet implementation class SelectDataServlet
  */
+@Controller
 @WebServlet("/SelectDataServlet")
 public class SelectDataServlet extends HttpServlet {
 
-	private ComputerService computerService = new ComputerService();
+	@Autowired
+	private ComputerService computerService;
 
 	// private IComputerDAO myComputerDAO;
 	static final Logger LOG = LoggerFactory.getLogger(SelectDataServlet.class);
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public SelectDataServlet() {
-		super();
-	}
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		ContextGetter.getInstance();
+		DAOFactory.getInstance();
+	}	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -42,10 +49,8 @@ public class SelectDataServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		/*
-		 * DAOFactory.getInstance(); myComputerDAO =
-		 * DAOFactory.getMyComputerDAO();
-		 */
+		computerService = ContextGetter.getApplicationContext().getBean(ComputerService.class);
+		
 		Page<Computer> myPage = new Page<Computer>();
 
 		if (request.getParameterMap().isEmpty()) {

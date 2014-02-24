@@ -12,15 +12,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.ILogDAO;
 import com.excilys.formation.projet.om.Log;
 
+@Repository
 public class LogDAO implements ILogDAO {
 	static final Logger LOG = LoggerFactory.getLogger(LogDAO.class);
 
-	@Override
+	// @Override
 	public List<Log> readAll() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
@@ -56,7 +58,7 @@ public class LogDAO implements ILogDAO {
 		return null;
 	}
 
-	@Override
+	// @Override
 	public boolean create(Log log) {
 		LOG.debug("[SQLEXCEPTION 2]");
 		PreparedStatement myStatement = null;

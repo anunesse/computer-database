@@ -1,5 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>m-computer-database</groupId>
   <artifactId>m-computer-database</artifactId>
@@ -7,34 +8,75 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>m-computer-database Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
+  <properties>
+  	<spring.version>4.0.1.RELEASE</spring.version>
+  	<bonecp.version>0.8.0.RELEASE</bonecp.version>
+  </properties>
+  
   <dependencies>
+  	<!-- Junit test -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    
+    <!-- ConnectionPool BoneCP -->
     <dependency>
 		<groupId>com.jolbox</groupId>
 		<artifactId>bonecp</artifactId>
-		<version>0.8.0.RELEASE</version>
+		<version>${bonecp.version}</version>
+		<scope>compile</scope>
 	</dependency>
+	
+	<!-- Mysql connector -->
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.6</version>
+		<scope>runtime</scope>
 	</dependency>
+	
+	<!-- Servlet API -->
 	<dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>javax.servlet-api</artifactId>
 		<version>3.0.1</version>
+		<scope>compile</scope>
 	</dependency>
+	
+	<!-- Logback core -->
 	<dependency>
 		<groupId>ch.qos.logback</groupId>
 		<artifactId>logback-core</artifactId>
 		<version>1.1.1</version>
 	</dependency>
+	
+	<!-- Spring Context including other dependencies -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+	
+	<!-- Spring JDBC connector -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+	
+	<!-- H2 database engine -->
+	<dependency>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+		<version>1.3.175</version>
+	</dependency>
+	
   </dependencies>
+  
   <build>
     <finalName>m-computer-database</finalName>
     <plugins>

@@ -1,7 +1,6 @@
 package com.excilys.formation.projet.servlet;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,34 +14,42 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import com.excilys.formation.projet.om.Company;
 import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.services.CompanyService;
 import com.excilys.formation.projet.services.ComputerService;
+import com.excilys.formation.projet.servlet.context.ContextGetter;
 import com.excilys.formation.projet.servlet.wrapper.Page;
 import com.excilys.formation.projet.util.Validation;
 
 /**
  * Servlet implementation class SelectComputerServlet
  */
+@Controller
 @WebServlet("/SelectComputerServlet")
 public class SelectComputerServlet extends HttpServlet {
 
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		//ContextGetter.getInstance();
+		//context = ContextGetter.getApplicationContext();
+	}
 	static final Logger LOG = LoggerFactory
 			.getLogger(SelectComputerServlet.class);
-
-	private CompanyService companyService = new CompanyService();
-	private ComputerService computerService = new ComputerService();
+	
+	@Autowired
+	private CompanyService companyService;
+	
+	@Autowired
+	private ComputerService computerService;
+	
 
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public SelectComputerServlet() {
-		super();
-	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -50,17 +57,19 @@ public class SelectComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		LOG.debug("Http Get request catched.");
-
+		companyService = ContextGetter.getApplicationContext().getBean(CompanyService.class);
+		computerService = ContextGetter.getApplicationContext().getBean(ComputerService.class);
+		
+		request.setAttribute("options", companyService.read());
 		if (request.getParameterMap().isEmpty()) {
-			request.setAttribute("options", companyService.read());
 			LOG.error("The computer id could not be found on request.");
 			request.setAttribute("answer", 0);
 			request.getRequestDispatcher("WEB-INF/addComputer.jsp").forward(
 					request, response);
 			return;
 		} else {
-			request.setAttribute("options", companyService.read());
 			Computer myComp = computerService.read(Long.parseLong(request
 					.getParameter("computer")));
 			if (myComp == null) {
@@ -80,7 +89,10 @@ public class SelectComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		LOG.debug("Http Post request catched.");
+		companyService = ContextGetter.getApplicationContext().getBean(CompanyService.class);
+		computerService = ContextGetter.getApplicationContext().getBean(ComputerService.class);
 
 		request.setAttribute("computers", computerService.readAll());
 
@@ -115,8 +127,8 @@ public class SelectComputerServlet extends HttpServlet {
 					request, response);
 			return;
 		} else if (request.getParameter("mode").equals("add")) {
-			Timestamp ts_introduced = null;
-			Timestamp ts_discontinued = null;
+			//Timestamp ts_introduced = null;
+			//Timestamp ts_discontinued = null;
 			Computer myComp = null;
 			boolean has_errors = false;
 			StringBuilder error = new StringBuilder("(Errors : ");
@@ -290,5 +302,8 @@ public class SelectComputerServlet extends HttpServlet {
 			}
 		}
 
+	}
+	public void setCompanyService(CompanyService companyService) {
+		this.companyService = companyService;
 	}
 }

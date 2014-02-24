@@ -2,22 +2,30 @@ package com.excilys.formation.projet.services;
 
 import java.util.List;
 
-import com.excilys.formation.projet.dao.DAOFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.projet.dao.ILogDAO;
+import com.excilys.formation.projet.dao.impl.LogDAO;
 import com.excilys.formation.projet.om.Log;
+import com.excilys.formation.projet.servlet.context.ContextGetter;
 
+@Service
 public class LogService {
-	ILogDAO myLogDAO;
+	
+	@Autowired
+	ILogDAO logDAO;
 
-	public LogService() {
-		myLogDAO = DAOFactory.getInstance().getMyLogDAO();
-	}
+	/*public LogService() {
+		ContextGetter.getInstance();
+		logDAO = ContextGetter.getApplicationContext().getBean(LogDAO.class);
+	}*/
 
 	public List<Log> readAll() {
-		return myLogDAO.readAll();
+		return logDAO.readAll();
 	}
 
 	public boolean create(Log log) {
-		return myLogDAO.create(log);
+		return logDAO.create(log);
 	}
 }

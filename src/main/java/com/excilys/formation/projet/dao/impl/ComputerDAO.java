@@ -11,12 +11,14 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.IComputerDAO;
 import com.excilys.formation.projet.om.Company;
 import com.excilys.formation.projet.om.Computer;
 
+@Repository
 public class ComputerDAO implements IComputerDAO {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDAO.class);
 
@@ -27,7 +29,6 @@ public class ComputerDAO implements IComputerDAO {
 	/**
 	 * Return COUNT(*)
 	 */
-	@Override
 	public int readTotal() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
@@ -55,7 +56,7 @@ public class ComputerDAO implements IComputerDAO {
 	/**
 	 * Read single computer on ID
 	 */
-	@Override
+	// @Override
 	public Computer read(long id) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
@@ -87,7 +88,7 @@ public class ComputerDAO implements IComputerDAO {
 	/**
 	 * Check if ID exist
 	 */
-	@Override
+	// @Override
 	public boolean exist(long id) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
@@ -119,7 +120,7 @@ public class ComputerDAO implements IComputerDAO {
 	/**
 	 * delete Computer on ID
 	 */
-	@Override
+	// @Override
 	public boolean delete(long id) {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
@@ -140,7 +141,7 @@ public class ComputerDAO implements IComputerDAO {
 		return b;
 	}
 
-	@Override
+	// @Override
 	public List<Computer> readRangedOrdered(int min, int max, String type,
 			String field) {
 		ResultSet myResults = null;
@@ -239,7 +240,7 @@ public class ComputerDAO implements IComputerDAO {
 	/**
 	 * Default read function, used to retrieve all data
 	 */
-	@Override
+	// @Override
 	public List<Computer> readAll() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
@@ -309,7 +310,7 @@ public class ComputerDAO implements IComputerDAO {
 		return 0;
 	}
 
-	@Override
+	// @Override
 	public long add(Computer myComp) {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();
@@ -348,7 +349,7 @@ public class ComputerDAO implements IComputerDAO {
 	/**
 	 * Default editor.
 	 */
-	@Override
+	// @Override
 	public boolean edit(Computer myComp) {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getInstance().getConnection();

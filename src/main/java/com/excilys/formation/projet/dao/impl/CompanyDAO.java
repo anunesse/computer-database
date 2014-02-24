@@ -9,11 +9,13 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.ICompanyDAO;
 import com.excilys.formation.projet.om.Company;
 
+@Repository
 public class CompanyDAO implements ICompanyDAO {
 	static final Logger LOG = LoggerFactory.getLogger(CompanyDAO.class);
 
@@ -24,7 +26,6 @@ public class CompanyDAO implements ICompanyDAO {
 	/**
 	 * Retrieve single Company on ID
 	 */
-	@Override
 	public Company read(long id) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
@@ -62,7 +63,6 @@ public class CompanyDAO implements ICompanyDAO {
 	/**
 	 * Retrieve all companies with max limit for convenient output.
 	 */
-	@Override
 	public List<Company> read(int max) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
@@ -100,7 +100,6 @@ public class CompanyDAO implements ICompanyDAO {
 	/**
 	 * Default companies retriever.
 	 */
-	@Override
 	public List<Company> read() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
@@ -137,7 +136,6 @@ public class CompanyDAO implements ICompanyDAO {
 	/**
 	 * Test if ID exist on table.
 	 */
-	@Override
 	public boolean exist(long id) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
@@ -165,13 +163,7 @@ public class CompanyDAO implements ICompanyDAO {
 		return false;
 	}
 
-	/*
-	 * public void CloseConnection(Connection myCon) { try { myCon.close(); }
-	 * catch (SQLException e) { LOG.error("[CLOSE SQLEXCEPTION]");
-	 * e.printStackTrace(); } catch (NullPointerException e) {
-	 * LOG.error("[CLOSE NPEXCEPTION]"); e.printStackTrace(); } }
-	 */
-
+	
 	public void CloseResults(ResultSet myResults) {
 		try {
 			myResults.close();

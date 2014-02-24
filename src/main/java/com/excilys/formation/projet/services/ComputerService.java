@@ -6,49 +6,59 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.IComputerDAO;
 import com.excilys.formation.projet.dao.ILogDAO;
+import com.excilys.formation.projet.dao.impl.ComputerDAO;
+import com.excilys.formation.projet.dao.impl.LogDAO;
 import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.om.Log;
+import com.excilys.formation.projet.servlet.context.ContextGetter;
 
+@Service
 public class ComputerService {
 
 	static final Logger LOG = LoggerFactory.getLogger(ComputerService.class);
 
-	IComputerDAO myComputerDAO;
-	ILogDAO myLogDAO;
+	@Autowired
+	IComputerDAO computerDAO;
+	
+	@Autowired
+	ILogDAO logDAO;
 
-	public ComputerService() {
-		myComputerDAO = DAOFactory.getInstance().getMyComputerDAO();
-		myLogDAO = DAOFactory.getInstance().getMyLogDAO();
-	}
+	/*public ComputerService() {
+		ContextGetter.getInstance();
+		logDAO = ContextGetter.getApplicationContext().getBean(LogDAO.class);
+		computerDAO = ContextGetter.getApplicationContext().getBean(ComputerDAO.class);
+	}*/
 
 	public int readTotal() {
 		DAOFactory.startTransaction();
-		int i = myComputerDAO.readTotal();
+		int i = computerDAO.readTotal();
 		DAOFactory.closeTransaction();
 		return i;
 	}
 
 	public int readTotal(String search) {
 		DAOFactory.startTransaction();
-		int i = myComputerDAO.readTotal(search);
+		int i = computerDAO.readTotal(search);
 		DAOFactory.closeTransaction();
 		return i;
 	}
 
 	public Computer read(long id) {
 		DAOFactory.startTransaction();
-		Computer c = myComputerDAO.read(id);
+		Computer c = computerDAO.read(id);
 		DAOFactory.closeTransaction();
 		return c;
 	}
 
 	public boolean exist(long id) {
 		DAOFactory.startTransaction();
-		boolean b = myComputerDAO.exist(id);
+		boolean b = computerDAO.exist(id);
 		DAOFactory.closeTransaction();
 		return b;
 	}
@@ -62,8 +72,8 @@ public class ComputerService {
 					"Field computer deleted on ID : ");
 			str.append(id);
 			str.append(";");
-			b = myComputerDAO.delete(id);
-			myLogDAO.create(new Log("DELETE", new Date(), str.toString()));
+			b = computerDAO.delete(id);
+			logDAO.create(new Log("DELETE", new Date(), str.toString()));
 			if (b)
 				DAOFactory.getInstance().getConnection().commit();
 			else
@@ -79,14 +89,14 @@ public class ComputerService {
 	public List<Computer> read(int min, int max, String type, String field,
 			String search) {
 		DAOFactory.startTransaction();
-		List<Computer> lc = myComputerDAO.read(min, max, type, field, search);
+		List<Computer> lc = computerDAO.read(min, max, type, field, search);
 		DAOFactory.closeTransaction();
 		return lc;
 	}
 
 	public List<Computer> readAll() {
 		DAOFactory.startTransaction();
-		List<Computer> lc = myComputerDAO.readAll();
+		List<Computer> lc = computerDAO.readAll();
 		DAOFactory.closeTransaction();
 		return lc;
 	}
@@ -97,10 +107,10 @@ public class ComputerService {
 		try {
 			DAOFactory.startTransaction();
 			StringBuilder str = new StringBuilder("Field computer added, ID ");
-			b = myComputerDAO.add(myComp);
+			b = computerDAO.add(myComp);
 			str.append(b);
 			str.append(";");
-			myLogDAO.create(new Log("CREATE", new Date(), str.toString()));
+			logDAO.create(new Log("CREATE", new Date(), str.toString()));
 			if (b > 0)
 				DAOFactory.getInstance().getConnection().commit();
 			else
@@ -121,8 +131,8 @@ public class ComputerService {
 					"Field computer edited, ID : ");
 			str.append(myComp.getId());
 			str.append(";");
-			b = myComputerDAO.edit(myComp);
-			myLogDAO.create(new Log("UPDATE", new Date(), str.toString()));
+			b = computerDAO.edit(myComp);
+			logDAO.create(new Log("UPDATE", new Date(), str.toString()));
 			if (b)
 				DAOFactory.getInstance().getConnection().commit();
 			else
@@ -138,7 +148,7 @@ public class ComputerService {
 	public List<Computer> readRangedOrdered(int min, int max, String type,
 			String field) {
 		DAOFactory.startTransaction();
-		List<Computer> lc = myComputerDAO.readRangedOrdered(min, max, type,
+		List<Computer> lc = computerDAO.readRangedOrdered(min, max, type,
 				field);
 		DAOFactory.closeTransaction();
 		return lc;

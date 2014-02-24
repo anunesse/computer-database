@@ -5,19 +5,13 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
-import com.excilys.formation.projet.dao.impl.CompanyDAO;
-import com.excilys.formation.projet.dao.impl.ComputerDAO;
-import com.excilys.formation.projet.dao.impl.LogDAO;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
+@Repository
 public class DAOFactory {
-
-	private static ICompanyDAO myCompanyDAO;
-	private static IComputerDAO myComputerDAO;
-	private static ILogDAO myLogDAO;
-
 	private static BoneCP connectionPool;
 
 	private static ThreadLocal<Connection> localConnection;
@@ -31,10 +25,6 @@ public class DAOFactory {
 	private static DAOFactory myDAO;
 
 	private DAOFactory() {
-		myCompanyDAO = new CompanyDAO();
-		myComputerDAO = new ComputerDAO();
-		myLogDAO = new LogDAO();
-
 		localConnection = new ThreadLocal<Connection>();
 
 		try {
@@ -71,17 +61,17 @@ public class DAOFactory {
 		return myDAO;
 	}
 
-	public static ICompanyDAO getMyCompanyDAO() {
-		return myCompanyDAO;
+	/*public static ICompanyDAO getMyCompanyDAO() {
+		return companyDAO;
 	}
 
 	public static IComputerDAO getMyComputerDAO() {
-		return myComputerDAO;
+		return computerDAO;
 	}
 
 	public static ILogDAO getMyLogDAO() {
-		return myLogDAO;
-	}
+		return logDAO;
+	}*/
 
 	public Connection getConnection() {
 

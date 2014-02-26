@@ -9,7 +9,7 @@
 
 <ul class="pagination">
 <li>
-	<a href="SelectDataServlet?page=1&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">First Page</a>
+	<a href="Display?page=1&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">First Page</a>
 </li>
 <c:if test="${ page == 1 }">
 	<li class="disabled">
@@ -18,20 +18,20 @@
 </c:if>
 <c:if test="${ page > 1 }">
 	<li class="prev">
-		<a href="SelectDataServlet?page=${page-1}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">&laquo;</a>
+		<a href="Display?page=${page-1}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">&laquo;</a>
 	</li>
 </c:if>
 
 <c:forEach var="entry" begin="${(page - 5 < 1) ? 1 : page - 5}" end="${(page + 5 > numberOfPages) ? numberOfPages : page + 5}">
 	<c:if test="${entry == page}">
 		<li class="active">
-			<a href="SelectDataServlet?page=${entry}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">${entry}</a>
+			<a href="Display?page=${entry}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">${entry}</a>
 		</li>
 	</c:if>
 	
 	<c:if test="${entry != page}">
 		<li class="current">
-			<a href="SelectDataServlet?page=${entry}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">${entry}</a>
+			<a href="Display?page=${entry}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">${entry}</a>
 		</li>
 	</c:if>
 </c:forEach>
@@ -43,10 +43,10 @@
 </c:if>
 <c:if test="${ page != numberOfPages }">
 	<li class="next">
-		<a href="SelectDataServlet?page=${page+1}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">&raquo;</a>
+		<a href="Display?page=${page+1}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">&raquo;</a>
 	</li>
 	<li>
-		<a href="SelectDataServlet?page=${numberOfPages}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">Last Page</a>
+		<a href="Display?page=${numberOfPages}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">Last Page</a>
 	</li>
 </c:if>
 

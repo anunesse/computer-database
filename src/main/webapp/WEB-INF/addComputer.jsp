@@ -4,6 +4,9 @@
 <%@ page import="com.excilys.formation.projet.dao.*"%>
 <%@ page import="com.excilys.formation.projet.om.*"%>
 <section id="main">
+
+	<div style="margin-top:90px"><h1 id="homeTitle">Computer</h1></div>
+
 	<c:if test="${not empty error}">
 	   <jsp:include page="../include/info.jsp" />  
 	</c:if>
@@ -11,21 +14,19 @@
 	<c:choose>
 		<c:when test="${answer==0}">
 			<h1>Add Computer</h1>
-			<form class="myForm" action="SelectComputerServlet" method="POST">
+			<form class="myForm" action="AddComputer" method="POST">
 				<input type="hidden" name="mode" value="add"/>
 		</c:when>
 		
 		<c:otherwise>
 			<h1>Edit Computer</h1>
 			
-			<form action="SelectComputerServlet" method="POST">
-				<input type="hidden" name="mode" value="del"/>
+			<form action="DelComputer" method="POST">
 				<input type="hidden" name="computer" value="${computer.id }"/>
 				<input type="submit" value="Delete" onclick="return confirm('You are about to delete this computer, are you sure?')" class="btn btn-danger">
 			</form>
 			
-			<form class="myForm" action="SelectComputerServlet" method="POST">
-				<input type="hidden" name="mode" value="edit"/>
+			<form class="myForm" action="EditComputer" method="POST">
 				<input type="text" name="comp_id" value="${computer.id }" readonly/>
 		</c:otherwise>
 	</c:choose>	
@@ -66,7 +67,7 @@
 				</fieldset>
 				<div class="actions">
 					<input type="submit" value="Edit" class="btn primary">
-					<a href="SelectDataServlet" class="btn">Cancel</a>
+					<a href="Display" class="btn">Cancel</a>
 					
 				</div>
 			</form>

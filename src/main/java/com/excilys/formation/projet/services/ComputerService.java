@@ -12,11 +12,8 @@ import org.springframework.stereotype.Service;
 import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.IComputerDAO;
 import com.excilys.formation.projet.dao.ILogDAO;
-import com.excilys.formation.projet.dao.impl.ComputerDAO;
-import com.excilys.formation.projet.dao.impl.LogDAO;
 import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.om.Log;
-import com.excilys.formation.projet.servlet.context.ContextGetter;
 
 @Service
 public class ComputerService {
@@ -28,12 +25,11 @@ public class ComputerService {
 	
 	@Autowired
 	ILogDAO logDAO;
-
-	/*public ComputerService() {
-		ContextGetter.getInstance();
-		logDAO = ContextGetter.getApplicationContext().getBean(LogDAO.class);
-		computerDAO = ContextGetter.getApplicationContext().getBean(ComputerDAO.class);
-	}*/
+	
+	public ComputerService(){
+		super();
+		System.out.println("SPRING SETTING COMPUTER SERVICE_____________!");
+	}
 
 	public int readTotal() {
 		DAOFactory.startTransaction();
@@ -75,9 +71,9 @@ public class ComputerService {
 			b = computerDAO.delete(id);
 			logDAO.create(new Log("DELETE", new Date(), str.toString()));
 			if (b)
-				DAOFactory.getInstance().getConnection().commit();
+				DAOFactory.getConnection().commit();
 			else
-				DAOFactory.getInstance().getConnection().rollback();
+				DAOFactory.getConnection().rollback();
 			DAOFactory.closeTransaction();
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");
@@ -112,9 +108,9 @@ public class ComputerService {
 			str.append(";");
 			logDAO.create(new Log("CREATE", new Date(), str.toString()));
 			if (b > 0)
-				DAOFactory.getInstance().getConnection().commit();
+				DAOFactory.getConnection().commit();
 			else
-				DAOFactory.getInstance().getConnection().rollback();
+				DAOFactory.getConnection().rollback();
 			DAOFactory.closeTransaction();
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");
@@ -134,9 +130,9 @@ public class ComputerService {
 			b = computerDAO.edit(myComp);
 			logDAO.create(new Log("UPDATE", new Date(), str.toString()));
 			if (b)
-				DAOFactory.getInstance().getConnection().commit();
+				DAOFactory.getConnection().commit();
 			else
-				DAOFactory.getInstance().getConnection().rollback();
+				DAOFactory.getConnection().rollback();
 			DAOFactory.closeTransaction();
 		} catch (SQLException e) {
 			LOG.error("[SQLEXCEPTION]");

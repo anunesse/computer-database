@@ -1,3 +1,3 @@
 <%
-response.sendRedirect("SelectDataServlet");
+response.sendRedirect("ComputerDB/Display");
 %>

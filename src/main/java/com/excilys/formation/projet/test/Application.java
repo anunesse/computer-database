@@ -22,6 +22,7 @@ public class Application {
 	public static void main(String[] args) {
 		System.out.println("Running...");
 
+		@SuppressWarnings("resource")
 		ApplicationContext context = new AnnotationConfigApplicationContext(
 				Application.class);
 		MessagePrinter printer = null;

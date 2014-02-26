@@ -5,14 +5,15 @@
 
 
 <section id="main">
-	<h1 id="homeTitle">${pageData.totalNumberOfRecords} Computers found</h1>
+
+	<div style="margin-top:90px"><h1 id="homeTitle">${pageData.totalNumberOfRecords} Computers found</h1></div>
 	
 	<c:if test="${not empty error}">
 	   <jsp:include page="../include/info.jsp" />  
 	</c:if>
 	
 	<div id="actions">
-		<form action="SelectDataServlet" method="GET">
+		<form action="Display" method="GET">
 		<c:choose>
 			<c:when test="${pageData.recordsOnThisPage > 0}">
 				<input type="search" id="dispbox" name="display" value="${pageData.recordsOnThisPage}" placeholder="10, 20, 50, ...">
@@ -25,7 +26,7 @@
 			<input type="submit" value="Find it" class="btn btn-primary">
 		</form>
 		
-		<a class="btn btn-success" id="add" href="SelectComputerServlet">Add Computer</a>
+		<a class="btn btn-success" id="add" href="GetComputer">Add Computer</a>
 	</div>
 
 	<c:if test="${not empty pageData.pageNumber && pageData.recordsOnThisPage>0}">
@@ -39,20 +40,20 @@
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'computer' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
 										&order=ASC" class="btn">Computer</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
 										&order=DESC" class="btn">Computer</a>
 								</c:if>
 							</c:when>
-							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+							<c:otherwise><a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=computer
 										&order=ASC" class="btn">Computer</a></c:otherwise>
@@ -62,20 +63,20 @@
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'introduced' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=introduced
 										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Introduced</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=introduced
 										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Introduced UP</a>
 								</c:if>
 							</c:when>
-							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+							<c:otherwise><a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=introduced
 										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Introduced</a></c:otherwise>
@@ -85,20 +86,20 @@
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'discontinued' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=discontinued
 										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Discontinued</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=discontinued
 										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Discontinued</a>
 								</c:if>
 							</c:when>
-							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+							<c:otherwise><a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=discontinued
 										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Discontinued</a></c:otherwise>
@@ -108,20 +109,20 @@
 						<c:choose>
 							<c:when test="${pageData.resultsOrderedBy == 'company' }">
 								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=company
 										&order=ASC" class="btn active"><i class="icon-arrow-down"></i>Company</a>
 									<!--  -->
 								</c:if>
 								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="SelectDataServlet?page=${pageData.pageNumber}
+									<a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=company
 										&order=DESC" class="btn active"><i class="icon-arrow-up"></i>Company</a>
 								</c:if>
 							</c:when>
-							<c:otherwise><a href="SelectDataServlet?page=${pageData.pageNumber}
+							<c:otherwise><a href="Display?page=${pageData.pageNumber}
 										&search=${search}&display=${pageData.recordsOnThisPage}
 										&orderField=company
 										&order=ASC" class="btn"><i class="icon-arrow-down"></i>Company</a></c:otherwise>
@@ -138,7 +139,7 @@
 				<c:otherwise>
 				<c:forEach var="comp" items="${pageData.results}">
 					<tr>
-						<td><a href="SelectComputerServlet?computer=${comp.id}">${comp.name }</a></td>
+						<td><a href="GetComputer?computer=${comp.id}">${comp.name }</a></td>
 						<td><fmt:formatDate value="${comp.introduced}" pattern="yyyy/MM/dd"/></td>
 						<td><fmt:formatDate value="${comp.discontinued}" pattern="yyyy/MM/dd"/></td>
 						<td>${comp.company.name }</td>

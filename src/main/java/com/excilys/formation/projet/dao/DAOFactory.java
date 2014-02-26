@@ -5,12 +5,10 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
-@Repository
 public class DAOFactory {
 	private static BoneCP connectionPool;
 
@@ -22,11 +20,13 @@ public class DAOFactory {
 	private static String user = "jee-cdb";
 	private static String passwd = "password";
 
-	private static DAOFactory myDAO;
-
-	private DAOFactory() {
+	public DAOFactory(){
+		super();
+		System.out.println("SPRING SETTING FACTORY DAO__________________!");
+	};
+	
+	static{
 		localConnection = new ThreadLocal<Connection>();
-
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			LOG.info("[BONECP]Connection successfully openned");
@@ -55,25 +55,7 @@ public class DAOFactory {
 		}
 	}
 
-	public static DAOFactory getInstance() {
-		if (myDAO == null)
-			myDAO = new DAOFactory();
-		return myDAO;
-	}
-
-	/*public static ICompanyDAO getMyCompanyDAO() {
-		return companyDAO;
-	}
-
-	public static IComputerDAO getMyComputerDAO() {
-		return computerDAO;
-	}
-
-	public static ILogDAO getMyLogDAO() {
-		return logDAO;
-	}*/
-
-	public Connection getConnection() {
+	public static Connection getConnection() {
 
 		if (localConnection.get() == null) {
 			try {
@@ -93,9 +75,12 @@ public class DAOFactory {
 
 	public static void startTransaction() {
 		try {
-			localConnection.set(myDAO.getConnection());
+			localConnection.set(DAOFactory.getConnection());
 			localConnection.get().setAutoCommit(false);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException e){
+			LOG.error("CANNOT GET CONNECTION FROM NULL DAOFACTORY!");
 			e.printStackTrace();
 		}
 	}

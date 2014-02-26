@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.ICompanyDAO;
-import com.excilys.formation.projet.dao.impl.CompanyDAO;
 import com.excilys.formation.projet.om.Company;
-import com.excilys.formation.projet.servlet.context.ContextGetter;
 
 
 @Service

@@ -32,7 +32,7 @@ public class LogDAO implements ILogDAO {
 		String query = "SELECT * FROM log";
 
 		try {
-			Connection myCon = DAOFactory.getInstance().getConnection();
+			Connection myCon = DAOFactory.getConnection();
 			myStatement = myCon.createStatement();
 			myResults = myStatement.executeQuery(query);
 		} catch (SQLException SQLe) {
@@ -65,7 +65,7 @@ public class LogDAO implements ILogDAO {
 
 		String query = "INSERT INTO log (optype, opdate, description) VALUES(?,?,?);";
 		try {
-			Connection myCon = DAOFactory.getInstance().getConnection();
+			Connection myCon = DAOFactory.getConnection();
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, log.getOperationType());
 			myStatement.setTimestamp(2, new Timestamp(log.getOperationDate()

@@ -29,7 +29,7 @@ public class CompanyDAO implements ICompanyDAO {
 	public Company read(long id) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "SELECT * FROM company WHERE id = " + id;
 		try {
@@ -66,7 +66,7 @@ public class CompanyDAO implements ICompanyDAO {
 	public List<Company> read(int max) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 		List<Company> myCompanies = new ArrayList<Company>();
 		String query = "SELECT * FROM company LIMIT " + max;
 
@@ -103,7 +103,7 @@ public class CompanyDAO implements ICompanyDAO {
 	public List<Company> read() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 		List<Company> myCompanies = new ArrayList<Company>();
 		String query = "SELECT * FROM company";
 
@@ -139,7 +139,7 @@ public class CompanyDAO implements ICompanyDAO {
 	public boolean exist(long id) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "SELECT id, name FROM company WHERE id = " + id;
 		try {

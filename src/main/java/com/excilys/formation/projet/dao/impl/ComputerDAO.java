@@ -24,6 +24,7 @@ public class ComputerDAO implements IComputerDAO {
 
 	public ComputerDAO() {
 		super();
+		System.out.println("SPRING SETTING COMPUTER DAO_________________!");
 	}
 
 	/**
@@ -32,7 +33,7 @@ public class ComputerDAO implements IComputerDAO {
 	public int readTotal() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "SELECT COUNT(*) FROM computer";
 		try {
@@ -60,7 +61,7 @@ public class ComputerDAO implements IComputerDAO {
 	public Computer read(long id) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.id = ?";
 
@@ -92,7 +93,7 @@ public class ComputerDAO implements IComputerDAO {
 	public boolean exist(long id) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "SELECT id FROM computer WHERE id = ?";
 		try {
@@ -123,7 +124,7 @@ public class ComputerDAO implements IComputerDAO {
 	// @Override
 	public boolean delete(long id) {
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "DELETE FROM computer WHERE id = ?";
 		boolean b = false;
@@ -146,7 +147,7 @@ public class ComputerDAO implements IComputerDAO {
 			String field) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
 
 		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id ORDER BY ? ? LIMIT ? OFFSET ?";
@@ -200,7 +201,7 @@ public class ComputerDAO implements IComputerDAO {
 			String field, String search) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
 
 		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ? ORDER BY "
@@ -244,7 +245,7 @@ public class ComputerDAO implements IComputerDAO {
 	public List<Computer> readAll() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
 
 		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id ORDER BY c.name";
@@ -282,7 +283,7 @@ public class ComputerDAO implements IComputerDAO {
 	public int readTotal(String search) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "SELECT COUNT(*) FROM computer c JOIN company b LEFT ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
 		try {
@@ -313,7 +314,7 @@ public class ComputerDAO implements IComputerDAO {
 	// @Override
 	public long add(Computer myComp) {
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?,?,?,?);";
 		try {
@@ -352,7 +353,7 @@ public class ComputerDAO implements IComputerDAO {
 	// @Override
 	public boolean edit(Computer myComp) {
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getInstance().getConnection();
+		Connection myCon = DAOFactory.getConnection();
 
 		String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 		try {

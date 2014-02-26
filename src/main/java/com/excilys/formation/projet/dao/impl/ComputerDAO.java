@@ -285,7 +285,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = DAOFactory.getConnection();
 
-		String query = "SELECT COUNT(*) FROM computer c JOIN company b LEFT ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
+		String query = "SELECT COUNT(*) FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
+		//String query = "SELECT COUNT(*) FROM computer c JOIN company b LEFT ON c.company_id = b.id WHERE c.name LIKE ?";
 		try {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, "%" + search + "%");
@@ -294,8 +295,6 @@ public class ComputerDAO implements IComputerDAO {
 		} catch (SQLException SQLe) {
 			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
-		} finally {
-			CloseStatement(myStatement);
 		}
 		if (myResults != null) {
 			try {
@@ -306,6 +305,7 @@ public class ComputerDAO implements IComputerDAO {
 				e.printStackTrace();
 			} finally {
 				CloseResults(myResults);
+				CloseStatement(myStatement);
 			}
 		}
 		return 0;

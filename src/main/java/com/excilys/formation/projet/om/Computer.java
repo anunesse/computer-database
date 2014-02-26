@@ -3,12 +3,17 @@ package com.excilys.formation.projet.om;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class Computer {
 	private long id;
+	@NotEmpty
 	private String name;
+	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private Date introduced;
+	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private Date discontinued;
-	//private long company_id;
 	private Company company;
 	
 	

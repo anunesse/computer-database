@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="label.title"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 	
@@ -36,9 +38,14 @@
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="navbar-header">
-			<a class="navbar-brand" rel="home" href="Display" title="Computer Database">Computer Database</a>
+		
+		
+		<div class="row">
+			<div class="col-xs-12 col-md-8">
+		  		<a class="navbar-brand" rel="home" href="Display" title="Computer Database"><spring:message code="label.home"/></a>
+		  		<a class="navbar-brand" rel="home" href="Logs" title="Logs"><spring:message code="label.logs"/></a>
+  			</div>
 		</div>
-		<a class="navbar-brand" rel="home" href="Logs" title="Logs">Logs</a>
+		
 	</div>
 	

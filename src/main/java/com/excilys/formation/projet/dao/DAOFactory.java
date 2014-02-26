@@ -22,7 +22,6 @@ public class DAOFactory {
 
 	public DAOFactory(){
 		super();
-		System.out.println("SPRING SETTING FACTORY DAO__________________!");
 	};
 	
 	static{

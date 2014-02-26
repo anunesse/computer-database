@@ -15,11 +15,6 @@ public class CompanyService {
 
 	@Autowired
 	ICompanyDAO companyDAO;
-
-	/*public CompanyService() {
-		ContextGetter.getInstance();
-		companyDAO = ContextGetter.getApplicationContext().getBean(CompanyDAO.class);
-	}*/
 	
 	public Company read(long id) {
 		DAOFactory.startTransaction();

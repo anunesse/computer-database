@@ -6,12 +6,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,7 +22,6 @@ import com.excilys.formation.projet.om.Company;
 import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.services.CompanyService;
 import com.excilys.formation.projet.services.ComputerService;
-import com.excilys.formation.projet.util.Validation;
 
 
 @Controller
@@ -101,27 +102,17 @@ public class ComputerController{
 	 * @return
 	 */
 	@RequestMapping(value="AddComputer", method = RequestMethod.POST)
-	protected String addComputer(Model model, HttpServletRequest request){
-		Computer myComp = null;
-		boolean has_errors = false;
-		StringBuilder error = new StringBuilder("(Errors : ");
-		if (!Validation.validateString(request.getParameter("name"))) {
-			error.append("\nComputer name failed / ");
-			has_errors = true;
-		}
-		error.append(")");
-		if (has_errors) {
+	protected String addComputer(@Valid Computer computer, BindingResult result, Model model, HttpServletRequest request){
+		//Attention ajouter un redirect pour éviter le F5 utilisateur
+		if(result.hasErrors()){
 			request.setAttribute("error",
 					new com.excilys.formation.projet.controller.wrapper.Error(
 							"danger", "Fail to add computer",
-							"The computer was not added to database, please try again."
-									+ error));
+							"The computer was not added to database, please try again."));
 			request.setAttribute("mode", request.getParameter("mode"));
-			/*request.getRequestDispatcher("WEB-INF/addComputer.jsp")
-					.forward(request, response);*/
-			LOG.info("The computer can not be add.");
 			return "addComputer";
 		}
+		Computer myComp = null;
 		if (companyService.exist(Long.parseLong(request
 				.getParameter("company")))) {
 			DateFormat formatter;
@@ -178,22 +169,15 @@ public class ComputerController{
 	 * @return
 	 */
 	@RequestMapping(value="EditComputer", method = RequestMethod.POST)
-	protected String editComputer(Model model, HttpServletRequest request){
-		boolean has_errors = false;
-		StringBuilder error_params = new StringBuilder("(Errors : ");
-
-		if (!Validation.validateString(request.getParameter("name"))) {
-			error_params.append("\nComputer name failed / ");
-			has_errors = true;
-		}
-		error_params.append(")");
-		if (has_errors) {
+	protected String editComputer(@Valid Computer computer, BindingResult result, Model model, HttpServletRequest request){
+		//Attention ajouter un redirect pour éviter le F5 utilisateur
+		if(result.hasErrors()){
 			request.setAttribute("error",
 					new com.excilys.formation.projet.controller.wrapper.Error(
 							"danger", "Fail to edit computer",
-							"The computer was not edited please try again."
-									+ error_params));
+							"The computer was not edited please try again. [UNBIND]"));
 			LOG.info("Fail to access edit computer.");
+			request.setAttribute("computer", request.getParameter("comp_id"));
 			/*request.getRequestDispatcher(
 					"WEB-INF/addComputer.jsp?computer="
 							+ request.getParameter("comp_id")).forward(

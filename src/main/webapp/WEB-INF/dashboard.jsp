@@ -1,11 +1,12 @@
 <jsp:include page="../include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="at" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <section id="main">
 <div style="margin-top:60px" class="row">
+
 	<div class="col-md-8">
 		<h1 id="homeTitle">${pageData.totalNumberOfRecords} <spring:message code="label.datafound"/></h1>
 	</div>
@@ -38,7 +39,6 @@
 			<input type="search" id="search" name="search" value="${search }">
 			<button type="submit" class="btn btn-primary"><spring:message code="label.buttonsearch"/></button>
 		</form>
-		
 	</div>
 
 	<c:if test="${not empty pageData.pageNumber && pageData.recordsOnThisPage>0}">
@@ -49,97 +49,28 @@
 			<thead>
 				<tr>
 					<th class="col-sm-1">
-						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'computer' }">
-								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=computer
-										&order=ASC" class="btn"><spring:message code="label.table.header.computer"/></a>
-									<!--  -->
-								</c:if>
-								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=computer
-										&order=DESC" class="btn"><spring:message code="label.table.header.computer"/></a>
-								</c:if>
-							</c:when>
-							<c:otherwise><a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=computer
-										&order=ASC" class="btn"><spring:message code="label.table.header.computer"/></a></c:otherwise>
-						</c:choose>
+						<a href="Display?page=${pageData.pageNumber}
+							&search=${search}&display=${pageData.recordsOnThisPage}
+							&orderField=computer
+							&order=ASC" class="btn"><spring:message code="label.table.header.computer"/></a>
 					</th>
 					<th class="col-sm-1">
-						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'introduced' }">
-								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=introduced
-										&order=ASC" class="btn active"><i class="icon-arrow-down"></i><spring:message code="label.table.header.introduced"/></a>
-									<!--  -->
-								</c:if>
-								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=introduced
-										&order=DESC" class="btn active"><i class="icon-arrow-up"></i><spring:message code="label.table.header.introduced"/></a>
-								</c:if>
-							</c:when>
-							<c:otherwise><a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=introduced
-										&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.introduced"/></a></c:otherwise>
-						</c:choose>
+						<a href="Display?page=${pageData.pageNumber}
+							&search=${search}&display=${pageData.recordsOnThisPage}
+							&orderField=introduced
+							&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.introduced"/></a>
 					</th>
 					<th class="col-sm-1">
-						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'discontinued' }">
-								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=discontinued
-										&order=ASC" class="btn active"><i class="icon-arrow-down"></i><spring:message code="label.table.header.discontinued"/></a>
-									<!--  -->
-								</c:if>
-								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=discontinued
-										&order=DESC" class="btn active"><i class="icon-arrow-up"></i><spring:message code="label.table.header.discontinued"/></a>
-								</c:if>
-							</c:when>
-							<c:otherwise><a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=discontinued
-										&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.discontinued"/></a></c:otherwise>
-						</c:choose>
+						<a href="Display?page=${pageData.pageNumber}
+							&search=${search}&display=${pageData.recordsOnThisPage}
+							&orderField=discontinued
+							&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.discontinued"/></a>
 					</th>
 					<th class="col-sm-1">
-						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'company' }">
-								<c:if test="${pageData.orderDirection == 'DESC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=company
-										&order=ASC" class="btn active"><i class="icon-arrow-down"></i><spring:message code="label.table.header.company"/></a>
-									<!--  -->
-								</c:if>
-								<c:if test="${pageData.orderDirection == 'ASC' }">
-									<a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=company
-										&order=DESC" class="btn active"><i class="icon-arrow-up"></i><spring:message code="label.table.header.company"/></a>
-								</c:if>
-							</c:when>
-							<c:otherwise><a href="Display?page=${pageData.pageNumber}
-										&search=${search}&display=${pageData.recordsOnThisPage}
-										&orderField=company
-										&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.company"/></a>
-							</c:otherwise>
-						</c:choose>
+						<a href="Display?page=${pageData.pageNumber}
+							&search=${search}&display=${pageData.recordsOnThisPage}
+							&orderField=company
+							&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.company"/></a>
 					</th>
 				</tr>
 			</thead>
@@ -153,8 +84,10 @@
 				<c:forEach var="comp" items="${pageData.results}">
 					<tr>
 						<td><a href="GetComputer?computer=${comp.id}">${comp.name }</a></td>
-						<td><fmt:formatDate value="${comp.introduced}" pattern="yyyy/MM/dd"/></td>
-						<td><fmt:formatDate value="${comp.discontinued}" pattern="yyyy/MM/dd"/></td>
+						<td>
+							<joda:format value="${comp.introduced}" style="S-"/>
+						</td>
+						<td><joda:format value="${comp.discontinued}" style="M-"/></td>
 						<td>${comp.company.name }</td>
 					</tr>
 				</c:forEach>

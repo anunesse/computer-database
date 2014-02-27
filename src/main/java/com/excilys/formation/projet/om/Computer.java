@@ -1,19 +1,24 @@
 package com.excilys.formation.projet.om;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Computer {
 	private long id;
 	@NotEmpty
 	private String name;
-	@DateTimeFormat(pattern="yyyy-mm-dd")
-	private Date introduced;
-	@DateTimeFormat(pattern="yyyy-mm-dd")
-	private Date discontinued;
+
+	//@DateTimeFormat(style="S-")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private DateTime introduced;
+	
+	//@DateTimeFormat(style="S-")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private DateTime discontinued;
+	
 	private Company company;
 	
 	
@@ -36,17 +41,17 @@ public class Computer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getIntroduced() {
+	public DateTime getIntroduced() {
 		return introduced;
 	}
 	public void setIntroduced(Timestamp introduced) {
-		this.introduced = introduced;
+		this.introduced = new DateTime(introduced.getTime());
 	}
-	public Date getDiscontinued() {
+	public DateTime getDiscontinued() {
 		return discontinued;
 	}
 	public void setDiscontinued(Timestamp discontinued) {
-		this.discontinued = discontinued;
+		this.discontinued = new DateTime(discontinued.getTime());
 	}
 	/*public long getCompany_id() {
 		return company_id;
@@ -62,39 +67,38 @@ public class Computer {
 		return this;
 	}
 	
-	/*public Computer(long id, String name, Timestamp introduced,
-			Timestamp discontinued, long company_id) {
+	public Computer(long id, String name, Timestamp introduced,
+			Timestamp discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.company_id = company_id;
-	}*/
-	public Computer(String name, Date Introduced,
-			Date Discontinued, Company company) {
+		this.introduced = new DateTime(introduced);
+		this.discontinued = new DateTime(discontinued);
+		this.company = company;
+	}
+	public Computer(String name, DateTime Introduced,
+			DateTime Discontinued, Company company) {
 		this.name = name;
 		this.introduced = Introduced;
 		this.discontinued = Discontinued;
 		this.company = company;
 	}
-	public Computer(String name, Date introduced, Date discontinued) {
+	public Computer(String name, DateTime introduced, DateTime discontinued) {
 		super();
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 		//this.company_id = company_id;
 	}
-	public Computer(long id, String name, Date introduced, Date discontinued) {
+	public Computer(long id, String name, DateTime introduced, DateTime discontinued) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		//this.company_id = company_id;
 	}
-	public Computer(long id, String name, Date date,
-			Date date2, Company company) {
+	public Computer(long id, String name, DateTime date,
+			DateTime date2, Company company) {
 		super();
 		this.id = id;
 		this.name = name;

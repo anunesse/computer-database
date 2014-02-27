@@ -44,21 +44,23 @@ public class ComputerController{
 	 * @return
 	 */
 	@RequestMapping(value="GetComputer", method = RequestMethod.GET)
-	protected String getComputer(Model model, HttpServletRequest request){
-		request.setAttribute("options", companyService.read());
+	protected String getComputer(@Valid Computer computer, BindingResult result, Model model, HttpServletRequest request){
+		
+		model.addAttribute("options", companyService.read());
+		
 		if (request.getParameterMap().isEmpty()) {
-			LOG.error("The computer id could not be found on request.");
-			request.setAttribute("answer", 0);
+			model.addAttribute("computer", new Computer());
 			return "addComputer";
 		} else {
-			Computer myComp = computerService.read(Long.parseLong(request
-					.getParameter("computer")));
+			Computer myComp = computerService.read(Long.parseLong(request.getParameter("computer")));
 			if (myComp == null) {
 				LOG.error("The computer id could not be found on database.");
-				request.setAttribute("answer", 0);
-			} else
-				request.setAttribute("computer", myComp);
-			return "addComputer";
+				model.addAttribute("answer", 0);
+			} else{
+				model.addAttribute("computer", myComp);
+				LOG.error("___________________RETURNING WRONG TIME");
+			}
+			return "editComputer";
 		}
 	}
 	
@@ -103,59 +105,25 @@ public class ComputerController{
 	 */
 	@RequestMapping(value="AddComputer", method = RequestMethod.POST)
 	protected String addComputer(@Valid Computer computer, BindingResult result, Model model, HttpServletRequest request){
-		//Attention ajouter un redirect pour éviter le F5 utilisateur
+		
+		model.addAttribute("options", companyService.read());
+		
 		if(result.hasErrors()){
-			request.setAttribute("error",
-					new com.excilys.formation.projet.controller.wrapper.Error(
-							"danger", "Fail to add computer",
-							"The computer was not added to database, please try again."));
-			request.setAttribute("mode", request.getParameter("mode"));
 			return "addComputer";
 		}
-		Computer myComp = null;
-		if (companyService.exist(Long.parseLong(request
-				.getParameter("company")))) {
-			DateFormat formatter;
-			Date dateFormattedIntroduced = null;
-			Date dateFormattedDiscontinued = null;
-			formatter = new SimpleDateFormat("yyyy-mm-dd");
-			try {
-				dateFormattedIntroduced = (Date) formatter.parse(request
-						.getParameter("introduced"));
-				dateFormattedDiscontinued = (Date) formatter.parse(request
-						.getParameter("discontinued"));
-			} catch (ParseException e1) {
-				LOG.error("Adding computer parse exception catch.");
-				e1.printStackTrace();
-			}
-			myComp = new Computer(request.getParameter("name"),
-					dateFormattedIntroduced, dateFormattedDiscontinued,
-					new Company(Long.parseLong(request
-							.getParameter("company"))));
+		
+		Computer myComputer = null;
+		Company myCompany = new Company(Long.parseLong(request.getParameter("company")));
+		myComputer = computer;
 
-		}
-
-		if (computerService.add(myComp) > 0) {
-			request.setAttribute(
-					"error",
-					new com.excilys.formation.projet.controller.wrapper.Error(
-							"success", "Computer added",
-							"Congratulations, the computer has been added to the database."));
+		if (computerService.add(myComputer) > 0) {
+			LOG.info("Computer added.");
 			Page<Computer> myPage = new Page<Computer>();
 			myPage.results = computerService.readAll();
 			myPage.totalNumberOfRecords = computerService.readTotal();
-			request.setAttribute("pageData", myPage);
-			/*request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(
-					request, response);*/
+			model.addAttribute("pageData", myPage);
 			return "dashboard";
 		} else {
-			request.setAttribute(
-					"error",
-					new com.excilys.formation.projet.controller.wrapper.Error(
-							"danger", "Fail to add computer",
-							"The computer was not added to the database please try again."));
-			/*request.getRequestDispatcher("WEB-INF/addComputer.jsp")
-					.forward(request, response);*/
 			LOG.info("The computer can not be add.");
 			return "addComputer";
 		}
@@ -172,22 +140,12 @@ public class ComputerController{
 	protected String editComputer(@Valid Computer computer, BindingResult result, Model model, HttpServletRequest request){
 		//Attention ajouter un redirect pour éviter le F5 utilisateur
 		if(result.hasErrors()){
-			request.setAttribute("error",
-					new com.excilys.formation.projet.controller.wrapper.Error(
-							"danger", "Fail to edit computer",
-							"The computer was not edited please try again. [UNBIND]"));
-			LOG.info("Fail to access edit computer.");
-			request.setAttribute("computer", request.getParameter("comp_id"));
-			/*request.getRequestDispatcher(
-					"WEB-INF/addComputer.jsp?computer="
-							+ request.getParameter("comp_id")).forward(
-					request, response);
-			return;*/
-			return "addComputer";
+			model.addAttribute("computer", request.getParameter("comp_id"));
+			return "editComputer";
 		}
 
-		Computer myComp = null;
-
+		Computer myComputer = null;
+		System.out.println("___________ INTRO : "+computer.getIntroduced());
 		DateFormat formatter;
 		Date dateFormattedIntroduced = null;
 		Date dateFormattedDiscontinued = null;
@@ -209,17 +167,17 @@ public class ComputerController{
 			} catch (ParseException e1) {
 				LOG.error("Discontinued date parse exception catch.");
 				e1.printStackTrace();
-				return "addComputer";
+				return "editComputer";
 			}
 		}
 
-		myComp = new Computer(Long.parseLong(request
-				.getParameter("comp_id")), request.getParameter("name"),
-				dateFormattedIntroduced, dateFormattedDiscontinued,
-				companyService.read(Long.parseLong(request
-						.getParameter("company"))));
 
-		if (computerService.edit(myComp)) {
+		/* Attention créer le myComputer correctement */
+		Company myCompany = new Company(Long.parseLong(request
+				.getParameter("company")));
+		myComputer = new Computer();
+
+		if (computerService.edit(myComputer)){
 			request.setAttribute(
 					"error",
 					new com.excilys.formation.projet.controller.wrapper.Error(

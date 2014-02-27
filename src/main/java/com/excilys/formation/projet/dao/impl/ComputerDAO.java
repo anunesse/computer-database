@@ -325,13 +325,13 @@ public class ComputerDAO implements IComputerDAO {
 				myStatement.setNull(2, java.sql.Types.TIMESTAMP);
 			else {
 				myStatement.setTimestamp(2, new Timestamp(myComp
-						.getIntroduced().getTime()));
+						.getIntroduced().getMillis()));
 			}
 			if (myComp.getDiscontinued() == null)
 				myStatement.setNull(3, java.sql.Types.TIMESTAMP);
 			else {
 				myStatement.setTimestamp(3, new Timestamp(myComp
-						.getDiscontinued().getTime()));
+						.getDiscontinued().getMillis()));
 			}
 			myStatement.setLong(4, myComp.getCompany().getId());
 			myStatement.executeUpdate();
@@ -363,13 +363,13 @@ public class ComputerDAO implements IComputerDAO {
 				myStatement.setNull(2, java.sql.Types.TIMESTAMP);
 			else {
 				myStatement.setTimestamp(2, new Timestamp(myComp
-						.getIntroduced().getTime()));
+						.getIntroduced().getMillis()));
 			}
 			if (myComp.getDiscontinued() == null)
 				myStatement.setNull(3, java.sql.Types.TIMESTAMP);
 			else {
 				myStatement.setTimestamp(3, new Timestamp(myComp
-						.getDiscontinued().getTime()));
+						.getDiscontinued().getMillis()));
 			}
 			myStatement.setLong(4, myComp.getCompany().getId());
 			myStatement.setLong(5, myComp.getId());

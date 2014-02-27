@@ -6,17 +6,21 @@
 <%@ attribute name="search" required="true" type="java.lang.String"%>
 <%@ attribute name="orderField" required="true" type="java.lang.String"%>
 <%@ attribute name="orderDirection" required="true" type="java.lang.String"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <ul class="pagination">
-<li>
-	<a href="Display?page=1&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">First Page</a>
-</li>
 <c:if test="${ page == 1 }">
+	<li class="disabled">
+		<a href="Display?page=1&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}"><spring:message code="pagination.first"/></a>
+	</li>
 	<li class="disabled">
 		<a>&laquo;</a>
 	</li>
 </c:if>
 <c:if test="${ page > 1 }">
+	<li>
+		<a href="Display?page=1&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}"><spring:message code="pagination.first"/></a>
+	</li>
 	<li class="prev">
 		<a href="Display?page=${page-1}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">&laquo;</a>
 	</li>
@@ -40,13 +44,16 @@
 	<li class="disabled">
 		<a>&raquo;</a>
 	</li>
+	<li class="disabled">
+		<a href="Display?page=${numberOfPages}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}"><spring:message code="pagination.last"/></a>
+	</li>
 </c:if>
 <c:if test="${ page != numberOfPages }">
 	<li class="next">
 		<a href="Display?page=${page+1}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">&raquo;</a>
 	</li>
 	<li>
-		<a href="Display?page=${numberOfPages}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">Last Page</a>
+		<a href="Display?page=${numberOfPages}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}"><spring:message code="pagination.last"/></a>
 	</li>
 </c:if>
 

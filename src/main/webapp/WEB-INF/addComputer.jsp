@@ -6,7 +6,7 @@
 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="at" %>
 
-<section id="main">
+<section id="main" style="margin-left:90px">
 
 	<div style="margin-top:90px"></div>
 
@@ -17,7 +17,6 @@
 	<h1><spring:message code="label.add"/></h1>
 
 	<form:form role="form" class="myForm" commandName="computer" action="AddComputer" method="POST">
-
 		<fieldset>
 		<div class="form-group">
 			<label for="name"><spring:message code="label.table.header.computer"/> :</label>
@@ -51,8 +50,8 @@
 			<div class="form-group">
 				<label for="company"><spring:message code="label.table.header.company"/> :</label>
 					<div class="input">
-					<form:select path="company">
-						<option value="">Unknown</option>
+					<form:select path="company.id">
+						<option value="0">Unknown</option>
 						<c:forEach var="comp" items="${options}">
 							<option value="${comp.id }">${comp.name }</option>
 						</c:forEach>
@@ -61,7 +60,7 @@
 			</div>
 			</fieldset>
 			<div class="form-group">
-				<button type="submit" class="btn primary"><spring:message code="label.buttonedit"/></button>
+				<button type="submit" class="btn primary"><spring:message code="label.buttonadd"/></button>
 				<a href="Display" class="btn"><spring:message code="label.buttoncancel"/></a>
 			</div>
 	</form:form>

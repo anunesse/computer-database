@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -42,8 +42,8 @@ public class LogDAO implements ILogDAO {
 		if (myResults != null) {
 			try {
 				while (myResults.next()) {
-					myLogs.add(new Log(myResults.getString("optype"), new Date(
-							myResults.getTimestamp("opdate").getTime()),
+					myLogs.add(new Log(myResults.getString("optype"), new DateTime(
+							myResults.getTimestamp("opdate")),
 							myResults.getString("description")));
 				}
 				return myLogs;
@@ -69,7 +69,7 @@ public class LogDAO implements ILogDAO {
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, log.getOperationType());
 			myStatement.setTimestamp(2, new Timestamp(log.getOperationDate()
-					.getTime()));
+					.getMillis()));
 			myStatement.setString(3, log.getDescription());
 			myStatement.executeUpdate();
 			return true;

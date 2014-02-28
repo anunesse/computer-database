@@ -3,15 +3,13 @@ package com.excilys.formation.projet.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jolbox.bonecp.BoneCP;
-import com.jolbox.bonecp.BoneCPConfig;
-
 public class DAOFactory {
-	private static BoneCP connectionPool;
-
+	private static BasicDataSource DataSource;
+	
 	private static ThreadLocal<Connection> localConnection;
 
 	static final Logger LOG = LoggerFactory.getLogger(DAOFactory.class);
@@ -25,41 +23,23 @@ public class DAOFactory {
 	};
 	
 	static{
+		DataSource = new BasicDataSource();
+		DataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		localConnection = new ThreadLocal<Connection>();
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			LOG.info("[BONECP]Connection successfully openned");
-		} catch (ClassNotFoundException CNFe) {
-			LOG.error("[CLASSNFEXCEPTION]");
-			CNFe.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		BoneCPConfig config = new BoneCPConfig();
-
-		config.setJdbcUrl(url);
-		config.setUsername(user);
-		config.setPassword(passwd);
-
-		config.setMinConnectionsPerPartition(5);
-		config.setMaxConnectionsPerPartition(10);
-		config.setPartitionCount(1);
-		try {
-			connectionPool = new BoneCP(config);
-		} catch (SQLException e) {
-			LOG.error("[SQLEXCEPTION]");
-			e.printStackTrace();
-		}
+		
+		DataSource.setUrl(url);
+		DataSource.setUsername(user);
+		DataSource.setPassword(passwd);
+		
+		DataSource.setInitialSize(10);
+		DataSource.setMaxActive(10);
 	}
 
 	public static Connection getConnection() {
-
 		if (localConnection.get() == null) {
 			try {
 				LOG.debug("[BONECP] RETURNING CONNECTION");
-				localConnection.set(connectionPool.getConnection());
+				localConnection.set(DataSource.getConnection());
 				return localConnection.get();
 			} catch (SQLException e) {
 				LOG.error("[UNABLE TO GET CONNECTION]");

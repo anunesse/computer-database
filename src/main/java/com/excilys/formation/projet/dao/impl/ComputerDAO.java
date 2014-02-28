@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -71,10 +72,15 @@ public class ComputerDAO implements IComputerDAO {
 			myResults = myStatement.executeQuery();
 			if (myResults.first()) {
 				LOG.info("Computer retrieved.");
-				return new Computer(myResults.getInt(1),
-						myResults.getString(2), myResults.getTimestamp(3),
-						myResults.getTimestamp(4), new Company(
-								myResults.getInt(5), myResults.getString(6)));
+				DateTime date_intr = null;
+				if(myResults.getTimestamp(3) != null)
+					date_intr = new DateTime(myResults.getTimestamp(3));
+				DateTime date_disc = null;
+				if(myResults.getTimestamp(4) != null)
+					date_disc = new DateTime(myResults.getTimestamp(4));
+				return new Computer(myResults.getInt(1), myResults
+						.getString(2), date_intr, date_disc, new Company(myResults.getInt(5),
+						myResults.getString(6)));
 			}
 		} catch (SQLException SQLe) {
 			LOG.error("[SQLEXCEPTION]");
@@ -168,11 +174,15 @@ public class ComputerDAO implements IComputerDAO {
 		if (myResults != null) {
 			try {
 				while (myResults.next()) {
-					Computer my = new Computer(myResults.getInt(1),
-							myResults.getString(2), myResults.getTimestamp(3),
-							myResults.getTimestamp(4),
-							new Company(myResults.getInt(5), myResults
-									.getString(6)));
+					DateTime date_intr = null;
+					if(myResults.getTimestamp(3) != null)
+						date_intr = new DateTime(myResults.getTimestamp(3));
+					DateTime date_disc = null;
+					if(myResults.getTimestamp(4) != null)
+						date_disc = new DateTime(myResults.getTimestamp(4));
+					Computer my = new Computer(myResults.getInt(1), myResults
+							.getString(2), date_intr, date_disc, new Company(myResults.getInt(5),
+							myResults.getString(6)));
 					myComputers.add(my);
 				}
 				return myComputers;
@@ -221,10 +231,16 @@ public class ComputerDAO implements IComputerDAO {
 		if (myResults != null) {
 			try {
 				while (myResults.next()) {
-					myComputers.add(new Computer(myResults.getInt(1), myResults
-							.getString(2), myResults.getTimestamp(3), myResults
-							.getTimestamp(4), new Company(myResults.getInt(5),
-							myResults.getString(6))));
+					DateTime date_intr = null;
+					if(myResults.getTimestamp(3) != null)
+						date_intr = new DateTime(myResults.getTimestamp(3));
+					DateTime date_disc = null;
+					if(myResults.getTimestamp(4) != null)
+						date_disc = new DateTime(myResults.getTimestamp(4));
+					Computer my = new Computer(myResults.getInt(1), myResults
+							.getString(2), date_intr, date_disc, new Company(myResults.getInt(5),
+							myResults.getString(6)));
+					myComputers.add(my);
 				}
 				return myComputers;
 			} catch (SQLException e) {
@@ -247,6 +263,9 @@ public class ComputerDAO implements IComputerDAO {
 		Statement myStatement = null;
 		Connection myCon = DAOFactory.getConnection();
 		List<Computer> myComputers = new ArrayList<Computer>();
+		
+		DateTime date_intr = null;
+		DateTime date_disc = null;
 
 		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id ORDER BY c.name";
 		try {
@@ -259,9 +278,12 @@ public class ComputerDAO implements IComputerDAO {
 		if (myResults != null) {
 			try {
 				while (myResults.next()) {
+					if(myResults.getTimestamp(3) != null)
+						date_intr = new DateTime(myResults.getTimestamp(3));
+					if(myResults.getTimestamp(4) != null)
+						date_disc = new DateTime(myResults.getTimestamp(4));
 					myComputers.add(new Computer(myResults.getInt(1), myResults
-							.getString(2), myResults.getTimestamp(3), myResults
-							.getTimestamp(4), new Company(myResults.getInt(5),
+							.getString(2), date_intr, date_disc, new Company(myResults.getInt(5),
 							myResults.getString(6))));
 				}
 				LOG.info("Computers retrieved.");
@@ -335,7 +357,7 @@ public class ComputerDAO implements IComputerDAO {
 			}
 			myStatement.setLong(4, myComp.getCompany().getId());
 			myStatement.executeUpdate();
-			// return myStatement.getGeneratedKeys().getLong(1);
+			//return myStatement.getGeneratedKeys().getLong(1);
 			ResultSet re = myStatement.getGeneratedKeys();
 			if (re != null && re.next())
 				return re.getLong(1);

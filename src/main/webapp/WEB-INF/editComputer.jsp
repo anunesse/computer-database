@@ -8,17 +8,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="at" %>
 
-<section id="main">
+<section id="main" style="margin-left:90px">
 
 	<div style="margin-top:90px"></div>
 
 	<c:if test="${not empty error}">
 	   <jsp:include page="../include/info.jsp" />  
 	</c:if>
-		<spring:message code="label.edit"/>
+		<h1><spring:message code="label.edit"/></h1>
 		
-		<form action="DelComputer" method="POST">
-			<input type="hidden" name="computer" value="${computer.id }"/>
+		<form action="DelComputer" method="GET">
+			<input type="hidden" name="computer_id" value="${computer.id }"/>
 			<button type="submit" onclick="return confirm('You are about to delete this computer, are you sure?')" class="btn btn-danger">
 				<spring:message code="label.buttondelete"/>
 			</button>
@@ -53,14 +53,14 @@
 			<div class="form-group">
 				<label for="company"><spring:message code="label.table.header.company"/> :</label>
 				<div class="input">
-					<select name="company">
+					<form:select path="company.id">
 						<option value="${computer.company.id }">${computer.company.name }</option>
 						<c:forEach var="comp" items="${options}">
 							<option value="${comp.id }">${comp.name }</option>
-								</c:forEach>
-							</select>
-						</div>
-					</div>
+						</c:forEach>
+					</form:select>
+				</div>
+			</div>
 				</fieldset>
 				<div class="form-group">
 					<button type="submit" class="btn primary"><spring:message code="label.buttonedit"/></button>

@@ -1,9 +1,9 @@
 package com.excilys.formation.projet.services;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class ComputerService {
 			str.append(id);
 			str.append(";");
 			b = computerDAO.delete(id);
-			logDAO.create(new Log("DELETE", new Date(), str.toString()));
+			logDAO.create(new Log("DELETE", new DateTime(), str.toString()));
 			if (b)
 				DAOFactory.getConnection().commit();
 			else
@@ -106,7 +106,7 @@ public class ComputerService {
 			b = computerDAO.add(myComp);
 			str.append(b);
 			str.append(";");
-			logDAO.create(new Log("CREATE", new Date(), str.toString()));
+			logDAO.create(new Log("CREATE", new DateTime(), str.toString()));
 			if (b > 0)
 				DAOFactory.getConnection().commit();
 			else
@@ -128,7 +128,7 @@ public class ComputerService {
 			str.append(myComp.getId());
 			str.append(";");
 			b = computerDAO.edit(myComp);
-			logDAO.create(new Log("UPDATE", new Date(), str.toString()));
+			logDAO.create(new Log("UPDATE", new DateTime(), str.toString()));
 			if (b)
 				DAOFactory.getConnection().commit();
 			else

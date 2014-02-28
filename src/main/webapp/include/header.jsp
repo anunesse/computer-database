@@ -17,15 +17,15 @@
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 	
 	
-	<script src="//js/jquery.js"></script> 
-	<script src="//js/jquery.form-validator.min.js"></script>
-	<script src="//js/main.js"></script>
+	<script src="js/jquery.js"></script> 
+	<script src="js/jquery.form-validator.min.js"></script>
+	<script src="js/main.js"></script>
 	
 	<!-- Bootstrap -->
-	<!-- 
-	<link href="//css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<script src="//js/bootstrap.min.js"></script>
-	 -->
+	
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<script src="js/bootstrap.min.js"></script>
+	
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	<!-- Optional theme -->

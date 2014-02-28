@@ -1,6 +1,6 @@
 package com.excilys.formation.projet.util;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class Validation {
 	public static boolean validateString(String str){
@@ -13,7 +13,7 @@ public class Validation {
 		else
 			return true;
 	}
-	public static boolean validateDate(Date date){
+	public static boolean validateDate(DateTime date){
 		if(date==null)
 			return false;
 		//Maybe add some other validation

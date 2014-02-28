@@ -1,13 +1,14 @@
 package com.excilys.formation.projet.util;
 
 import java.sql.Timestamp;
-import java.util.Date;
+
+import org.joda.time.DateTime;
 
 public class Converter {
-	public static Date dateFromTimestamp(Timestamp date){
-		return new Date(date.getTime());
+	public static DateTime dateFromTimestamp(Timestamp date){
+		return new DateTime(date);
 	}
-	public static Timestamp timestampFromDate(Date date){
-		return new Timestamp(date.getTime());
+	public static Timestamp timestampFromDate(DateTime date){
+		return new Timestamp(date.getMillis());
 	}
 }

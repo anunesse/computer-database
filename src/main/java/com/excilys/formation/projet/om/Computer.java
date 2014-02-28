@@ -1,6 +1,5 @@
 package com.excilys.formation.projet.om;
 
-import java.sql.Timestamp;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
@@ -12,11 +11,11 @@ public class Computer {
 	private String name;
 
 	//@DateTimeFormat(style="S-")
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private DateTime introduced;
 	
 	//@DateTimeFormat(style="S-")
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-mm-dd")
 	private DateTime discontinued;
 	
 	private Company company;
@@ -44,21 +43,10 @@ public class Computer {
 	public DateTime getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(Timestamp introduced) {
-		this.introduced = new DateTime(introduced.getTime());
-	}
 	public DateTime getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(Timestamp discontinued) {
-		this.discontinued = new DateTime(discontinued.getTime());
-	}
-	/*public long getCompany_id() {
-		return company_id;
-	}
-	public void setCompany_id(long company_id) {
-		this.company_id = company_id;
-	}*/
+
 	public Computer() {
 		super();
 	}
@@ -66,16 +54,7 @@ public class Computer {
 	public Computer build(){
 		return this;
 	}
-	
-	public Computer(long id, String name, Timestamp introduced,
-			Timestamp discontinued, Company company) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.introduced = new DateTime(introduced);
-		this.discontinued = new DateTime(discontinued);
-		this.company = company;
-	}
+
 	public Computer(String name, DateTime Introduced,
 			DateTime Discontinued, Company company) {
 		this.name = name;

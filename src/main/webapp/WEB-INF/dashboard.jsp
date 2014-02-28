@@ -42,35 +42,87 @@
 	</div>
 
 	<c:if test="${not empty pageData.pageNumber && pageData.recordsOnThisPage>0}">
-		<at:Pagination orderDirection="${pageData.orderDirection}" elementsByPage="${pageData.recordsOnThisPage}" search="${search }" page="${pageData.pageNumber }" orderField="${pageData.resultsOrderedBy}" numberOfPages="${pageData.numberOfPages}"></at:Pagination>
+		<at:Pagination orderDirection="${pageData.orderDirection}"
+			elementsByPage="${pageData.recordsOnThisPage}"
+			search="${search }" page="${pageData.pageNumber }"
+			orderField="${pageData.resultsOrderedBy}"
+			numberOfPages="${pageData.numberOfPages}"></at:Pagination>
 	</c:if>
 	
 		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th class="col-sm-1">
-						<a href="Display?page=${pageData.pageNumber}
-							&search=${search}&display=${pageData.recordsOnThisPage}
-							&orderField=computer
-							&order=ASC" class="btn"><spring:message code="label.table.header.computer"/></a>
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'computer' }">
+									<c:if test="${pageData.orderDirection == 'DESC' }">
+										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+											field="computer" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.computer"/></at:Link>
+									</c:if>
+									<c:if test="${pageData.orderDirection == 'ASC' }">
+										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
+											field="computer" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.computer"/></at:Link>
+									</c:if>
+							</c:when>
+							<c:otherwise>
+								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+										field="computer" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.computer"/></at:Link>
+							</c:otherwise>
+						</c:choose>
 					</th>
 					<th class="col-sm-1">
-						<a href="Display?page=${pageData.pageNumber}
-							&search=${search}&display=${pageData.recordsOnThisPage}
-							&orderField=introduced
-							&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.introduced"/></a>
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'introduced' }">
+									<c:if test="${pageData.orderDirection == 'DESC' }">
+										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+											field="introduced" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.introduced"/></at:Link>
+									</c:if>
+									<c:if test="${pageData.orderDirection == 'ASC' }">
+										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
+											field="introduced" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.introduced"/></at:Link>
+									</c:if>
+							</c:when>
+							<c:otherwise>
+								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+										field="introduced" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.introduced"/></at:Link>
+							</c:otherwise>
+						</c:choose>
 					</th>
 					<th class="col-sm-1">
-						<a href="Display?page=${pageData.pageNumber}
-							&search=${search}&display=${pageData.recordsOnThisPage}
-							&orderField=discontinued
-							&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.discontinued"/></a>
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'discontinued' }">
+									<c:if test="${pageData.orderDirection == 'DESC' }">
+										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+											field="discontinued" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.discontinued"/></at:Link>
+									</c:if>
+									<c:if test="${pageData.orderDirection == 'ASC' }">
+										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
+											field="discontinued" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.discontinued"/></at:Link>
+									</c:if>
+							</c:when>
+							<c:otherwise>
+								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+										field="discontinued" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.discontinued"/></at:Link>
+							</c:otherwise>
+						</c:choose>
 					</th>
 					<th class="col-sm-1">
-						<a href="Display?page=${pageData.pageNumber}
-							&search=${search}&display=${pageData.recordsOnThisPage}
-							&orderField=company
-							&order=ASC" class="btn"><i class="icon-arrow-down"></i><spring:message code="label.table.header.company"/></a>
+						<c:choose>
+							<c:when test="${pageData.resultsOrderedBy == 'company' }">
+									<c:if test="${pageData.orderDirection == 'DESC' }">
+										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+											field="company" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.company"/></at:Link>
+									</c:if>
+									<c:if test="${pageData.orderDirection == 'ASC' }">
+										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
+											field="company" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.company"/></at:Link>
+									</c:if>
+							</c:when>
+							<c:otherwise>
+								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
+										field="company" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.company"/></at:Link>
+							</c:otherwise>
+						</c:choose>
 					</th>
 				</tr>
 			</thead>
@@ -85,9 +137,11 @@
 					<tr>
 						<td><a href="GetComputer?computer=${comp.id}">${comp.name }</a></td>
 						<td>
-							<joda:format value="${comp.introduced}" style="S-"/>
+							<joda:format value="${comp.introduced}" style="M-"/>
 						</td>
-						<td><joda:format value="${comp.discontinued}" style="M-"/></td>
+						<td>
+							<joda:format value="${comp.discontinued}" style="M-"/>
+						</td>
 						<td>${comp.company.name }</td>
 					</tr>
 				</c:forEach>

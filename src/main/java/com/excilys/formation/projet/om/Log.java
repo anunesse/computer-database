@@ -1,12 +1,13 @@
 package com.excilys.formation.projet.om;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+
 
 public class Log {
 
 	private long id;
 	private String operationType;
-	private Date operationDate;
+	private DateTime operationDate;
 	private String description;
 
 	public long getId() {
@@ -25,11 +26,11 @@ public class Log {
 		this.operationType = operationType;
 	}
 
-	public Date getOperationDate() {
+	public DateTime getOperationDate() {
 		return operationDate;
 	}
 
-	public void setOperationDate(Date operationDate) {
+	public void setOperationDate(DateTime operationDate) {
 		this.operationDate = operationDate;
 	}
 
@@ -45,7 +46,7 @@ public class Log {
 		super();
 	}
 
-	public Log(long id, String operationType, Date operationDate,
+	public Log(long id, String operationType, DateTime operationDate,
 			String description) {
 		super();
 		this.id = id;
@@ -54,7 +55,7 @@ public class Log {
 		this.description = description;
 	}
 
-	public Log(String operationType, Date operationDate, String description) {
+	public Log(String operationType, DateTime operationDate, String description) {
 		super();
 		this.operationType = operationType;
 		this.operationDate = operationDate;

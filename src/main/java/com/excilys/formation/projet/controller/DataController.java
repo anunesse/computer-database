@@ -111,7 +111,7 @@ public class DataController{
 
 		myPage.orderDirection = sortMode;
 		myPage.pageNumber = page;
-
+		
 		request.setAttribute("search", search);
 		LOG.debug(sortResult + "/" + sortMode);
 		myPage.results = computerService.read(limit, offset, sortResult, sortMode, search);

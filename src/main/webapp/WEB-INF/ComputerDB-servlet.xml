@@ -61,6 +61,8 @@
         <property name="url" value="jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull"></property>
         <property name="username" value="jee-cdb"></property>
         <property name="password" value="password"></property>
+        <property name="initialSize" value="1"/>
+		<property name="maxActive" value="5"/>
     </bean>
 	
 </beans>

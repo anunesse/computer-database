@@ -14,6 +14,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.IComputerDAO;
@@ -39,8 +41,8 @@ public class ComputerDAO implements IComputerDAO {
 		Statement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -58,8 +60,8 @@ public class ComputerDAO implements IComputerDAO {
 			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
 		} finally {
-			CloseResults(myResults);
-			CloseStatement(myStatement);
+			closeResults(myResults);
+			closeStatement(myStatement);
 		}
 		return 0;
 	}
@@ -73,8 +75,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -101,8 +103,8 @@ public class ComputerDAO implements IComputerDAO {
 			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
 		} finally {
-			CloseResults(myResults);
-			CloseStatement(myStatement);
+			closeResults(myResults);
+			closeStatement(myStatement);
 		}
 		return null;
 	}
@@ -116,8 +118,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -139,8 +141,8 @@ public class ComputerDAO implements IComputerDAO {
 			LOG.error("[SQLEXCEPTION]");
 			e.printStackTrace();
 		} finally {
-			CloseResults(myResults);
-			CloseStatement(myStatement);
+			closeResults(myResults);
+			closeStatement(myStatement);
 		}
 		return false;
 	}
@@ -153,8 +155,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -170,7 +172,7 @@ public class ComputerDAO implements IComputerDAO {
 			LOG.error("[SQLEXCEPTION]");
 			SQLe.printStackTrace();
 		} finally {
-			CloseStatement(myStatement);
+			closeStatement(myStatement);
 		}
 		return b;
 	}
@@ -182,8 +184,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -223,8 +225,8 @@ public class ComputerDAO implements IComputerDAO {
 				LOG.error("[SQLEXCEPTION]");
 				e.printStackTrace();
 			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
+				closeResults(myResults);
+				closeStatement(myStatement);
 			}
 		}
 		return null;
@@ -246,8 +248,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -286,8 +288,8 @@ public class ComputerDAO implements IComputerDAO {
 				LOG.error("[SQLEXCEPTION]");
 				e.printStackTrace();
 			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
+				closeResults(myResults);
+				closeStatement(myStatement);
 			}
 		}
 		return null;
@@ -302,8 +304,8 @@ public class ComputerDAO implements IComputerDAO {
 		Statement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -337,8 +339,8 @@ public class ComputerDAO implements IComputerDAO {
 				LOG.error("[SQLEXCEPTION]");
 				e.printStackTrace();
 			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
+				closeResults(myResults);
+				closeStatement(myStatement);
 			}
 		}
 		return null;
@@ -377,8 +379,8 @@ public class ComputerDAO implements IComputerDAO {
 				LOG.error("[SQLEXCEPTION]");
 				e.printStackTrace();
 			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
+				closeResults(myResults);
+				closeStatement(myStatement);
 			}
 		}
 		return 0;
@@ -389,8 +391,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -421,11 +423,11 @@ public class ComputerDAO implements IComputerDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			CloseStatement(myStatement);
+			closeStatement(myStatement);
 		}
 		return 0;
 	}
-
+	
 	/**
 	 * Default editor.
 	 */
@@ -434,8 +436,8 @@ public class ComputerDAO implements IComputerDAO {
 		PreparedStatement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -466,12 +468,12 @@ public class ComputerDAO implements IComputerDAO {
 			LOG.debug("DATA NOT EDITED");
 			e.printStackTrace();
 		} finally {
-			CloseStatement(myStatement);
+			closeStatement(myStatement);
 		}
 		return false;
 	}
 
-	public void CloseResults(ResultSet myResults) {
+	public void closeResults(ResultSet myResults) {
 		try {
 			myResults.close();
 		} catch (SQLException e) {
@@ -483,7 +485,7 @@ public class ComputerDAO implements IComputerDAO {
 		}
 	}
 
-	public void CloseStatement(Statement myStatement) {
+	public void closeStatement(Statement myStatement) {
 		try {
 			myStatement.close();
 		} catch (SQLException e) {

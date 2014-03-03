@@ -11,6 +11,8 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.ICompanyDAO;
@@ -35,8 +37,8 @@ public class CompanyDAO implements ICompanyDAO {
 		Statement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -78,8 +80,8 @@ public class CompanyDAO implements ICompanyDAO {
 		Statement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -120,8 +122,8 @@ public class CompanyDAO implements ICompanyDAO {
 		Statement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -162,8 +164,8 @@ public class CompanyDAO implements ICompanyDAO {
 		Statement myStatement = null;
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}

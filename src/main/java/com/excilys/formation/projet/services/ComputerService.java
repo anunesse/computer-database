@@ -15,6 +15,7 @@ import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.om.Log;
 
 @Service
+@Transactional
 public class ComputerService {
 
 	static final Logger LOG = LoggerFactory.getLogger(ComputerService.class);
@@ -29,26 +30,29 @@ public class ComputerService {
 		super();
 	}
 
+	@Transactional(readOnly=true)
 	public int readTotal() {
 		//DAOFactory.startTransaction();
 		int i = computerDAO.readTotal();
 		//DAOFactory.closeTransaction();
 		return i;
 	}
-
+	
+	@Transactional(readOnly=true)
 	public int readTotal(String search) {
 		return computerDAO.readTotal(search);
 	}
 
+	@Transactional(readOnly=true)
 	public Computer read(long id) {
 		return computerDAO.read(id);
 	}
 
+	@Transactional(readOnly=true)
 	public boolean exist(long id) {
 		return computerDAO.exist(id);
 	}
 
-	@Transactional
 	public boolean delete(long id) {
 		boolean b = false;
 		StringBuilder str = new StringBuilder(
@@ -60,18 +64,19 @@ public class ComputerService {
 		return b;
 	}
 
+	@Transactional(readOnly=true)
 	public List<Computer> read(int min, int max, String type, String field,
 			String search) {
 		List<Computer> lc = computerDAO.read(min, max, type, field, search);
 		return lc;
 	}
 
+	@Transactional(readOnly=true)
 	public List<Computer> readAll() {
 		List<Computer> lc = computerDAO.readAll();
 		return lc;
 	}
 
-	@Transactional
 	public long add(Computer myComp) {
 		long b = 0;
 		StringBuilder str = new StringBuilder("Field computer added, ID ");
@@ -82,7 +87,6 @@ public class ComputerService {
 		return b;
 	}
 
-	@Transactional
 	public boolean edit(Computer myComp) {
 		boolean b = false;
 		StringBuilder str = new StringBuilder(
@@ -94,6 +98,7 @@ public class ComputerService {
 		return b;
 	}
 
+	@Transactional(readOnly=true)
 	public List<Computer> readRangedOrdered(int min, int max, String type,
 			String field) {
 		List<Computer> lc = computerDAO.readRangedOrdered(min, max, type, field);

@@ -49,7 +49,6 @@ public class DataController{
 				|| "".equals(request.getParameter("display"))) {
 			limit = 20;
 		} else {
-			System.out.println(request.getParameter("display"));
 			if (!request.getParameter("display").matches("\\d+")
 					|| Integer.parseInt(request.getParameter("display")) <= 0)
 				limit = 20;

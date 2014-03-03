@@ -14,6 +14,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.ILogDAO;
@@ -33,8 +35,8 @@ public class LogDAO implements ILogDAO {
 
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -62,8 +64,8 @@ public class LogDAO implements ILogDAO {
 				LOG.error("[SQLEXCEPTION 1]");
 				e.printStackTrace();
 			} finally {
-				CloseResults(myResults);
-				CloseStatement(myStatement);
+				closeResults(myResults);
+				closeStatement(myStatement);
 			}
 		}
 		return null;
@@ -76,8 +78,8 @@ public class LogDAO implements ILogDAO {
 
 		Connection myCon = null;
 		try {
-			myCon = dataSource.getConnection();
-		} catch (SQLException e) {
+			myCon = DataSourceUtils.getConnection(dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
 			LOG.error("Unable to get transaction from transaction manager.");
 			e.printStackTrace();
 		}
@@ -95,12 +97,12 @@ public class LogDAO implements ILogDAO {
 			LOG.error("[SQLEXCEPTION 2]");
 			e.printStackTrace();
 		} finally {
-			CloseStatement(myStatement);
+			closeStatement(myStatement);
 		}
 		return false;
 	}
 
-	public void CloseResults(ResultSet myResults) {
+	public void closeResults(ResultSet myResults) {
 		try {
 			myResults.close();
 		} catch (SQLException e) {
@@ -111,7 +113,7 @@ public class LogDAO implements ILogDAO {
 		}
 	}
 
-	public void CloseStatement(Statement myStatement) {
+	public void closeStatement(Statement myStatement) {
 		try {
 			myStatement.close();
 		} catch (SQLException e) {

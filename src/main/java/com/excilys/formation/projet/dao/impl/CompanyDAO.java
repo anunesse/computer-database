@@ -7,11 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.ICompanyDAO;
 import com.excilys.formation.projet.om.Company;
 
@@ -19,6 +20,9 @@ import com.excilys.formation.projet.om.Company;
 public class CompanyDAO implements ICompanyDAO {
 	static final Logger LOG = LoggerFactory.getLogger(CompanyDAO.class);
 
+	@Autowired
+	private BasicDataSource dataSource;
+	
 	public CompanyDAO() {
 		super();
 	}
@@ -29,7 +33,13 @@ public class CompanyDAO implements ICompanyDAO {
 	public Company read(long id) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "SELECT * FROM company WHERE id = " + id;
 		try {
@@ -66,13 +76,18 @@ public class CompanyDAO implements ICompanyDAO {
 	public List<Company> read(int max) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 		List<Company> myCompanies = new ArrayList<Company>();
 		String query = "SELECT * FROM company LIMIT " + max;
 
 		try {
 			myStatement = myCon.createStatement();
-			System.out.println(myStatement);
 			myResults = myStatement.executeQuery(query);
 		} catch (SQLException SQLe) {
 			LOG.error("[SQLEXCEPTION]");
@@ -103,7 +118,13 @@ public class CompanyDAO implements ICompanyDAO {
 	public List<Company> read() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 		List<Company> myCompanies = new ArrayList<Company>();
 		String query = "SELECT * FROM company";
 
@@ -139,7 +160,13 @@ public class CompanyDAO implements ICompanyDAO {
 	public boolean exist(long id) {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "SELECT id, name FROM company WHERE id = " + id;
 		try {

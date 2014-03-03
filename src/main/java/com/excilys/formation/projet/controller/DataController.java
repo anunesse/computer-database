@@ -115,15 +115,11 @@ public class DataController{
 
 		request.setAttribute("search", search);
 		LOG.debug(sortResult + "/" + sortMode);
-		myPage.results = computerService.read(limit, offset, sortResult,
-				sortMode, search);
-		// myComputerDAO.re
-		myPage.numberOfPages = (int) Math.ceil(myPage.totalNumberOfRecords
-				/ myPage.recordsOnThisPage) + 1;
+		myPage.results = computerService.read(limit, offset, sortResult, sortMode, search);
+		
+		myPage.numberOfPages = (int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1;
 		LOG.debug(myPage.toString());
 		request.setAttribute("pageData", myPage);
-
-		// System.out.println(myPage);
 		return "dashboard";
 	}
 }

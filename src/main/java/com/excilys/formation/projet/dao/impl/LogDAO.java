@@ -9,12 +9,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.ILogDAO;
 import com.excilys.formation.projet.om.Log;
 
@@ -22,17 +23,27 @@ import com.excilys.formation.projet.om.Log;
 public class LogDAO implements ILogDAO {
 	static final Logger LOG = LoggerFactory.getLogger(LogDAO.class);
 
+	@Autowired
+	private BasicDataSource dataSource;
+	
 	// @Override
 	public List<Log> readAll() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
 
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
+		
 		List<Log> myLogs = new ArrayList<Log>();
 
 		String query = "SELECT * FROM log";
 
 		try {
-			Connection myCon = DAOFactory.getConnection();
 			myStatement = myCon.createStatement();
 			myResults = myStatement.executeQuery(query);
 		} catch (SQLException SQLe) {
@@ -63,9 +74,16 @@ public class LogDAO implements ILogDAO {
 		LOG.debug("[SQLEXCEPTION 2]");
 		PreparedStatement myStatement = null;
 
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
+		
 		String query = "INSERT INTO log (optype, opdate, description) VALUES(?,?,?);";
 		try {
-			Connection myCon = DAOFactory.getConnection();
 			myStatement = myCon.prepareStatement(query);
 			myStatement.setString(1, log.getOperationType());
 			myStatement.setTimestamp(2, new Timestamp(log.getOperationDate()

@@ -9,12 +9,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.formation.projet.dao.DAOFactory;
 import com.excilys.formation.projet.dao.IComputerDAO;
 import com.excilys.formation.projet.om.Company;
 import com.excilys.formation.projet.om.Computer;
@@ -23,9 +24,11 @@ import com.excilys.formation.projet.om.Computer;
 public class ComputerDAO implements IComputerDAO {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDAO.class);
 
+	@Autowired
+	private BasicDataSource dataSource;
+	
 	public ComputerDAO() {
 		super();
-		System.out.println("SPRING SETTING COMPUTER DAO_________________!");
 	}
 
 	/**
@@ -34,7 +37,13 @@ public class ComputerDAO implements IComputerDAO {
 	public int readTotal() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "SELECT COUNT(*) FROM computer";
 		try {
@@ -62,7 +71,13 @@ public class ComputerDAO implements IComputerDAO {
 	public Computer read(long id) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.id = ?";
 
@@ -99,7 +114,13 @@ public class ComputerDAO implements IComputerDAO {
 	public boolean exist(long id) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "SELECT id FROM computer WHERE id = ?";
 		try {
@@ -130,7 +151,13 @@ public class ComputerDAO implements IComputerDAO {
 	// @Override
 	public boolean delete(long id) {
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "DELETE FROM computer WHERE id = ?";
 		boolean b = false;
@@ -153,7 +180,13 @@ public class ComputerDAO implements IComputerDAO {
 			String field) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 		List<Computer> myComputers = new ArrayList<Computer>();
 
 		String query = "SELECT  c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id ORDER BY ? ? LIMIT ? OFFSET ?";
@@ -211,7 +244,13 @@ public class ComputerDAO implements IComputerDAO {
 			String field, String search) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 		List<Computer> myComputers = new ArrayList<Computer>();
 
 		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, b.id, b.name FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ? ORDER BY "
@@ -261,7 +300,13 @@ public class ComputerDAO implements IComputerDAO {
 	public List<Computer> readAll() {
 		ResultSet myResults = null;
 		Statement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 		List<Computer> myComputers = new ArrayList<Computer>();
 		
 		DateTime date_intr = null;
@@ -305,7 +350,13 @@ public class ComputerDAO implements IComputerDAO {
 	public int readTotal(String search) {
 		ResultSet myResults = null;
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "SELECT COUNT(*) FROM computer c LEFT JOIN company b ON c.company_id = b.id WHERE c.name LIKE ? OR b.name LIKE ?";
 		//String query = "SELECT COUNT(*) FROM computer c JOIN company b LEFT ON c.company_id = b.id WHERE c.name LIKE ?";
@@ -336,7 +387,13 @@ public class ComputerDAO implements IComputerDAO {
 	// @Override
 	public long add(Computer myComp) {
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?,?,?,?);";
 		try {
@@ -375,7 +432,13 @@ public class ComputerDAO implements IComputerDAO {
 	// @Override
 	public boolean edit(Computer myComp) {
 		PreparedStatement myStatement = null;
-		Connection myCon = DAOFactory.getConnection();
+		Connection myCon = null;
+		try {
+			myCon = dataSource.getConnection();
+		} catch (SQLException e) {
+			LOG.error("Unable to get transaction from transaction manager.");
+			e.printStackTrace();
+		}
 
 		String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 		try {

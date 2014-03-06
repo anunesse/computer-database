@@ -1,0 +1,12 @@
+build/
+out/
+target/
+bin/
+.idea/
+.settings/
+.classpath
+*.iml
+*.eml
+*.project
+*.userlibraries
+*.DS_Store

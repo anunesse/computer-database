@@ -1,0 +1,92 @@
+package com.excilys.formation.projet.om;
+
+
+import org.joda.time.DateTime;
+
+
+public class Computer {
+	
+	private long id;
+	private String name;
+	private DateTime introduced;
+	private DateTime discontinued;
+	private Company company;
+	
+	
+	public Company getCompany() {
+		return company;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public DateTime getIntroduced() {
+		return introduced;
+	}
+	public DateTime getDiscontinued() {
+		return discontinued;
+	}
+	public void setIntroduced(DateTime introduced) {
+		this.introduced = introduced;
+	}
+	public void setDiscontinued(DateTime discontinued) {
+		this.discontinued = discontinued;
+	}
+	
+	public Computer() {
+		super();
+	}
+	
+	public Computer build(){
+		return this;
+	}
+
+	public Computer(String name, DateTime Introduced,
+			DateTime Discontinued, Company company) {
+		this.name = name;
+		this.introduced = Introduced;
+		this.discontinued = Discontinued;
+		this.company = company;
+	}
+	public Computer(String name, DateTime introduced, DateTime discontinued) {
+		super();
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		//this.company_id = company_id;
+	}
+	public Computer(long id, String name, DateTime introduced, DateTime discontinued) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+	}
+	public Computer(long id, String name, DateTime date,
+			DateTime date2, Company company) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.introduced = date;
+		this.discontinued = date2;
+		this.company = company;
+	}
+	public String toString() {
+		return "Computer [id=" + id + ", name=" + name + ", introduced="
+				+ introduced + ", discontinued=" + discontinued
+				+ "]";
+	}
+	
+}

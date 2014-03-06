@@ -56,7 +56,11 @@
 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 	   	<property name="dataSource" ref="dataSource"></property>
 	</bean>
-    
+		
+	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	    
     <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
 	   <property name="driverClass" value="com.mysql.jdbc.Driver" />
 	   <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />

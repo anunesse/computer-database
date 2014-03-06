@@ -48,20 +48,14 @@ public class ComputerService {
 		return computerDAO.read(id);
 	}
 
-	@Transactional(readOnly=true)
-	public boolean exist(long id) {
-		return computerDAO.exist(id);
-	}
-
-	public boolean delete(long id) {
+	public void delete(long id) {
 		boolean b = false;
 		StringBuilder str = new StringBuilder(
 				"Field computer deleted on ID : ");
 		str.append(id);
 		str.append(";");
-		b = computerDAO.delete(id);
+		computerDAO.delete(id);
 		logDAO.create(new Log("DELETE", new DateTime(), str.toString()));
-		return b;
 	}
 
 	@Transactional(readOnly=true)
@@ -77,31 +71,23 @@ public class ComputerService {
 		return lc;
 	}
 
-	public long add(Computer myComp) {
+	public long create(Computer myComp) {
 		long b = 0;
 		StringBuilder str = new StringBuilder("Field computer added, ID ");
-		b = computerDAO.add(myComp);
+		b = computerDAO.create(myComp);
 		str.append(b);
 		str.append(";");
 		logDAO.create(new Log("CREATE", new DateTime(), str.toString()));
 		return b;
 	}
 
-	public boolean edit(Computer myComp) {
+	public void update(Computer myComp) {
 		boolean b = false;
 		StringBuilder str = new StringBuilder(
 				"Field computer edited, ID : ");
 		str.append(myComp.getId());
 		str.append(";");
-		b = computerDAO.edit(myComp);
+		computerDAO.update(myComp);
 		logDAO.create(new Log("UPDATE", new DateTime(), str.toString()));
-		return b;
-	}
-
-	@Transactional(readOnly=true)
-	public List<Computer> readRangedOrdered(int min, int max, String type,
-			String field) {
-		List<Computer> lc = computerDAO.readRangedOrdered(min, max, type, field);
-		return lc;
 	}
 }

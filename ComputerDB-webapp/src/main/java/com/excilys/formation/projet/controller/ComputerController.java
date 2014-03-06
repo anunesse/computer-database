@@ -68,11 +68,7 @@ public class ComputerController{
 	 */
 	@RequestMapping(value="DelComputer", method = RequestMethod.GET)
 	protected String delComputer(Model model, HttpServletRequest request){
-		if (computerService.delete(Long.parseLong(request.getParameter("computer_id")))) {
-			LOG.info("Computer successfully deleted!");
-		} else {
-			LOG.info("The computer can not be delete.");
-		}
+		computerService.delete(Long.parseLong(request.getParameter("computer_id")));
 		Page<Computer> myPage = new Page<Computer>();
 		myPage.results = computerService.readAll();
 		myPage.totalNumberOfRecords = computerService.readTotal();
@@ -102,7 +98,7 @@ public class ComputerController{
 		myComputer = Converter.fromDTO(computerDTO);
 		LOG.info("Computer valid going on!");
 
-		if (computerService.add(myComputer) > 0) {
+		if (computerService.create(myComputer) > 0) {
 			LOG.info("Computer added.");
 			Page<Computer> myPage = new Page<Computer>();
 			myPage.results = computerService.readAll();
@@ -128,26 +124,18 @@ public class ComputerController{
 		Computer myComputer = null;
 		myComputer = Converter.fromDTO(computerDTO);
 		myComputer.setId(Integer.parseInt(request.getParameter("comp_id")));
-		//Attention ajouter un redirect pour éviter le F5 utilisateur
 		if(result.hasErrors()){
 			LOG.info("Invalid computer not edited.");
 			model.addAttribute("computerDTO", Converter.toDTO(myComputer));
 			return "editComputer";
 		}
-
+		computerService.update(myComputer);
+		LOG.info("Computer successfully edited.");
+		Page<Computer> myPage = new Page<Computer>();
+		myPage.results = computerService.readAll();
+		myPage.totalNumberOfRecords = computerService.readTotal();
 		
-
-		if (computerService.edit(myComputer)){
-			LOG.info("Computer successfully edited.");
-			Page<Computer> myPage = new Page<Computer>();
-			myPage.results = computerService.readAll();
-			myPage.totalNumberOfRecords = computerService.readTotal();
-			
-			redirectAttributes.addFlashAttribute("pageData", myPage);	
-			return "redirect:Display";	
-		} else {
-			LOG.info("Fail to edit computer.");
-			return "dashboard";
-		}
+		redirectAttributes.addFlashAttribute("pageData", myPage);	
+		return "dashboard";
 	}
 }

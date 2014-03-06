@@ -12,19 +12,15 @@ public interface IComputerDAO {
 
 	public abstract Computer read(long id);
 
-	public abstract boolean exist(long id);
-
-	public abstract boolean delete(long id);
+	public abstract void delete(long id);
 
 	public abstract List<Computer> read(int min, int max, String type,
 			String field, String search);
 
 	public abstract List<Computer> readAll();
 
-	public abstract long add(Computer myComp);
+	public abstract long create(Computer myComp);
 
-	public abstract boolean edit(Computer myComp);
-
-	List<Computer> readRangedOrdered(int min, int max, String type, String field);
+	public abstract void update(Computer myComp);
 
 }

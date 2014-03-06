@@ -16,23 +16,11 @@ public class CompanyService {
 	ICompanyDAO companyDAO;
 	
 	public Company read(long id) {
-		Company c = companyDAO.read(id);
-		return c;
-	}
-
-	public List<Company> read(int max) {
-		//DAOFactory.startTransaction();
-		List<Company> lc = companyDAO.read(max);
-		//DAOFactory.closeTransaction();
-		return lc;
+		return companyDAO.read(id);
 	}
 
 	public List<Company> read() {
-		List<Company> lc = companyDAO.read();
-		return lc;
-	}
+		return companyDAO.read();
 
-	public boolean exist(long id) {
-		return companyDAO.exist(id);
 	}
 }

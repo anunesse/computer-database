@@ -8,10 +8,6 @@ public interface ICompanyDAO {
 
 	public abstract Company read(long id);
 
-	public abstract List<Company> read(int max);
-
 	public abstract List<Company> read();
-
-	public abstract boolean exist(long id);
 
 }

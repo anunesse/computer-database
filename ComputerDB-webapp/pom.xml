@@ -23,32 +23,23 @@
 		</plugins>
 	</build>
 	
-	<properties>
-		<spring.version>4.0.1.RELEASE</spring.version>
-		<bonecp.version>0.8.0.RELEASE</bonecp.version>
-		<slf4j.version>1.6.6</slf4j.version>
-	</properties>
-	
 <dependencies>
 
 	<!-- JODA TIME -->
 	<dependency>
 		<groupId>joda-time</groupId>
 		<artifactId>joda-time</artifactId>
-		<version>2.3</version>
 	</dependency>
 	
 	<dependency>
 		<groupId>joda-time</groupId>
 		<artifactId>joda-time-jsptags</artifactId>
-		<version>1.1.1</version>
 	</dependency>
 	
   	<!-- Junit test -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
 	
@@ -56,28 +47,24 @@
 	<dependency>
 		<groupId>ch.qos.logback</groupId>
 		<artifactId>logback-core</artifactId>
-		<version>1.1.1</version>
 	</dependency>
 	
 	<!-- Logback classic -->
 	<dependency>
 		<groupId>ch.qos.logback</groupId>
 		<artifactId>logback-classic</artifactId>
-		<version>1.1.1</version>
 	</dependency>
 	
 	<!-- Spring MVC including other spring dependencies -->
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
-		<version>${spring.version}</version>
 	</dependency>
 	
 	<!-- Spring JDBC connector -->
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-jdbc</artifactId>
-		<version>${spring.version}</version>
 	</dependency>
 	
 	<!-- Sister's modules requirements -->

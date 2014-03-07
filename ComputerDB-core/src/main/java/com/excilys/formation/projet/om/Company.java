@@ -1,15 +1,27 @@
 package com.excilys.formation.projet.om;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="company")
 public class Company {
-	public Company(long l) {
-		super();
-		this.id = l;
-	}
+	@Id
+	@GeneratedValue
 	private long id;
+	
+	@Column(name="name")
 	private String name;
 	
 	public Company() {
 		super();
+	}
+	public Company(long l) {
+		super();
+		this.id = l;
 	}
 	public Company(long id, String name) {
 		super();

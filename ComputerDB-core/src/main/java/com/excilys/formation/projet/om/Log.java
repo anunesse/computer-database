@@ -1,13 +1,27 @@
 package com.excilys.formation.projet.om;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.joda.time.DateTime;
 
-
+@Entity
+@Table(name="log")
 public class Log {
-
+	@Id
+	@GeneratedValue
 	private long id;
+	
+	@Column(name="optype")
 	private String operationType;
+	
+	@Column(name="opdate")
 	private DateTime operationDate;
+	
+	@Column(name="description")
 	private String description;
 
 	public long getId() {

@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.excilys.formation.module</groupId>
     <artifactId>ComputerDB</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>ComputerDB-persistence</artifactId>
   
@@ -23,8 +23,7 @@
 	</build>
 	
 <dependencies>
-
-	<!-- JODA TIME -->
+	
 	<dependency>
 		<groupId>joda-time</groupId>
 		<artifactId>joda-time</artifactId>
@@ -63,11 +62,16 @@
 		<artifactId>logback-classic</artifactId>
 	</dependency>
 	
-	<!-- Spring MVC including other spring dependencies -->
+	<!-- Spring -->
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
 	</dependency>
+	
+	<dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-orm</artifactId>
+     </dependency>
 	
 	<!-- Spring JDBC connector -->
 	<dependency>
@@ -78,7 +82,7 @@
 	<dependency>
           <groupId>com.excilys.formation.module</groupId>
           <artifactId>ComputerDB-core</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
+          <version>3.1.0-SNAPSHOT</version>
           <exclusions>
               <exclusion>
                   <groupId>joda-time</groupId>

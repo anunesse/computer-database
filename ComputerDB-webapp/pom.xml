@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.excilys.formation.module</groupId>
     <artifactId>ComputerDB</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>ComputerDB-webapp</artifactId>
   <packaging>war</packaging>
@@ -24,16 +24,16 @@
 	</build>
 	
 <dependencies>
-
-	<!-- JODA TIME -->
-	<dependency>
-		<groupId>joda-time</groupId>
-		<artifactId>joda-time</artifactId>
-	</dependency>
 	
 	<dependency>
 		<groupId>joda-time</groupId>
 		<artifactId>joda-time-jsptags</artifactId>
+		<scope>runtime</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time</artifactId>
 	</dependency>
 	
   	<!-- Junit test -->
@@ -60,18 +60,14 @@
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
 	</dependency>
-	
-	<dependency>
-         <groupId>org.hibernate.javax.persistence</groupId>
-         <artifactId>hibernate-jpa-2.0-api</artifactId>
-     </dependency>
 
      <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-orm</artifactId>
      </dependency>
-
-     <dependency>
+     <!-- /Spring MVC including other spring dependencies -->
+	
+	 <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-entitymanager</artifactId>
      </dependency>
@@ -82,23 +78,37 @@
 		<artifactId>spring-jdbc</artifactId>
 	</dependency>
 	
+	<!-- SLJ over jcl and jboss logging -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+	</dependency>
+	
 	<!-- Sister's modules requirements -->
 	<dependency>
           <groupId>com.excilys.formation.module</groupId>
           <artifactId>ComputerDB-core</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
+          <version>3.1.0-SNAPSHOT</version>
      </dependency>
      
      <dependency>
           <groupId>com.excilys.formation.module</groupId>
           <artifactId>ComputerDB-service</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
+          <version>3.1.0-SNAPSHOT</version>
      </dependency>
      
      <dependency>
           <groupId>com.excilys.formation.module</groupId>
           <artifactId>ComputerDB-binding</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
+          <version>3.1.0-SNAPSHOT</version>
      </dependency>
 	
 </dependencies>

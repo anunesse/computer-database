@@ -8,6 +8,6 @@ public interface ILogDAO {
 
 	public abstract List<Log> readAll();
 
-	public abstract boolean create(Log log);
+	public abstract void create(Log log);
 
 }

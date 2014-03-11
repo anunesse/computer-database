@@ -18,7 +18,7 @@ import com.excilys.formation.projet.om.Log;
 		return logDAO.readAll();
 	}
 	
-	public boolean create(Log log) {
-		return logDAO.create(log);
+	public void create(Log log) {
+		logDAO.create(log);
 	}
 }

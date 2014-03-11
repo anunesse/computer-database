@@ -26,8 +26,6 @@ public class LogsController{
 		Page<Log> myPage = new Page<Log>();
 		myPage.results = logService.readAll();
 		request.setAttribute("pageData", myPage);
-		/*request.getRequestDispatcher("WEB-INF/logs.jsp").forward(request,
-				response);*/
 		return "logs";
 	}
 }

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 @Entity
@@ -19,6 +20,7 @@ public class Log {
 	private String operationType;
 	
 	@Column(name="opdate")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime operationDate;
 	
 	@Column(name="description")

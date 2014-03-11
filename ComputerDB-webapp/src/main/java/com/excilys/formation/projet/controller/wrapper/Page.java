@@ -11,7 +11,7 @@ public List<T> results;
     public int pageNumber;
     public int pageSize;
     public int recordsOnThisPage;
-    public int totalNumberOfRecords;
+    public long totalNumberOfRecords;
     public int numberOfPages;
 
     public List<T> getResults() {
@@ -86,13 +86,13 @@ this.recordsOnThisPage = recordsOnThisPage;
 
 
 
-public int getTotalNumberOfRecords() {
+public long getTotalNumberOfRecords() {
 return totalNumberOfRecords;
 }
 
 
 
-public void setTotalNumberOfRecords(int totalNumberOfRecords) {
+public void setTotalNumberOfRecords(long totalNumberOfRecords) {
 this.totalNumberOfRecords = totalNumberOfRecords;
 }
 

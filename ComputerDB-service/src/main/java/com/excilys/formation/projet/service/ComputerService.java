@@ -31,15 +31,15 @@ public class ComputerService {
 	}
 
 	@Transactional(readOnly=true)
-	public int readTotal() {
+	public long readTotal() {
 		//DAOFactory.startTransaction();
-		int i = computerDAO.readTotal();
+		long i = computerDAO.readTotal();
 		//DAOFactory.closeTransaction();
 		return i;
 	}
 	
 	@Transactional(readOnly=true)
-	public int readTotal(String search) {
+	public long readTotal(String search) {
 		return computerDAO.readTotal(search);
 	}
 

@@ -67,7 +67,7 @@ public class DataController{
 		myPage.pageNumber = page;
 
 		String search = "";
-		String sortResult = "c.id";
+		String sortResult = "computer.id";
 		if (request.getParameter("search") == null
 				|| "".equals(request.getParameter("search"))) {
 			search = "";
@@ -87,25 +87,25 @@ public class DataController{
 
 		if (request.getParameter("orderField") == null
 				|| "".equals(request.getParameter("orderField"))) {
-			sortResult = "c.id";
+			sortResult = "computer.id";
 			myPage.resultsOrderedBy = "id";
 		} else {
 			if ("computer".equals(request.getParameter("orderField"))) {
-				sortResult = "c.name";
+				sortResult = "computer.name";
 				myPage.resultsOrderedBy = "computer";
 			} else if ("company".equals(request.getParameter("orderField"))) {
-				sortResult = "b.name";
+				sortResult = "company.name";
 				myPage.resultsOrderedBy = "company";
 			} else if ("introduced".equals(request.getParameter("orderField"))) {
-				sortResult = "c.introduced";
+				sortResult = "computer.introduced";
 				myPage.resultsOrderedBy = "introduced";
 			} else if ("discontinued"
 					.equals(request.getParameter("orderField"))) {
-				sortResult = "c.discontinued";
+				sortResult = "computer.discontinued";
 				myPage.resultsOrderedBy = "discontinued";
 			} else {
-				sortResult = "c.id";
-				myPage.resultsOrderedBy = "id";
+				sortResult = "computer.name";
+				myPage.resultsOrderedBy = "name";
 			}
 		}
 

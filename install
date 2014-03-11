@@ -1,0 +1,19 @@
+[INFO] Scanning for projects...
+[INFO] Reactor build order: 
+[INFO]   Unnamed - com.excilys.formation.module:ComputerDB:pom:3.1.0-SNAPSHOT
+[INFO]   Unnamed - com.excilys.formation.module:ComputerDB-core:jar:3.1.0-SNAPSHOT
+[INFO]   Unnamed - com.excilys.formation.module:ComputerDB-persistence:jar:3.1.0-SNAPSHOT
+[INFO]   Unnamed - com.excilys.formation.module:ComputerDB-service:jar:3.1.0-SNAPSHOT
+[INFO]   Unnamed - com.excilys.formation.module:ComputerDB-binding:jar:3.1.0-SNAPSHOT
+[INFO]   Unnamed - com.excilys.formation.module:ComputerDB-webapp:war:3.1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Invalid task '-': you must specify a valid lifecycle phase, or a goal in the format plugin:goal or pluginGroupId:pluginArtifactId:pluginVersion:goal
+[INFO] ------------------------------------------------------------------------
+[INFO] For more information, run Maven with the -e switch
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: < 1 second
+[INFO] Finished at: Tue Mar 11 09:50:11 CET 2014
+[INFO] Final Memory: 2M/78M
+[INFO] ------------------------------------------------------------------------

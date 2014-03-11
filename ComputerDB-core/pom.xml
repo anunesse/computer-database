@@ -33,6 +33,11 @@
 			<artifactId>joda-time-hibernate</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+		</dependency>
 	
 		<!-- Hibernate Validator -->
 		<dependency>

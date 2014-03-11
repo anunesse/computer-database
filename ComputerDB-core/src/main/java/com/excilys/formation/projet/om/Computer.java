@@ -23,11 +23,11 @@ public class Computer {
 	private String name;
 	
 	@Column(name="introduced")
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime introduced;
 	
 	@Column(name="discontinued")
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime discontinued;
 	
 	@JoinColumn(name="company_id")

@@ -36,7 +36,17 @@ public class ComputerDAO implements IComputerDAO {
 	 * Return COUNT(*)
 	 */
 	public Long readTotal() {
-		return ((Long)entityManager.createQuery("SELECT COUNT(computer) FROM Computer as computer LEFT JOIN computer.company company").getSingleResult());
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		//SELECT COUNT(*) as long
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		//FROM Computer
+		Root<Computer> computer = cq.from(Computer.class);
+		//SELECT COUNT(*)
+		cq.select(cb.count(computer));
+		//LEFT JOIN
+		Join<Computer, Company> company = computer.join("company", JoinType.LEFT);
+		Query query = entityManager.createQuery(cq);
+		return ((Long) query.getSingleResult()).longValue();
 	}
 
 	/**
@@ -68,20 +78,11 @@ public class ComputerDAO implements IComputerDAO {
 	 * @param search
 	 * @return
 	 */
-	public List<Computer> read(int limit, int offset, String type, String field, String search) {
-//		String order = "ORDER BY "+type+" "+field;
-//		return entityManager.createQuery("SELECT computer FROM Computer as computer LEFT JOIN computer.company company WITH company.name LIKE :search WHERE computer.name LIKE :search " + order)
-//				.setParameter("search", "%" + search + "%")
-//				.setFirstResult(offset)
-//				.setMaxResults(limit)
-//				.getResultList();
-		
+	public List<Computer> read(int limit, int offset, String type, String field, String search) {		
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
 		CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
 		Root<Computer> computer = cq.from(Computer.class);
-		
-//		cq.select(cb.count(computer));
 		
 		Join<Computer, Company> company = computer.join("company", JoinType.LEFT);
 		
@@ -141,21 +142,15 @@ public class ComputerDAO implements IComputerDAO {
 	public List<Computer> readAll() {
 		//return ((List<Computer>)entityManager.createQuery("SELECT computer FROM Computer as computer LEFT JOIN computer.company company").getResultList());
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		
 		//Creating SELECT Computer
-		CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
-		
+		CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);	
 		//Creating Root = FROM
-		Root<Computer> computer = cq.from(Computer.class);
-		
+		Root<Computer> computer = cq.from(Computer.class);	
 		//Creating LEFT JOIN
 		Join<Computer, Company> company = computer.join("company", JoinType.LEFT);
-		
 		//Creating ORDER BY
 		cq.orderBy(cb.asc(computer.get("name")));
-		
 		Query query = entityManager.createQuery(cq);
-
 		return (List<Computer>)query.getResultList();
 	}
 
@@ -164,19 +159,13 @@ public class ComputerDAO implements IComputerDAO {
 	 */
 	public long readTotal(String search) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<Computer> computer = cq.from(Computer.class);
 		cq.select(cb.count(computer));
-		
 		Join<Computer, Company> company = computer.join("company", JoinType.LEFT);
-		
 		search = new StringBuilder("%").append(search).append("%").toString();
-		
 		cq.where(cb.or(cb.like(computer.get("name").as(String.class), search), cb.like(company.get("name").as(String.class), search)));
-		
-		Query query = entityManager.createQuery(cq);
-		
+		Query query = entityManager.createQuery(cq);	
 		return ((Long)query.getSingleResult()).intValue();
 	}
 

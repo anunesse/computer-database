@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.IComputerDAO;
+import com.excilys.formation.projet.dao.Ordered;
 import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.om.QComputer;
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -74,6 +75,8 @@ public class ComputerDAO implements IComputerDAO {
 
 		search = new StringBuilder("%").append(search).append("%").toString();
 		query = query.where(computer.name.like(search).or(computer.company.name.like(search)));
+		Ordered myOrder = new Ordered(type, field);
+		query = query.orderBy(myOrder.getMySpecifier());
 		query = query.limit(limit);
 		query = query.offset(offset);
 		return query.list(computer);

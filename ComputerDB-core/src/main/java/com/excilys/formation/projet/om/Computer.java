@@ -74,6 +74,11 @@ public class Computer {
 	public Computer build(){
 		return this;
 	}
+	
+	public Computer(long id) {
+		super();
+		this.id = id;
+	}
 
 	public Computer(String name, DateTime Introduced,
 			DateTime Discontinued, Company company) {

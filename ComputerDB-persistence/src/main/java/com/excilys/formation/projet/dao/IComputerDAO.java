@@ -6,7 +6,7 @@ import com.excilys.formation.projet.om.Computer;
 
 public interface IComputerDAO {
 
-	public abstract Long readTotal();
+	public abstract long readTotal();
 
 	public abstract long readTotal(String search);
 

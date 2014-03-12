@@ -2,124 +2,113 @@ package com.excilys.formation.projet.dao.impl;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
-import org.joda.time.DateTime;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.projet.dao.IComputerDAO;
 import com.excilys.formation.projet.om.Computer;
-import com.excilys.formation.projet.om.Log;
+import com.excilys.formation.projet.om.QComputer;
+import com.mysema.query.jpa.impl.JPAQuery;
+
 
 @Repository
 public class ComputerDAO implements IComputerDAO {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerDAO.class);
-	
-	@Autowired
-	private SessionFactory sessionFactory;
-	
+
+
+	//JPA Hibernate : https://docs.jboss.org/hibernate/entitymanager/3.6/reference/en/html/configuration.html
+	@PersistenceContext(unitName="entityManagerFactory")
+	private EntityManager entityManager;
+
 	public ComputerDAO() {
-		super();
+	super();
 	}
 
 	/**
-	 * Read single computer on ID
-	 */
+	* Return COUNT(*)
+	*/
+	public long readTotal() {
+		JPAQuery query = new JPAQuery(entityManager);
+		QComputer computer = QComputer.computer;
+		return query.from(computer).leftJoin(computer.company).count();
+	}
+
+	/**
+	* Read single computer on ID
+	*/
 	public Computer read(long id) {
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		Computer computer = (Computer)session.get(Computer.class, id);
-		session.getTransaction().commit();
+		Computer computer = entityManager.find(Computer.class, id);
+		LOG.info("Reading computer with id : " + id);
 		return computer;
 	}
 
 
 	/**
-	 * delete Computer on ID
-	 */
+	* delete Computer on ID
+	*/
 	public void delete(long id) {
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		Computer computer = (Computer)session.get(Computer.class, id);
-		session.delete(computer);
-		session.save(new Log("DELETE",new DateTime(), "Deleting a computer from DB : "+id));
-		LOG.debug("Deleting a computer from DB : "+id);
-		session.getTransaction().commit();
+		Computer computer = entityManager.find(Computer.class, id);
+		entityManager.remove(computer);
+		LOG.info("Deleting computer from database.");
 	}
 
-	
 	/**
-	 * Retrieves number of results for research
-	 */
-	public long readTotal(String search) {
-		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Computer.class)
-				.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN)
-				.add(Restrictions.like("name", "%"+search+"%"))
-				.add(Restrictions.like("company.name", "%"+search+"%"))
-				.list().size();
-	}
-	/**
-	 * Default read function.
-	 * 
-	 * @param limit
-	 * @param offset
-	 * @param type
-	 * @param field
-	 * @param search
-	 * @return
-	 */
+	* Default read function.
+	*
+	* @param limit
+	* @param offset
+	* @param type
+	* @param field
+	* @param search
+	* @return
+	*/
 	public List<Computer> read(int limit, int offset, String type, String field, String search) {	
-		Session session = sessionFactory.getCurrentSession();
-		List<Computer> computers = session.createCriteria(Computer.class)
-					.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN)
-					.add(Restrictions.or(Restrictions.like("name", "%"+search+"%"), Restrictions.like("company.name", "%"+search+"%")))
-					.setMaxResults(limit)
-					.setFirstResult(offset).list();
-		return computers;
+		JPAQuery query = new JPAQuery(entityManager);
+		
+		QComputer computer = QComputer.computer;
+		query = query.from(computer).leftJoin(computer.company);
+
+		search = new StringBuilder("%").append(search).append("%").toString();
+		query = query.where(computer.name.like(search).or(computer.company.name.like(search)));
+		query = query.limit(limit);
+		query = query.offset(offset);
+		return query.list(computer);
 	}
 
 	/**
-	 * Return COUNT(*)
-	 */
-	public long readTotal() {
-		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Computer.class).createAlias("company", "company", JoinType.LEFT_OUTER_JOIN).list().size();
-	}
-	
-	/**
-	 * Default read function, used to retrieve all data
-	 */
-	@SuppressWarnings("unchecked")
+	* Default read function, used to retrieve all data
+	*/
 	public List<Computer> readAll() {
-		Session session = sessionFactory.getCurrentSession();
-		return (List<Computer>)session.createCriteria(Computer.class).createAlias("company", "company", JoinType.LEFT_OUTER_JOIN).list();
+		JPAQuery query = new JPAQuery(entityManager);
+		QComputer computer = QComputer.computer;
+		return query.from(computer).leftJoin(computer.company).list(computer);
+	}
+
+	/**
+	* Retrieves number of results for research
+	*/
+	public long readTotal(String search) {
+		JPAQuery query = new JPAQuery(entityManager);
+		QComputer computer = QComputer.computer;
+		search = new StringBuilder("%").append(search).append("%").toString();
+		return query.from(computer).leftJoin(computer.company).where(computer.name.like(search).or(computer.company.name.like(search))).count();
 	}
 
 	public long create(Computer myComp) {
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		session.save(myComp);
-		session.save(new Log("CREATE",new DateTime(), "Computer created on database id : "+myComp.getId()));
-		LOG.debug("Creating a computer in DB : "+myComp.getId());
-		session.getTransaction().commit();
+		entityManager.persist(myComp);
+		LOG.debug("Persisting a computer in DB : "+myComp.getId());
 		return myComp.getId();
 	}
-	
+
 	/**
-	 * Default editor.
-	 */
+	* Default editor.
+	*/
 	public void update(Computer myComp) {
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		session.update(myComp);
-		session.save(new Log("UPDATE",new DateTime(), "Computer updated in database id : "+myComp.getId()));
-		LOG.debug("Updating a computer in DB : "+myComp.getId());
-		session.getTransaction().commit();
+		entityManager.merge(myComp);
+		LOG.debug("Editing a computer in DB : "+myComp.getId());
 	}
 }

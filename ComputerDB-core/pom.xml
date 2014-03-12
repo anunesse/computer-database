@@ -19,10 +19,37 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<plugin>
+		      <groupId>com.mysema.maven</groupId>
+		      <artifactId>apt-maven-plugin</artifactId>
+		      <version>1.0.9</version>
+		      <executions>
+		        <execution>
+		          <goals>
+		            <goal>process</goal>
+		          </goals>
+		          <configuration>
+		            <outputDirectory>target/generated-sources/java</outputDirectory>
+		            <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+		          </configuration>
+		        </execution>
+		      </executions>
+		    </plugin>
 		</plugins>
 	</build>
 	
 	<dependencies>
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<scope>provided</scope>
+		</dependency>    
+		    
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+	
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>

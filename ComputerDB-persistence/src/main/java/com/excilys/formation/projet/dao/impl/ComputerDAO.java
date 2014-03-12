@@ -49,7 +49,7 @@ public class ComputerDAO implements IComputerDAO {
 
 
 	/**
-	* delete Computer on ID
+	* Delete Computer on ID
 	*/
 	public void delete(long id) {
 		Computer computer = entityManager.find(Computer.class, id);
@@ -72,10 +72,12 @@ public class ComputerDAO implements IComputerDAO {
 		
 		QComputer computer = QComputer.computer;
 		query = query.from(computer).leftJoin(computer.company);
-
-		search = new StringBuilder("%").append(search).append("%").toString();
-		query = query.where(computer.name.like(search).or(computer.company.name.like(search)));
-		Ordered myOrder = new Ordered(type, field);
+		if(!"".equals(search)){
+			search = new StringBuilder("%").append(search).append("%").toString();
+			query = query.where(computer.name.like(search).or(computer.company.name.like(search)));
+		}
+		Ordered myOrder = new Ordered(field, type);
+		LOG.error("_______________________________________________________"+type+"/"+field);
 		query = query.orderBy(myOrder.getMySpecifier());
 		query = query.limit(limit);
 		query = query.offset(offset);
@@ -97,8 +99,12 @@ public class ComputerDAO implements IComputerDAO {
 	public long readTotal(String search) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QComputer computer = QComputer.computer;
-		search = new StringBuilder("%").append(search).append("%").toString();
-		return query.from(computer).leftJoin(computer.company).where(computer.name.like(search).or(computer.company.name.like(search))).count();
+		query = query.from(computer).leftJoin(computer.company);
+		if(!"".equals(search)){
+			search = new StringBuilder("%").append(search).append("%").toString();
+			query = query.where(computer.name.like(search).or(computer.company.name.like(search)));
+		}
+		return query.count();
 	}
 
 	public long create(Computer myComp) {

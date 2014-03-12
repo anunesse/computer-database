@@ -32,7 +32,6 @@ public class DataController{
 	public String displayComputer(HttpServletRequest request){
 		
 		Page<Computer> myPage = new Page<Computer>();
-		//request.addAllAttributes()
 		
 		if (request.getParameterMap().isEmpty()) {
 			myPage.results = computerService.readAll();

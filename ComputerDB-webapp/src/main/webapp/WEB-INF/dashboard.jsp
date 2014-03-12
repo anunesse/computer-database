@@ -136,12 +136,8 @@
 				<c:forEach var="comp" items="${pageData.results}">
 					<tr>
 						<td><a href="GetComputer?computer=${comp.id}">${comp.name }</a></td>
-						<td>
-							<joda:format value="${comp.introduced}" style="M-"/>
-						</td>
-						<td>
-							<joda:format value="${comp.discontinued}" style="M-"/>
-						</td>
+						<td><joda:format value="${comp.introduced}" style="M-"/></td>
+						<td><joda:format value="${comp.discontinued}" style="M-"/></td>
 						<td>${comp.company.name }</td>
 					</tr>
 				</c:forEach>

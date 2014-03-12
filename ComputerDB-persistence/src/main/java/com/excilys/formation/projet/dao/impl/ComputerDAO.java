@@ -78,29 +78,85 @@ public class ComputerDAO implements IComputerDAO {
 		
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
-		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
 		Root<Computer> computer = cq.from(Computer.class);
-		cq.select(cb.count(computer));
+		
+//		cq.select(cb.count(computer));
 		
 		Join<Computer, Company> company = computer.join("company", JoinType.LEFT);
-		String order = new StringBuilder("%").append("ORDER BY ").append(type).append(" ").append(field).toString();
+		
 		search = new StringBuilder("%").append(search).append("%").toString();
 		cq.where(cb.or(cb.like(computer.get("name").as(String.class), search), cb.like(company.get("name").as(String.class), search)));
 		
-//		if("asc".equals(field))
-//			cq.orderBy(cb.asc(c.get("currency")));
+		if("DESC".equals(field)){
+			if("computer.id".equals(field)){
+				cq.orderBy(cb.desc(computer.get("id")));
+			}
+			else if("computer.name".equals(field)){
+				cq.orderBy(cb.desc(computer.get("name")));
+			}
+			else if("computer.introduced".equals(field)){
+				cq.orderBy(cb.desc(computer.get("introduced")));
+			}
+			else if("computer.discontinued".equals(field)){
+				cq.orderBy(cb.desc(computer.get("introduced")));
+			}
+			else if("company.name".equals(field)){
+				cq.orderBy(cb.desc(company.get("name")));
+			}
+			else{
+				cq.orderBy(cb.desc(computer.get("name")));
+			}
+		}
+		else{//ASC
+			if("computer.id".equals(field)){
+				cq.orderBy(cb.asc(computer.get("id")));
+			}
+			else if("computer.name".equals(field)){
+				cq.orderBy(cb.asc(computer.get("name")));
+			}
+			else if("computer.introduced".equals(field)){
+				cq.orderBy(cb.asc(computer.get("introduced")));
+			}
+			else if("computer.discontinued".equals(field)){
+				cq.orderBy(cb.asc(computer.get("introduced")));
+			}
+			else if("company.name".equals(field)){
+				cq.orderBy(cb.asc(company.get("name")));
+			}
+			else{
+				cq.orderBy(cb.asc(computer.get("name")));
+			}
+		}
 		
 		Query query = entityManager.createQuery(cq);
-		
-		//Predicate namePredicate = cb.like(computer.get("name"), searchParamExp);
-		return null;
+		query.setMaxResults(limit);
+		query.setFirstResult(offset);
+		return (List<Computer>)query.getResultList();
 	}
 
 	/**
 	 * Default read function, used to retrieve all data
 	 */
 	public List<Computer> readAll() {
-		return ((List<Computer>)entityManager.createQuery("SELECT computer FROM Computer as computer LEFT JOIN computer.company company").getResultList());
+		//return ((List<Computer>)entityManager.createQuery("SELECT computer FROM Computer as computer LEFT JOIN computer.company company").getResultList());
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		
+		//Creating SELECT Computer
+		CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
+		
+		//Creating Root = FROM
+		Root<Computer> computer = cq.from(Computer.class);
+		
+		//Creating LEFT JOIN
+		Join<Computer, Company> company = computer.join("company", JoinType.LEFT);
+		
+		//Creating ORDER BY
+		cq.orderBy(cb.asc(computer.get("name")));
+		
+		Query query = entityManager.createQuery(cq);
+
+		return (List<Computer>)query.getResultList();
 	}
 
 	/**
@@ -108,18 +164,19 @@ public class ComputerDAO implements IComputerDAO {
 	 */
 	public long readTotal(String search) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
+		
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<Computer> computer = cq.from(Computer.class);
 		cq.select(cb.count(computer));
-
+		
 		Join<Computer, Company> company = computer.join("company", JoinType.LEFT);
-
+		
 		search = new StringBuilder("%").append(search).append("%").toString();
+		
 		cq.where(cb.or(cb.like(computer.get("name").as(String.class), search), cb.like(company.get("name").as(String.class), search)));
-
+		
 		Query query = entityManager.createQuery(cq);
-
+		
 		return ((Long)query.getSingleResult()).intValue();
 	}
 

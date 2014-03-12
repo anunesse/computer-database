@@ -99,8 +99,7 @@ public class DataController{
 			} else if ("introduced".equals(request.getParameter("orderField"))) {
 				sortResult = "computer.introduced";
 				myPage.resultsOrderedBy = "introduced";
-			} else if ("discontinued"
-					.equals(request.getParameter("orderField"))) {
+			} else if ("discontinued".equals(request.getParameter("orderField"))) {
 				sortResult = "computer.discontinued";
 				myPage.resultsOrderedBy = "discontinued";
 			} else {

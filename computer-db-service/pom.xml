@@ -2,14 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.excilys.formation.module</groupId>
-    <artifactId>ComputerDB</artifactId>
+    <artifactId>computer-db</artifactId>
     <version>3.1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>ComputerDB-webapp</artifactId>
-  <packaging>war</packaging>
+  <artifactId>computer-db-service</artifactId>
+  <packaging>jar</packaging>
   
   <build>
-	<finalName>ComputerDB-service</finalName>
+	<finalName>computer-db-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -27,21 +27,29 @@
 	
 	<dependency>
 		<groupId>joda-time</groupId>
-		<artifactId>joda-time-jsptags</artifactId>
-		<scope>runtime</scope>
-	</dependency>
-	
-	<dependency>
-		<groupId>joda-time</groupId>
 		<artifactId>joda-time</artifactId>
 	</dependency>
-	
+
   	<!-- Junit test -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    
+    <!-- ConnectionPool BoneCP -->
+    <dependency>
+		<groupId>com.jolbox</groupId>
+		<artifactId>bonecp</artifactId>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- Mysql connector -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<scope>runtime</scope>
+	</dependency>
 	
 	<!-- Logback core -->
 	<dependency>
@@ -60,16 +68,9 @@
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
 	</dependency>
-
-     <dependency>
+	<dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-orm</artifactId>
-     </dependency>
-     <!-- /Spring MVC including other spring dependencies -->
-	
-	 <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-entitymanager</artifactId>
      </dependency>
 	
 	<!-- Spring JDBC connector -->
@@ -78,39 +79,53 @@
 		<artifactId>spring-jdbc</artifactId>
 	</dependency>
 	
-	<!-- SLJ over jcl and jboss logging -->
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>jcl-over-slf4j</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-log4j12</artifactId>
-	</dependency>
-	
-	<!-- Sister's modules requirements -->
 	<dependency>
           <groupId>com.excilys.formation.module</groupId>
-          <artifactId>ComputerDB-core</artifactId>
+          <artifactId>computer-db-core</artifactId>
           <version>3.1.0-SNAPSHOT</version>
+          <exclusions>
+              <exclusion>
+              		<groupId>junit</groupId>
+      				<artifactId>junit</artifactId>
+              </exclusion>
+              <exclusion>
+              		<groupId>com.jolbox</groupId>
+					<artifactId>bonecp</artifactId>
+              </exclusion>
+              <exclusion>
+              		<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+              </exclusion>
+              <exclusion>
+              		<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-core</artifactId>
+              </exclusion>
+              <exclusion>
+              		<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+              </exclusion>
+              <exclusion>
+              		<groupId>org.springframework</groupId>
+					<artifactId>spring-webmvc</artifactId>
+              </exclusion>
+              <exclusion>
+			         <groupId>org.springframework</groupId>
+			         <artifactId>spring-context</artifactId>
+              </exclusion>
+              <exclusion>
+              		<groupId>org.springframework</groupId>
+					<artifactId>spring-jdbc</artifactId>
+              </exclusion>
+          </exclusions>
      </dependency>
      
      <dependency>
           <groupId>com.excilys.formation.module</groupId>
-          <artifactId>ComputerDB-service</artifactId>
+          <artifactId>computer-db-persistence</artifactId>
           <version>3.1.0-SNAPSHOT</version>
-     </dependency>
-     
-     <dependency>
-          <groupId>com.excilys.formation.module</groupId>
-          <artifactId>ComputerDB-binding</artifactId>
-          <version>3.1.0-SNAPSHOT</version>
+          <exclusions>
+          </exclusions>
      </dependency>
 	
 </dependencies>
-  
 </project>

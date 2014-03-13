@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.excilys.formation.module</groupId>
-    <artifactId>ComputerDB</artifactId>
+    <artifactId>computer-db</artifactId>
     <version>3.1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>ComputerDB-core</artifactId>
+  <artifactId>computer-db-core</artifactId>
 
 	<build>
-	<finalName>ComputerDB-core</finalName>
+	<finalName>computer-db-core</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

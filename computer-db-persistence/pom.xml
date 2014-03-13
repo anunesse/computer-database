@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.excilys.formation.module</groupId>
+    <artifactId>computer-db</artifactId>
+    <version>3.1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>computer-db-persistence</artifactId>
+  
+	<build>
+	<finalName>computer-db-persistence</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+<dependencies>
+	
+	<!-- QueryDSL -->
+	<dependency>
+		<groupId>com.mysema.querydsl</groupId>
+		<artifactId>querydsl-apt</artifactId>
+		<scope>provided</scope>
+	</dependency>    
+	    
+	<dependency>
+		<groupId>com.mysema.querydsl</groupId>
+		<artifactId>querydsl-jpa</artifactId>
+	</dependency>
+	
+	<dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+    </dependency>
+
+	<dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time</artifactId>
+	</dependency>
+	
+  	<!-- Junit test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- ConnectionPool BoneCP -->
+    <dependency>
+		<groupId>com.jolbox</groupId>
+		<artifactId>bonecp</artifactId>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- Mysql connector -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<scope>runtime</scope>
+	</dependency>
+	
+	<!-- Logback core -->
+	<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-core</artifactId>
+	</dependency>
+	
+	<!-- Logback classic -->
+	<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-classic</artifactId>
+	</dependency>
+	
+	<!-- Spring -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+	</dependency>
+	
+	<dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-orm</artifactId>
+     </dependency>
+	
+	<!-- Spring JDBC connector -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+	</dependency>
+	
+	<dependency>
+          <groupId>com.excilys.formation.module</groupId>
+          <artifactId>computer-db-core</artifactId>
+          <version>3.1.0-SNAPSHOT</version>
+          <exclusions>
+              <exclusion>
+                  <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+              </exclusion>
+          </exclusions>
+     </dependency>
+	
+</dependencies>
+  
+</project>

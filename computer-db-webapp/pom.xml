@@ -2,13 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.excilys.formation.module</groupId>
-    <artifactId>ComputerDB</artifactId>
+    <artifactId>computer-db</artifactId>
     <version>3.1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>ComputerDB-persistence</artifactId>
+  <artifactId>computer-db-webapp</artifactId>
+  <packaging>war</packaging>
   
-	<build>
-	<finalName>ComputerDB-persistence</finalName>
+  <build>
+	<finalName>computer-db-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -24,23 +25,12 @@
 	
 <dependencies>
 	
-	<!-- QueryDSL -->
 	<dependency>
-		<groupId>com.mysema.querydsl</groupId>
-		<artifactId>querydsl-apt</artifactId>
-		<scope>provided</scope>
-	</dependency>    
-	    
-	<dependency>
-		<groupId>com.mysema.querydsl</groupId>
-		<artifactId>querydsl-jpa</artifactId>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time-jsptags</artifactId>
+		<scope>runtime</scope>
 	</dependency>
 	
-	<dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-
 	<dependency>
 		<groupId>joda-time</groupId>
 		<artifactId>joda-time</artifactId>
@@ -52,20 +42,6 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-    
-    <!-- ConnectionPool BoneCP -->
-    <dependency>
-		<groupId>com.jolbox</groupId>
-		<artifactId>bonecp</artifactId>
-		<scope>compile</scope>
-	</dependency>
-	
-	<!-- Mysql connector -->
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<scope>runtime</scope>
-	</dependency>
 	
 	<!-- Logback core -->
 	<dependency>
@@ -79,15 +55,21 @@
 		<artifactId>logback-classic</artifactId>
 	</dependency>
 	
-	<!-- Spring -->
+	<!-- Spring MVC including other spring dependencies -->
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
 	</dependency>
-	
-	<dependency>
+
+     <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-orm</artifactId>
+     </dependency>
+     <!-- /Spring MVC including other spring dependencies -->
+	
+	 <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-entitymanager</artifactId>
      </dependency>
 	
 	<!-- Spring JDBC connector -->
@@ -96,16 +78,37 @@
 		<artifactId>spring-jdbc</artifactId>
 	</dependency>
 	
+	<!-- SLJ over jcl and jboss logging -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+	</dependency>
+	
+	<!-- Sister's modules requirements -->
 	<dependency>
           <groupId>com.excilys.formation.module</groupId>
-          <artifactId>ComputerDB-core</artifactId>
+          <artifactId>computer-db-core</artifactId>
           <version>3.1.0-SNAPSHOT</version>
-          <exclusions>
-              <exclusion>
-                  <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-              </exclusion>
-          </exclusions>
+     </dependency>
+     
+     <dependency>
+          <groupId>com.excilys.formation.module</groupId>
+          <artifactId>computer-db-service</artifactId>
+          <version>3.1.0-SNAPSHOT</version>
+     </dependency>
+     
+     <dependency>
+          <groupId>com.excilys.formation.module</groupId>
+          <artifactId>computer-db-binding</artifactId>
+          <version>3.1.0-SNAPSHOT</version>
      </dependency>
 	
 </dependencies>

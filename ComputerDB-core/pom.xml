@@ -19,26 +19,28 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<!-- Use Maven to process QueryDSl Classes -->
 			<plugin>
-		      <groupId>com.mysema.maven</groupId>
-		      <artifactId>apt-maven-plugin</artifactId>
-		      <version>1.0.9</version>
-		      <executions>
-		        <execution>
-		          <goals>
-		            <goal>process</goal>
-		          </goals>
-		          <configuration>
-		            <outputDirectory>target/generated-sources/java</outputDirectory>
-		            <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
-		          </configuration>
-		        </execution>
-		      </executions>
-		    </plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.0.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencies>
+		<!--  QueryDSL dependencies -->
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
@@ -49,7 +51,8 @@
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
-	
+		
+		<!-- Joda Time dependencies -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -61,12 +64,13 @@
 			<scope>runtime</scope>
 		</dependency>
 		
+		<!-- Jadira dependencies for DateTime persistence -->
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.core</artifactId>
 		</dependency>
 	
-		<!-- Hibernate Validator -->
+		<!-- Hibernate & Spring -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>

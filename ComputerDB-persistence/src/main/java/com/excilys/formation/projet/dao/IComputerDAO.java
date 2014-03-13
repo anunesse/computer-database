@@ -6,8 +6,6 @@ import com.excilys.formation.projet.om.Computer;
 
 public interface IComputerDAO {
 
-	public abstract long readTotal();
-
 	public abstract long readTotal(String search);
 
 	public abstract Computer read(long id);
@@ -16,8 +14,6 @@ public interface IComputerDAO {
 
 	public abstract List<Computer> read(int min, int max, String type,
 			String field, String search);
-
-	public abstract List<Computer> readAll();
 
 	public abstract long create(Computer myComp);
 

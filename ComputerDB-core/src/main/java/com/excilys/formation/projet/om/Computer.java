@@ -71,10 +71,6 @@ public class Computer {
 		super();
 	}
 	
-	public Computer build(){
-		return this;
-	}
-	
 	public Computer(long id) {
 		super();
 		this.id = id;
@@ -92,7 +88,6 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		//this.company_id = company_id;
 	}
 	public Computer(long id, String name, DateTime introduced, DateTime discontinued) {
 		super();

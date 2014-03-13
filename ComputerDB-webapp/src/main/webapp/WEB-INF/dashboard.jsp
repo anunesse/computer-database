@@ -36,7 +36,7 @@
 			</c:otherwise>
 		</c:choose>
 			<label for="search"><spring:message code="label.search"/></label>
-			<input type="search" id="search" name="search" value="${search }">
+			<input type="search" id="search" name="search" value="${pageData.search }">
 			<button type="submit" class="btn btn-primary"><spring:message code="label.buttonsearch"/></button>
 		</form>
 	</div>
@@ -44,7 +44,7 @@
 	<c:if test="${not empty pageData.pageNumber && pageData.recordsOnThisPage>0}">
 		<at:Pagination orderDirection="${pageData.orderDirection}"
 			elementsByPage="${pageData.recordsOnThisPage}"
-			search="${search }" page="${pageData.pageNumber }"
+			search="${pageData.search }" page="${pageData.pageNumber }"
 			orderField="${pageData.resultsOrderedBy}"
 			numberOfPages="${pageData.numberOfPages}"></at:Pagination>
 	</c:if>
@@ -54,73 +54,73 @@
 				<tr>
 					<th class="col-sm-1">
 						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'computer' }">
+							<c:when test="${pageData.resultsOrderedBy == 'computer.name' }">
 									<c:if test="${pageData.orderDirection == 'DESC' }">
-										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-											field="computer" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.computer"/></at:Link>
+										<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.name" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.computer"/></at:Link>
 									</c:if>
 									<c:if test="${pageData.orderDirection == 'ASC' }">
-										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
-											field="computer" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.computer"/></at:Link>
+										<at:Link order="DESC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.name" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.computer"/></at:Link>
 									</c:if>
 							</c:when>
 							<c:otherwise>
-								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-										field="computer" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.computer"/></at:Link>
+								<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+										field="computer.name" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.computer"/></at:Link>
 							</c:otherwise>
 						</c:choose>
 					</th>
 					<th class="col-sm-1">
 						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'introduced' }">
+							<c:when test="${pageData.resultsOrderedBy == 'computer.introduced' }">
 									<c:if test="${pageData.orderDirection == 'DESC' }">
-										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-											field="introduced" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.introduced"/></at:Link>
+										<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.introduced" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.introduced"/></at:Link>
 									</c:if>
 									<c:if test="${pageData.orderDirection == 'ASC' }">
-										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
-											field="introduced" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.introduced"/></at:Link>
+										<at:Link order="DESC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.introduced" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.introduced"/></at:Link>
 									</c:if>
 							</c:when>
 							<c:otherwise>
-								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-										field="introduced" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.introduced"/></at:Link>
+								<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+										field="computer.introduced" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.introduced"/></at:Link>
 							</c:otherwise>
 						</c:choose>
 					</th>
 					<th class="col-sm-1">
 						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'discontinued' }">
+							<c:when test="${pageData.resultsOrderedBy == 'computer.discontinued' }">
 									<c:if test="${pageData.orderDirection == 'DESC' }">
-										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-											field="discontinued" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.discontinued"/></at:Link>
+										<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.discontinued" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.discontinued"/></at:Link>
 									</c:if>
 									<c:if test="${pageData.orderDirection == 'ASC' }">
-										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
-											field="discontinued" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.discontinued"/></at:Link>
+										<at:Link order="DESC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.discontinued" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.discontinued"/></at:Link>
 									</c:if>
 							</c:when>
 							<c:otherwise>
-								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-										field="discontinued" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.discontinued"/></at:Link>
+								<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+										field="computer.discontinued" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.discontinued"/></at:Link>
 							</c:otherwise>
 						</c:choose>
 					</th>
 					<th class="col-sm-1">
 						<c:choose>
-							<c:when test="${pageData.resultsOrderedBy == 'company' }">
+							<c:when test="${pageData.resultsOrderedBy == 'computer.company.name' }">
 									<c:if test="${pageData.orderDirection == 'DESC' }">
-										<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-											field="company" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.company"/></at:Link>
+										<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.company.name" display="${pageData.recordsOnThisPage}" ><spring:message code="label.table.header.company"/></at:Link>
 									</c:if>
 									<c:if test="${pageData.orderDirection == 'ASC' }">
-										<at:Link order="DESC" search="${search}" page="${pageData.pageNumber}"
-											field="company" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.company"/></at:Link>
+										<at:Link order="DESC" search="${pageData.search}" page="${pageData.pageNumber}"
+											field="computer.company.name" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.company"/></at:Link>
 									</c:if>
 							</c:when>
 							<c:otherwise>
-								<at:Link order="ASC" search="${search}" page="${pageData.pageNumber}"
-										field="company" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.company"/></at:Link>
+								<at:Link order="ASC" search="${pageData.search}" page="${pageData.pageNumber}"
+										field="computer.company.name" display="${pageData.recordsOnThisPage}"><spring:message code="label.table.header.company"/></at:Link>
 							</c:otherwise>
 						</c:choose>
 					</th>

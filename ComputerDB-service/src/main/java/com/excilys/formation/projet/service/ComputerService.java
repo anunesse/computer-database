@@ -29,14 +29,6 @@ public class ComputerService {
 	public ComputerService(){
 		super();
 	}
-
-	@Transactional(readOnly=true)
-	public long readTotal() {
-		//DAOFactory.startTransaction();
-		long i = computerDAO.readTotal();
-		//DAOFactory.closeTransaction();
-		return i;
-	}
 	
 	@Transactional(readOnly=true)
 	public long readTotal(String search) {
@@ -62,12 +54,6 @@ public class ComputerService {
 	public List<Computer> read(int min, int max, String type, String field,
 			String search) {
 		List<Computer> lc = computerDAO.read(min, max, type, field, search);
-		return lc;
-	}
-
-	@Transactional(readOnly=true)
-	public List<Computer> readAll() {
-		List<Computer> lc = computerDAO.readAll();
 		return lc;
 	}
 

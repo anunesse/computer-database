@@ -70,8 +70,8 @@ public class ComputerController{
 	protected String delComputer(Model model, HttpServletRequest request){
 		computerService.delete(Long.parseLong(request.getParameter("computer_id")));
 		Page<Computer> myPage = new Page<Computer>();
-		myPage.results = computerService.readAll();
-		myPage.totalNumberOfRecords = computerService.readTotal();
+		myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
+		myPage.totalNumberOfRecords = computerService.readTotal("");
 		model.addAttribute("pageData", myPage);
 		return "dashboard";
 	}
@@ -90,7 +90,6 @@ public class ComputerController{
 		
 		if(result.hasErrors()){
 			LOG.info("Invalid computer not added.");
-			//model.addAttribute("computer", Converter.fromDTO(computerDTO));
 			return "addComputer";
 		}
 		
@@ -101,8 +100,8 @@ public class ComputerController{
 		if (computerService.create(myComputer) > 0) {
 			LOG.info("Computer added.");
 			Page<Computer> myPage = new Page<Computer>();
-			myPage.results = computerService.readAll();
-			myPage.totalNumberOfRecords = computerService.readTotal();
+			myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
+			myPage.totalNumberOfRecords = computerService.readTotal("");
 			model.addAttribute("pageData", myPage);
 			return "dashboard";
 		} else {
@@ -132,8 +131,8 @@ public class ComputerController{
 		computerService.update(myComputer);
 		LOG.info("Computer successfully edited.");
 		Page<Computer> myPage = new Page<Computer>();
-		myPage.results = computerService.readAll();
-		myPage.totalNumberOfRecords = computerService.readTotal();
+		myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
+		myPage.totalNumberOfRecords = computerService.readTotal("");
 		
 		redirectAttributes.addFlashAttribute("pageData", myPage);	
 		return "dashboard";

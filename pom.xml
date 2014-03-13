@@ -30,6 +30,7 @@
 	<joda-time.version>2.3</joda-time.version>
 	<joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
 	<jadira.version>3.0.0.CR1</jadira.version>
+	<joda-time-hibernate.version>1.3</joda-time-hibernate.version>
 	
 	<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
 	<hibernate.version>4.3.4.Final</hibernate.version>
@@ -52,24 +53,28 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
+            <scope>compile</scope>
         </dependency>
 
 		<!-- Hibernate entitymanager  -->
@@ -91,6 +96,7 @@
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 			<version>${querydsl.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<!-- Hibernate Validator -->
@@ -98,81 +104,99 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate.validator.version}</version>
+			<scope>compile</scope><!-- Required for compilation time -->
 		</dependency>
 		
-		<!-- Joda time tags -->
+		<!-- Joda time / JodaTime tags / Joda Jadira -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>${joda-time.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time-jsptags</artifactId>
 			<version>${joda-time-jsptags.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time-hibernate</artifactId>
-			<version>1.3</version>
+			<version>${joda-time-hibernate.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.core</artifactId>
 			<version>${jadira.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet-api.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.jolbox</groupId>
 			<artifactId>bonecp</artifactId>
 			<version>${bonecp.version}</version>
+			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>${logback.version}</version>
+			<scope>runtime</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${org.slf4j-version}</version>
+			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${org.slf4j-version}</version>
+			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${org.slf4j-version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-connector.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </dependencyManagement>

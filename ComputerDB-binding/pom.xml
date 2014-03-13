@@ -24,6 +24,11 @@
 	
 <dependencies>
 	
+	<dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time-hibernate</artifactId>
+	</dependency>
+	
   	<!-- Junit test -->
     <dependency>
       <groupId>junit</groupId>
@@ -91,6 +96,10 @@
               <exclusion>
               		<groupId>junit</groupId>
       				<artifactId>junit</artifactId>
+              </exclusion>
+              <exclusion>
+              		<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
               </exclusion>
               <exclusion>
               		<groupId>com.jolbox</groupId>

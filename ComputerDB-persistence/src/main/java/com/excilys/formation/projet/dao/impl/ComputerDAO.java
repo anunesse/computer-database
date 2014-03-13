@@ -30,15 +30,6 @@ public class ComputerDAO implements IComputerDAO {
 	}
 
 	/**
-	* Return COUNT(*)
-	*/
-	public long readTotal() {
-		JPAQuery query = new JPAQuery(entityManager);
-		QComputer computer = QComputer.computer;
-		return query.from(computer).leftJoin(computer.company).count();
-	}
-
-	/**
 	* Read single computer on ID
 	*/
 	public Computer read(long id) {
@@ -77,20 +68,10 @@ public class ComputerDAO implements IComputerDAO {
 			query = query.where(computer.name.like(search).or(computer.company.name.like(search)));
 		}
 		Ordered myOrder = new Ordered(field, type);
-		LOG.error("_______________________________________________________"+type+"/"+field);
 		query = query.orderBy(myOrder.getMySpecifier());
 		query = query.limit(limit);
 		query = query.offset(offset);
 		return query.list(computer);
-	}
-
-	/**
-	* Default read function, used to retrieve all data
-	*/
-	public List<Computer> readAll() {
-		JPAQuery query = new JPAQuery(entityManager);
-		QComputer computer = QComputer.computer;
-		return query.from(computer).leftJoin(computer.company).list(computer);
 	}
 
 	/**
@@ -99,7 +80,7 @@ public class ComputerDAO implements IComputerDAO {
 	public long readTotal(String search) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QComputer computer = QComputer.computer;
-		query = query.from(computer).leftJoin(computer.company);
+		query = query.from(computer);
 		if(!"".equals(search)){
 			search = new StringBuilder("%").append(search).append("%").toString();
 			query = query.where(computer.name.like(search).or(computer.company.name.like(search)));

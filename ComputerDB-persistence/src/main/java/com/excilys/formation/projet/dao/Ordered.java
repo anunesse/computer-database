@@ -8,7 +8,7 @@ public class Ordered {
 	private QComputer computer = QComputer.computer;
 	
 	public Ordered(String type, String field){
-		if("DESC".equals(field)){
+		if("DESC".equals(type)){
 			if("computer.id".equals(field)){
 				mySpecifier = computer.id.desc();
 			}
@@ -29,7 +29,7 @@ public class Ordered {
 			}
 		}
 		else{//ASC
-			if("computer.id".equals(field)){
+			if("computer.id".equals(type)){
 				mySpecifier = computer.id.asc();
 			}
 			else if("computer.name".equals(field)){

@@ -1,13 +1,13 @@
 package com.excilys.formation.projet.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.formation.projet.controller.wrapper.Page;
 import com.excilys.formation.projet.om.Computer;
@@ -29,94 +29,58 @@ public class DataController{
 	 * @return
 	 */
 	@RequestMapping(value="Display", method = RequestMethod.GET)
-	public String displayComputer(HttpServletRequest request){
+	public String displayComputer(	@RequestParam(value = "search", required = false) String search,
+									@RequestParam(value = "orderField", required = false) String orderField,
+									@RequestParam(value = "order", required = false) String order,
+									@RequestParam(value = "page", required = false) String page,
+									@RequestParam(value = "display", required = false) String display,
+									@RequestParam(value = "message", required = false) String message,
+									@RequestParam(value = "status", required = false) String status,
+									ModelMap model){
 		
 		Page<Computer> myPage = new Page<Computer>();
 		
-		if (request.getParameterMap().isEmpty()) {
-			myPage.results = computerService.readAll();
-			myPage.totalNumberOfRecords = computerService.readTotal();
-			myPage.pageNumber = 1;
-			request.setAttribute("pageData", myPage);
-			return "dashboard";
+		if(display == null || display.isEmpty()){
+			myPage.setRecordsOnThisPage(20);
 		}
-
-		int offset = 0;
-		int page = 1;
-		int limit = 20;
-		if (request.getParameter("display") == null
-				|| "".equals(request.getParameter("display"))) {
-			limit = 20;
-		} else {
-			if (!request.getParameter("display").matches("\\d+")
-					|| Integer.parseInt(request.getParameter("display")) <= 0)
-				limit = 20;
-			else
-				limit = Integer.parseInt(request.getParameter("display"));
+		else{
+			myPage.setRecordsOnThisPage(Integer.parseInt(display));
 		}
-		myPage.recordsOnThisPage = limit;
-
-		if (request.getParameter("page") == null
-				|| "".equals(request.getParameter("page")))
-			page = 1;
-		else {
-			page = Integer.parseInt(request.getParameter("page"));
-			offset = Math.max((page - 1) * limit, 0);
-		}
-		myPage.pageNumber = page;
-
-		String search = "";
-		String sortResult = "computer.id";
-		if (request.getParameter("search") == null
-				|| "".equals(request.getParameter("search"))) {
-			search = "";
-			myPage.totalNumberOfRecords = computerService.readTotal();
-		} else {
-			search = request.getParameter("search");
-			myPage.totalNumberOfRecords = computerService.readTotal(search);
-		}
-
-		String sortMode = "ASC";
-		if (request.getParameter("order") == null
-				|| "".equals(request.getParameter("order"))) {
-			sortMode = "ASC";
-		} else {
-			sortMode = request.getParameter("order");
-		}
-
-		if (request.getParameter("orderField") == null
-				|| "".equals(request.getParameter("orderField"))) {
-			sortResult = "computer.id";
-			myPage.resultsOrderedBy = "id";
-		} else {
-			if ("computer".equals(request.getParameter("orderField"))) {
-				sortResult = "computer.name";
-				myPage.resultsOrderedBy = "computer";
-			} else if ("company".equals(request.getParameter("orderField"))) {
-				sortResult = "company.name";
-				myPage.resultsOrderedBy = "company";
-			} else if ("introduced".equals(request.getParameter("orderField"))) {
-				sortResult = "computer.introduced";
-				myPage.resultsOrderedBy = "introduced";
-			} else if ("discontinued".equals(request.getParameter("orderField"))) {
-				sortResult = "computer.discontinued";
-				myPage.resultsOrderedBy = "discontinued";
-			} else {
-				sortResult = "computer.name";
-				myPage.resultsOrderedBy = "name";
-			}
-		}
-
-		myPage.orderDirection = sortMode;
-		myPage.pageNumber = page;
 		
-		request.setAttribute("search", search);
-		LOG.debug(sortResult + "/" + sortMode);
-		myPage.results = computerService.read(limit, offset, sortResult, sortMode, search);
+		if(page == null || page.isEmpty()){
+			myPage.setPageNumber(1);
+		}
+		else{
+			myPage.setPageNumber(Integer.parseInt(page));
+		}
 		
-		myPage.numberOfPages = (int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1;
+		if(order == null || order.isEmpty()){
+			myPage.setOrderDirection("ASC");
+		}
+		else{
+			myPage.setOrderDirection(order);
+		}
+		
+		if(orderField == null || orderField.isEmpty()){
+			myPage.setResultsOrderedBy("computer.name");
+		}
+		else{
+			myPage.setResultsOrderedBy(orderField);
+		}
+		
+		if(search == null){
+			myPage.setSearch("");
+		}
+		else{
+			myPage.setSearch(search);
+		}
+		int offset = Math.max((myPage.getPageNumber() - 1) * myPage.getRecordsOnThisPage(), 1);
+		myPage.setResults(computerService.read(myPage.getRecordsOnThisPage(), offset, myPage.getResultsOrderedBy(), myPage.getOrderDirection(), myPage.getSearch()));
+		myPage.setTotalNumberOfRecords(computerService.readTotal(myPage.getSearch()));
+		myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
+		
 		LOG.debug(myPage.toString());
-		request.setAttribute("pageData", myPage);
+		model.addAttribute("pageData", myPage);
 		return "dashboard";
 	}
 }

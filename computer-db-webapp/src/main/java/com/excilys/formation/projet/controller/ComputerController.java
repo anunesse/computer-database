@@ -1,6 +1,5 @@
 package com.excilys.formation.projet.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.excilys.formation.projet.controller.wrapper.Page;
@@ -40,15 +40,15 @@ public class ComputerController{
 	 * @return
 	 */
 	@RequestMapping(value="GetComputer", method = RequestMethod.GET)
-	protected String getComputer(Model model, HttpServletRequest request){
+	protected String getComputer(Model model, @RequestParam(value = "computer", required = false) String Id){
 		LOG.info("GETTING COMPUTER!");
 		model.addAttribute("options", companyService.read());
 		
-		if (request.getParameterMap().isEmpty()) {
+		if (Id == null || "".equals(Id)) {
 			model.addAttribute("computerDTO", new Computer());
 			return "addComputer";
 		} else {
-			Computer myComp = computerService.read(Long.parseLong(request.getParameter("computer")));
+			Computer myComp = computerService.read(Long.parseLong(Id));
 			if (myComp == null) {
 				LOG.error("The computer id could not be found on database.");
 				model.addAttribute("answer", 0);
@@ -63,12 +63,12 @@ public class ComputerController{
 	 * [GET] DELETE computer.
 	 * RequestMapping(value="DelComputer", method = RequestMethod.GET).
 	 * @param model
-	 * @param request
+	 * @param Id
 	 * @return
 	 */
 	@RequestMapping(value="DelComputer", method = RequestMethod.GET)
-	protected String delComputer(Model model, HttpServletRequest request){
-		computerService.delete(Long.parseLong(request.getParameter("computer_id")));
+	protected String delComputer(Model model, @RequestParam(value = "computer_id", required = true) String Id){
+		computerService.delete(Long.parseLong(Id));
 		Page<Computer> myPage = new Page<Computer>();
 		myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
 		myPage.totalNumberOfRecords = computerService.readTotal("");
@@ -83,14 +83,12 @@ public class ComputerController{
 	 * [POST] ADD computer
 	 * RequestMapping(value="AddComputer", method = RequestMethod.POST).
 	 * @param model
-	 * @param request
+	 * @param computerDTO
+	 * @param result
 	 * @return
 	 */
 	@RequestMapping(value="AddComputer", method = RequestMethod.POST)
-	protected String addComputer(@Valid ComputerDTO computerDTO, BindingResult result, Model model, HttpServletRequest request){
-		
-		
-		
+	protected String addComputer(@Valid ComputerDTO computerDTO, BindingResult result, Model model){
 		if(result.hasErrors()){
 			model.addAttribute("options", companyService.read());
 			LOG.info("Invalid computer not added.");
@@ -122,27 +120,21 @@ public class ComputerController{
 	 * [POST] EDIT computer.
 	 * RequestMapping(value="EditComputer", method = RequestMethod.POST).
 	 * @param model
-	 * @param request
+	 * @param computerDTO
+	 * @param result
 	 * @return
 	 */
 	@RequestMapping(value="EditComputer", method = RequestMethod.POST)
-	protected String editComputer(@Valid ComputerDTO computerDTO, BindingResult result, Model model, HttpServletRequest request, final RedirectAttributes redirectAttributes){
-		
-		Computer myComputer = new Computer();;
-		
+	protected String editComputer(@Valid ComputerDTO computerDTO, BindingResult result, Model model, final RedirectAttributes redirectAttributes){
 		if(result.hasErrors()){
 			model.addAttribute("options", companyService.read());
 			LOG.info("Invalid computer not edited.");
-			myComputer.setId(Integer.parseInt(request.getParameter("comp_id")));
-			model.addAttribute("computerDTO", Converter.toDTO(myComputer));
 			return "editComputer";
 		}
-		
+		Computer myComputer = new Computer();
 		myComputer = Converter.fromDTO(computerDTO);
-		myComputer.setId(Integer.parseInt(request.getParameter("comp_id")));
 		computerService.update(myComputer);
 		LOG.info("Computer successfully edited.");
-		
 		Page<Computer> myPage = new Page<Computer>();
 		
 		myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
@@ -151,7 +143,6 @@ public class ComputerController{
 		myPage.setRecordsOnThisPage(20);
 		myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
 		model.addAttribute("PageData", myPage);
-		//redirectAttributes.addFlashAttribute("pageData", myPage);	
 		return "dashboard";
 	}
 }

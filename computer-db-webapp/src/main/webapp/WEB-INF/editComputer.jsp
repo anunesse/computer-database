@@ -24,9 +24,7 @@
 			</button>
 		</form>
 	
-		<form:form role="form" class="myForm" commandName="computerDTO" action="EditComputer" method="POST">
-
-			<input type="text" name="comp_id" value="${computerDTO.id }" readonly/>
+		<form:form role="form" class="myForm" commandName="computerDTO" action="EditComputer" method="POST">	
 			<fieldset>
 			<div class="form-group">
 				<label for="name"><spring:message code="label.table.header.computer"/> :</label>

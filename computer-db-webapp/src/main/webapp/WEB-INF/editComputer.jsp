@@ -40,7 +40,7 @@
 			<div class="form-group">
 				<label for="introduced"><spring:message code="label.table.header.introduced"/> :</label>
 				<div class="input">
-					<form:input type="text" path="introduced"/>
+					<form:input class="datepicker" type="text" path="introduced"/>
 					<form:errors path="introduced" cssClass="error"></form:errors>
 					<span class="help-inline"><spring:message code="label.form.date"/></span>
 				</div>
@@ -48,10 +48,10 @@
 			<div class="form-group">
 				<label for="discontinued"><spring:message code="label.table.header.discontinued"/> :</label>
 				<div class="input">
-					<form:input type="text" path="discontinued"/>
+					<form:input class="datepicker" type="text" path="discontinued"/>
 					<form:errors path="discontinued" cssClass="error"></form:errors>
 					<span class="help-inline"><spring:message code="label.form.date"/></span>
-			</div>
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="company"><spring:message code="label.table.header.company"/> :</label>

@@ -18,8 +18,11 @@ public class Converter {
 		
 		Computer computer = new Computer();
 		computer.setName(computerDTO.getName());
-		computer.setCompany(new Company(computerDTO.getCompany()));
-		
+		if(computerDTO.getCompany() != 0){
+			computer.setCompany(new Company(computerDTO.getCompany()));
+		}
+		else
+			computer.setCompany(null);
 		DateTime introduced = null;
 		DateTime discontinued = null;
 		
@@ -61,9 +64,14 @@ public class Converter {
 		computerDTO.setName(computer.getName());
 		computerDTO.setIntroduced(introduced);
 		computerDTO.setDiscontinued(discontinued);
-		computerDTO.setCompany(computer.getCompany().getId());
-		computerDTO.setCompanyName(computer.getCompany().getName());
-		
+		if(computer.getCompany()!=null){
+			computerDTO.setCompany(computer.getCompany().getId());
+			computerDTO.setCompanyName(computer.getCompany().getName());
+		}
+		else{
+			computerDTO.setCompany(0);
+			computerDTO.setCompanyName("Unknown");
+		}		
 		return computerDTO;
 	}
 }

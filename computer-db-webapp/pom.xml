@@ -9,7 +9,7 @@
   <packaging>war</packaging>
   
   <build>
-	<finalName>computer-db-service</finalName>
+	<finalName>computer-db-webapp</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -42,12 +42,6 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-	
-	<!-- Logback core -->
-	<dependency>
-		<groupId>ch.qos.logback</groupId>
-		<artifactId>logback-core</artifactId>
-	</dependency>
 	
 	<!-- Logback classic -->
 	<dependency>
@@ -87,10 +81,7 @@
 		<groupId>org.slf4j</groupId>
 		<artifactId>jcl-over-slf4j</artifactId>
 	</dependency>
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-log4j12</artifactId>
-	</dependency>
+
 	
 	<!-- Sister's modules requirements -->
 	<dependency>

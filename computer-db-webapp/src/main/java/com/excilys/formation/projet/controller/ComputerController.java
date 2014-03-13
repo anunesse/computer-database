@@ -72,6 +72,9 @@ public class ComputerController{
 		Page<Computer> myPage = new Page<Computer>();
 		myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
 		myPage.totalNumberOfRecords = computerService.readTotal("");
+		myPage.setPageNumber(1);
+		myPage.setRecordsOnThisPage(20);
+		myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
 		model.addAttribute("pageData", myPage);
 		return "dashboard";
 	}
@@ -86,9 +89,10 @@ public class ComputerController{
 	@RequestMapping(value="AddComputer", method = RequestMethod.POST)
 	protected String addComputer(@Valid ComputerDTO computerDTO, BindingResult result, Model model, HttpServletRequest request){
 		
-		model.addAttribute("options", companyService.read());
+		
 		
 		if(result.hasErrors()){
+			model.addAttribute("options", companyService.read());
 			LOG.info("Invalid computer not added.");
 			return "addComputer";
 		}
@@ -102,9 +106,13 @@ public class ComputerController{
 			Page<Computer> myPage = new Page<Computer>();
 			myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
 			myPage.totalNumberOfRecords = computerService.readTotal("");
+			myPage.setPageNumber(1);
+			myPage.setRecordsOnThisPage(20);
+			myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
 			model.addAttribute("pageData", myPage);
 			return "dashboard";
 		} else {
+			model.addAttribute("options", companyService.read());
 			LOG.info("The computer can not be add.");
 			return "addComputer";
 		}
@@ -119,22 +127,31 @@ public class ComputerController{
 	 */
 	@RequestMapping(value="EditComputer", method = RequestMethod.POST)
 	protected String editComputer(@Valid ComputerDTO computerDTO, BindingResult result, Model model, HttpServletRequest request, final RedirectAttributes redirectAttributes){
-		model.addAttribute("options", companyService.read());
-		Computer myComputer = null;
-		myComputer = Converter.fromDTO(computerDTO);
-		myComputer.setId(Integer.parseInt(request.getParameter("comp_id")));
+		
+		Computer myComputer = new Computer();;
+		
 		if(result.hasErrors()){
+			model.addAttribute("options", companyService.read());
 			LOG.info("Invalid computer not edited.");
+			myComputer.setId(Integer.parseInt(request.getParameter("comp_id")));
 			model.addAttribute("computerDTO", Converter.toDTO(myComputer));
 			return "editComputer";
 		}
+		
+		myComputer = Converter.fromDTO(computerDTO);
+		myComputer.setId(Integer.parseInt(request.getParameter("comp_id")));
 		computerService.update(myComputer);
 		LOG.info("Computer successfully edited.");
+		
 		Page<Computer> myPage = new Page<Computer>();
+		
 		myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
 		myPage.totalNumberOfRecords = computerService.readTotal("");
-		
-		redirectAttributes.addFlashAttribute("pageData", myPage);	
+		myPage.setPageNumber(1);
+		myPage.setRecordsOnThisPage(20);
+		myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
+		model.addAttribute("PageData", myPage);
+		//redirectAttributes.addFlashAttribute("pageData", myPage);	
 		return "dashboard";
 	}
 }

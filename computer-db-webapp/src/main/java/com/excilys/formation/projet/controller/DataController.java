@@ -57,15 +57,24 @@ public class DataController{
 		if(order == null || order.isEmpty()){
 			myPage.setOrderDirection("ASC");
 		}
-		else{
+		else if ("DESC".equals(order)){
 			myPage.setOrderDirection(order);
+		}
+		else{
+			myPage.setOrderDirection("ASC");
 		}
 		
 		if(orderField == null || orderField.isEmpty()){
 			myPage.setResultsOrderedBy("computer.name");
 		}
-		else{
+		else if("computer.name".equals(orderField)
+				|| "computer.company.name".equals(orderField)
+				|| "computer.introduced".equals(orderField)
+				|| "computer.discontinued".equals(orderField)){
 			myPage.setResultsOrderedBy(orderField);
+		}
+		else{
+			myPage.setResultsOrderedBy("computer.name");
 		}
 		
 		if(search == null){
@@ -74,7 +83,7 @@ public class DataController{
 		else{
 			myPage.setSearch(search);
 		}
-		int offset = Math.max((myPage.getPageNumber() - 1) * myPage.getRecordsOnThisPage(), 1);
+		int offset = Math.max((myPage.getPageNumber() - 1) * myPage.getRecordsOnThisPage(), 0);
 		myPage.setResults(computerService.read(myPage.getRecordsOnThisPage(), offset, myPage.getResultsOrderedBy(), myPage.getOrderDirection(), myPage.getSearch()));
 		myPage.setTotalNumberOfRecords(computerService.readTotal(myPage.getSearch()));
 		myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);

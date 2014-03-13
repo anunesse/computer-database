@@ -51,12 +51,6 @@
 		<scope>runtime</scope>
 	</dependency>
 	
-	<!-- Logback core -->
-	<dependency>
-		<groupId>ch.qos.logback</groupId>
-		<artifactId>logback-core</artifactId>
-	</dependency>
-	
 	<!-- Logback classic -->
 	<dependency>
 		<groupId>ch.qos.logback</groupId>

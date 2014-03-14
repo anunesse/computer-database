@@ -22,85 +22,58 @@
 		</plugins>
 	</build>
 	
-<dependencies>
-	
-	<!-- QueryDSL -->
-	<dependency>
-		<groupId>com.mysema.querydsl</groupId>
-		<artifactId>querydsl-apt</artifactId>
-		<scope>provided</scope>
-	</dependency>    
-	    
-	<dependency>
-		<groupId>com.mysema.querydsl</groupId>
-		<artifactId>querydsl-jpa</artifactId>
-	</dependency>
-	
-	<dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
+<dependencies>		
+		<!-- BoneCP dependencies -->
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Spring Framework dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Spring hibernate -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Javassist -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
+		<!-- Query DSL -->
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-core</artifactId>
+		</dependency>
+		<!-- Spring Data JPA -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
 
 	<dependency>
-		<groupId>joda-time</groupId>
-		<artifactId>joda-time</artifactId>
+	     <groupId>com.excilys.formation.module</groupId>
+	     <artifactId>computer-db-core</artifactId>
+	     <version>3.1.0-SNAPSHOT</version>
+	     <exclusions>
+	         <exclusion>
+	             <groupId>joda-time</groupId>
+	           <artifactId>joda-time</artifactId>
+	         </exclusion>
+	     </exclusions>
 	</dependency>
-	
-  	<!-- Junit test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    
-    <!-- ConnectionPool BoneCP -->
-    <dependency>
-		<groupId>com.jolbox</groupId>
-		<artifactId>bonecp</artifactId>
-		<scope>compile</scope>
-	</dependency>
-	
-	<!-- Mysql connector -->
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<scope>runtime</scope>
-	</dependency>
-	
-	<!-- Logback classic -->
-	<dependency>
-		<groupId>ch.qos.logback</groupId>
-		<artifactId>logback-classic</artifactId>
-	</dependency>
-	
-	<!-- Spring -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-webmvc</artifactId>
-	</dependency>
-	
-	<dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-orm</artifactId>
-     </dependency>
-	
-	<!-- Spring JDBC connector -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
-	</dependency>
-	
-	<dependency>
-          <groupId>com.excilys.formation.module</groupId>
-          <artifactId>computer-db-core</artifactId>
-          <version>3.1.0-SNAPSHOT</version>
-          <exclusions>
-              <exclusion>
-                  <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-              </exclusion>
-          </exclusions>
-     </dependency>
 	
 </dependencies>
   

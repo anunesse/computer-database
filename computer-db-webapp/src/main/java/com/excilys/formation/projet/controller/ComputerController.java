@@ -102,6 +102,7 @@ public class ComputerController{
 		if (computerService.create(myComputer) > 0) {
 			LOG.info("Computer added.");
 			Page<Computer> myPage = new Page<Computer>();
+			
 			myPage.results = computerService.read(20, 0, "computer.name", "ASC", "");
 			myPage.totalNumberOfRecords = computerService.readTotal("");
 			myPage.setPageNumber(1);
@@ -109,6 +110,7 @@ public class ComputerController{
 			myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
 			model.addAttribute("pageData", myPage);
 			return "dashboard";
+			
 		} else {
 			model.addAttribute("options", companyService.read());
 			LOG.info("The computer can not be add.");
@@ -143,6 +145,7 @@ public class ComputerController{
 		myPage.setRecordsOnThisPage(20);
 		myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
 		model.addAttribute("PageData", myPage);
+		
 		return "dashboard";
 	}
 }

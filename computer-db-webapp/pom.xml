@@ -1,4 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.excilys.formation.module</groupId>
@@ -24,72 +28,51 @@
 	</build>
 	
 <dependencies>
+	<!-- Spring Framework dependencies -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+	</dependency>
 	
+	<!-- Log Spring in SLF4J -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+	</dependency>
+	
+	<!-- Form validator dependencies -->
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-validator</artifactId>
+	</dependency>
+	
+	<!-- JSTL dependencies -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<scope>runtime</scope>
+	</dependency>
+	
+	<!-- Joda Time - JSP tags -->
 	<dependency>
 		<groupId>joda-time</groupId>
 		<artifactId>joda-time-jsptags</artifactId>
 		<scope>runtime</scope>
 	</dependency>
 	
+	<!-- MySQL Connector dependencies -->
 	<dependency>
-		<groupId>joda-time</groupId>
-		<artifactId>joda-time</artifactId>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<scope>runtime</scope>
 	</dependency>
 	
-  	<!-- Junit test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
 	
-	<!-- Logback classic -->
-	<dependency>
-		<groupId>ch.qos.logback</groupId>
-		<artifactId>logback-classic</artifactId>
-	</dependency>
-	
-	<!-- Spring MVC including other spring dependencies -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-webmvc</artifactId>
-	</dependency>
-
-     <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-orm</artifactId>
-     </dependency>
-     <!-- /Spring MVC including other spring dependencies -->
-	
-	 <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-entitymanager</artifactId>
-     </dependency>
-	
-	<!-- Spring JDBC connector -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
-	</dependency>
-	
-	<!-- SLJ over jcl and jboss logging -->
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>jcl-over-slf4j</artifactId>
-	</dependency>
-
-	
-	<!-- Sister's modules requirements -->
-	<dependency>
-          <groupId>com.excilys.formation.module</groupId>
-          <artifactId>computer-db-core</artifactId>
-          <version>3.1.0-SNAPSHOT</version>
-     </dependency>
-     
+	<!-- Sister's modules requirements -->     
      <dependency>
           <groupId>com.excilys.formation.module</groupId>
           <artifactId>computer-db-service</artifactId>
@@ -101,6 +84,7 @@
           <artifactId>computer-db-binding</artifactId>
           <version>3.1.0-SNAPSHOT</version>
      </dependency>
+
 	
 </dependencies>
   

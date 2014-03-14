@@ -1,7 +1,5 @@
 package com.excilys.formation.projet.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +20,14 @@ public class LogsController{
 	}
 
 	@RequestMapping(value="/Logs", method = RequestMethod.GET)
-	protected String doGet(Model model, HttpServletRequest request){
+	protected String doGet(Model model){
 		Page<Log> myPage = new Page<Log>();
 		myPage.results = logService.readAll();
-		request.setAttribute("pageData", myPage);
+		myPage.totalNumberOfRecords = myPage.results.size();
+		myPage.setPageNumber(1);
+		myPage.setRecordsOnThisPage(20);
+		myPage.setNumberOfPages((int) Math.ceil(myPage.totalNumberOfRecords / myPage.recordsOnThisPage) + 1);
+		model.addAttribute("pageData", myPage);
 		return "logs";
 	}
 }

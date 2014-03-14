@@ -25,7 +25,14 @@ public class DataController{
 	/**
 	 * [GET] Display computer method.
 	 * RequestMapping(value="Display", method = RequestMethod.GET).
-	 * @param request
+	 * @param search
+	 * @param orderField
+	 * @param order
+	 * @param page
+	 * @param display
+	 * @param message
+	 * @param status
+	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="Display", method = RequestMethod.GET)

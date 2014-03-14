@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.formation.projet.dao.IComputerDAO;
-import com.excilys.formation.projet.dao.ILogDAO;
 import com.excilys.formation.projet.om.Computer;
 import com.excilys.formation.projet.om.Log;
+import com.excilys.formation.projet.repositories.ComputerRepository;
+import com.excilys.formation.projet.repositories.LogRepository;
 
 @Service
 @Transactional
@@ -21,59 +21,46 @@ public class ComputerService {
 	static final Logger LOG = LoggerFactory.getLogger(ComputerService.class);
 
 	@Autowired
-	IComputerDAO computerDAO;
-	
+	ComputerRepository computerRepository;
+
 	@Autowired
-	ILogDAO logDAO;
-	
-	public ComputerService(){
+	LogRepository logRepository;
+
+	public ComputerService() {
 		super();
 	}
-	
-	@Transactional(readOnly=true)
+
+	@Transactional(readOnly = true)
 	public long readTotal(String search) {
-		return computerDAO.readTotal(search);
+		return computerRepository.count();
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Computer read(long id) {
-		return computerDAO.read(id);
+		return computerRepository.findOne(id);
 	}
 
 	public void delete(long id) {
-		boolean b = false;
-		StringBuilder str = new StringBuilder(
-				"Field computer deleted on ID : ");
-		str.append(id);
-		str.append(";");
-		computerDAO.delete(id);
-		logDAO.create(new Log("DELETE", new DateTime(), str.toString()));
+		computerRepository.delete(id);
+		logRepository.save(new Log("DELETE", new DateTime(), "id = " + id));
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Computer> read(int min, int max, String type, String field,
 			String search) {
-		List<Computer> lc = computerDAO.read(min, max, type, field, search);
-		return lc;
+		return (List<Computer>) computerRepository.findAll();
 	}
 
 	public long create(Computer myComp) {
-		long b = 0;
-		StringBuilder str = new StringBuilder("Field computer added, ID ");
-		b = computerDAO.create(myComp);
-		str.append(b);
-		str.append(";");
-		logDAO.create(new Log("CREATE", new DateTime(), str.toString()));
-		return b;
+		computerRepository.save(myComp);
+		logRepository.save(new Log("CREATE", new DateTime(), "id = "
+				+ myComp.getId()));
+		return myComp.getId();
 	}
 
 	public void update(Computer myComp) {
-		boolean b = false;
-		StringBuilder str = new StringBuilder(
-				"Field computer edited, ID : ");
-		str.append(myComp.getId());
-		str.append(";");
-		computerDAO.update(myComp);
-		logDAO.create(new Log("UPDATE", new DateTime(), str.toString()));
+		computerRepository.save(myComp);
+		logRepository.save(new Log("UPDATE", new DateTime(), "id = "
+				+ myComp.getId()));
 	}
 }

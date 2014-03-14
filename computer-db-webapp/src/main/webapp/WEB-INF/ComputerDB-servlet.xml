@@ -36,7 +36,8 @@
 	<!-- Core Context -->
 	<import resource="classpath:core-context.xml"/>
 	
-	
+	<!-- Spring security -->
+	<import resource="spring-security.xml"/>
 
 </beans>
 

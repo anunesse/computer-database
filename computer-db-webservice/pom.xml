@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.excilys.formation.module</groupId>
+    <artifactId>computer-db</artifactId>
+    <version>3.1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>com.excilys.formation.module</groupId>
+  <artifactId>computer-db-webservice</artifactId>
+  <version>3.1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>computer-db-webservice</name>
+  
+  <dependencies>
+	<!-- JAX WS -->
+	<dependency>
+		<groupId>com.sun.xml.ws</groupId>
+		<artifactId>jaxws-rt</artifactId>
+		<version>2.2.8</version>
+	</dependency>
+
+    <!-- Log Spring in SLF4J -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+	</dependency>
+
+	<!-- Sister's modules requirements -->     
+     <dependency>
+          <groupId>com.excilys.formation.module</groupId>
+          <artifactId>computer-db-service</artifactId>
+          <version>3.1.0-SNAPSHOT</version>
+     </dependency>
+     
+     <dependency>
+          <groupId>com.excilys.formation.module</groupId>
+          <artifactId>computer-db-binding</artifactId>
+          <version>3.1.0-SNAPSHOT</version>
+     </dependency>
+     
+  </dependencies>
+  <build>
+    <finalName>computer-db-webservice</finalName>
+  </build>
+</project>

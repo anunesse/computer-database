@@ -9,7 +9,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <ul class="pagination">
-<c:if test="${ page == 1 }">
+<c:if test="${ page == 0 }">
 	<li class="disabled">
 		<a href="Display?page=1&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}"><spring:message code="pagination.first"/></a>
 	</li>
@@ -17,9 +17,9 @@
 		<a>&laquo;</a>
 	</li>
 </c:if>
-<c:if test="${ page > 1 }">
+<c:if test="${ page > 0 }">
 	<li>
-		<a href="Display?page=1&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}"><spring:message code="pagination.first"/></a>
+		<a href="Display?page=0&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}"><spring:message code="pagination.first"/></a>
 	</li>
 	<li class="prev">
 		<a href="Display?page=${page-1}&search=${search}&display=${elementsByPage}&orderField=${orderField}&order=${orderDirection}">&laquo;</a>

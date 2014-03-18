@@ -6,11 +6,13 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.formation.projet.om.Computer;
-import com.excilys.formation.projet.om.Log;
+import com.excilys.formation.projet.om.domain.Computer;
+import com.excilys.formation.projet.om.domain.Log;
 import com.excilys.formation.projet.repositories.ComputerRepository;
 import com.excilys.formation.projet.repositories.LogRepository;
 
@@ -62,5 +64,17 @@ public class ComputerService {
 		computerRepository.save(myComp);
 		logRepository.save(new Log("UPDATE", new DateTime(), "id = "
 				+ myComp.getId()));
+	}
+
+	public Page<Computer> retrievePage(Pageable pageable, String search) {
+		Page<Computer> page = null;
+
+		if (search == null){
+			page = computerRepository.findAll(pageable);
+		}
+		else{
+			page = computerRepository.findAll(new StringBuilder("%").append(search.toLowerCase()).append("%").toString(), pageable);
+		}
+		return page;
 	}
 }

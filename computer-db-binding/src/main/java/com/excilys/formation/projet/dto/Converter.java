@@ -7,8 +7,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import com.excilys.formation.projet.om.Company;
-import com.excilys.formation.projet.om.Computer;
+import com.excilys.formation.projet.om.domain.Company;
+import com.excilys.formation.projet.om.domain.Computer;
 
 public class Converter {
 	public static Computer fromDTO(ComputerDTO computerDTO){

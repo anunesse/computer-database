@@ -11,7 +11,7 @@
 		<tr><th class="col-sm-1">Date</th><th class="col-sm-1">Type</th><th class="col-sm-1">Description</th></tr>	
 	</thead>
 	<tbody>
-			<c:forEach var="log" items="${pageData.results}">
+			<c:forEach var="log" items="${pageData}">
 				<tr>
 					<td>
 						<joda:format value="${log.operationDate}" style="MM"/>

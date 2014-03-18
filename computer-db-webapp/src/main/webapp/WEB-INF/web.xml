@@ -20,12 +20,12 @@
 	
 	<error-page>
 		<error-code>404</error-code>
-		<location>/error/404</location>
+		<location>/ComputerDB/error/404</location>
 	</error-page>
 	
 	<error-page>
 		<error-code>500</error-code>
-		<location>/error/500</location>
+		<location>/ComputerDB/error/500</location>
 	</error-page>
 	
 	<!-- General error pages, place before servlet declaration in web.xml -->
@@ -41,7 +41,7 @@
          
     <servlet-mapping>
         <servlet-name>ComputerDB</servlet-name>
-        <url-pattern>/ComputerDB/*</url-pattern>
+		<url-pattern>/ComputerDB/*</url-pattern>
     </servlet-mapping>
 
 	<servlet-mapping>
@@ -64,6 +64,7 @@
 		<param-value>/WEB-INF/ComputerDB-servlet.xml</param-value>
 	</context-param>
 
+	<!-- Spring security -->
 	<listener>
 	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -75,7 +76,7 @@
 	
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/ComputerDB/*</url-pattern>
 	</filter-mapping>
 	
 </web-app>

@@ -16,12 +16,10 @@ public class CompanyService {
 	CompanyRepository companyRepository;
 	
 	public Company read(long id) {
-		//return companyDAO.read(id);
-		return null;
+		return companyRepository.findOne(id);
 	}
 
 	public List<Company> read() {
-		//return companyDAO.read();
-		return null;
+		return (List<Company>) companyRepository.findAll();
 	}
 }

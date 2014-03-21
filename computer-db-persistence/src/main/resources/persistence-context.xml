@@ -11,6 +11,9 @@
 			http://www.springframework.org/schema/data/jpa
 			http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 	
+    <!-- Core Context -->
+	<import resource="classpath:core-context.xml"/>
+    
 	<!-- BoneCP DataSource and TransactionManager -->
 	<tx:annotation-driven transaction-manager="txManager"/>
 	

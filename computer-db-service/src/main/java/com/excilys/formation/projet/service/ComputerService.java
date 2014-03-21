@@ -16,9 +16,10 @@ import com.excilys.formation.projet.om.domain.Log;
 import com.excilys.formation.projet.repositories.ComputerRepository;
 import com.excilys.formation.projet.repositories.LogRepository;
 
+
 @Service
 @Transactional
-public class ComputerService {
+public class ComputerService{
 
 	static final Logger LOG = LoggerFactory.getLogger(ComputerService.class);
 
@@ -52,7 +53,7 @@ public class ComputerService {
 			String search) {
 		return (List<Computer>) computerRepository.findAll();
 	}
-
+	
 	public long create(Computer myComp) {
 		computerRepository.save(myComp);
 		logRepository.save(new Log("CREATE", new DateTime(), "id = "

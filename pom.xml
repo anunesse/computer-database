@@ -50,7 +50,6 @@
 	<jaxws-spring.version>1.9</jaxws-spring.version>
 	
 	<org.apache.cxf.version>2.7.10</org.apache.cxf.version>
-	
 </properties>
 
 <dependencyManagement>
@@ -272,10 +271,15 @@
 			<version>${spring-remoting.version}</version>
 		</dependency>
 		
-		<!-- Apache CXF -->
+		<!-- Apache CXF for WS -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${org.apache.cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
 			<version>${org.apache.cxf.version}</version>
 		</dependency>
 		

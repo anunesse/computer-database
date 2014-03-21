@@ -17,7 +17,7 @@ import com.excilys.formation.projet.repositories.ComputerRepository;
 import com.excilys.formation.projet.repositories.LogRepository;
 
 
-@Service
+@Service("computerService")
 @Transactional
 public class ComputerService{
 

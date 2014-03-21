@@ -25,14 +25,14 @@ public class MainTest {
 	//	private static ComputerService computerService;
 	
 	public static void main(String[] args) throws Exception {
-		URL url = new URL("http://localhost:8080/computer-db-webservice/printcomp?wsdl");
+		URL url = new URL("http://localhost:8090/computer-db-webservice/printcomp?wsdl");
 
-		QName qname = new QName("http://impl.ws.projet.formation.excilys.com/", "PrintComputersWSImplService");
+		QName qname = new QName("http://ws.projet.formation.excilys.com/", "ComputerServiceService");
 		
 		Service service = Service.create(url, qname);
-		
+
 		ComputerWS hello = service.getPort(ComputerWS.class);
-		
+
 		for(String str : hello.readAll())
 			System.out.print(str);
 

@@ -5,6 +5,13 @@
 		http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
+    <welcome-file-list>
+        <welcome-file>
+            index.jsp
+            index.html
+        </welcome-file>
+    </welcome-file-list>
+    
  	<context-param>
 	<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -28,7 +35,4 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
     
-    <session-config>
-        <session-timeout>120</session-timeout>
-    </session-config>
 </web-app>

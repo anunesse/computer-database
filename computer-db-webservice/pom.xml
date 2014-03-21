@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-    	http://maven.apache.org/xsd/maven-4.0.0.xsd"
-    xmlns="http://maven.apache.org/POM/4.0.0"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -10,29 +8,16 @@
     <version>3.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>computer-db-webservice</artifactId>
-  
-	<build>
-	<finalName>computer-db-webapp</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+  <packaging>war</packaging>
   
   <dependencies>
-	<!-- JAX-WS -->	
+	<!-- JAX WS -->
 	<dependency>
-		<groupId>org.jvnet.jax-ws-commons.spring</groupId>
-		<artifactId>jaxws-spring</artifactId>
+		<groupId>com.sun.xml.ws</groupId>
+		<artifactId>jaxws-rt</artifactId>
+		<version>2.2.8</version>
 	</dependency>
-
+	
 	<!-- Spring WS -->
 	<dependency>
 		<groupId>org.springframework</groupId>
@@ -50,19 +35,34 @@
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-remoting</artifactId>
 	</dependency>
-	
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
 	</dependency>
 	
-	<!-- Apache CXF -->
+	<!-- Apache CXF for WS -->
 	<dependency>
 		<groupId>org.apache.cxf</groupId>
 		<artifactId>cxf-rt-frontend-jaxws</artifactId>
 	</dependency>
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-transports-http</artifactId>
+	</dependency>
+	
+    <!-- Log Spring in SLF4J -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+	</dependency>
 	
 	<!-- Sister's modules requirements -->
+     <dependency>
+          <groupId>com.excilys.formation.module</groupId>
+          <artifactId>computer-db-service</artifactId>
+          <version>3.1.0-SNAPSHOT</version>
+     </dependency>
+     
      <dependency>
           <groupId>com.excilys.formation.module</groupId>
           <artifactId>computer-db-binding</artifactId>
@@ -70,4 +70,17 @@
      </dependency>
      
   </dependencies>
+  <build>
+    <finalName>computer-db-webservice</finalName>
+    <plugins>
+	    <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.1</version>
+	        <configuration>
+		        <source>1.6</source>
+		        <target>1.6</target>
+	        </configuration>
+	    </plugin>
+	</plugins>
+  </build>
 </project>

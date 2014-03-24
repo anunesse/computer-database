@@ -11,6 +11,7 @@
 	<http pattern="/ComputerDB/css/**" security="none" />
 	<http pattern="/ComputerDB/img/**" security="none" />
 	<http pattern="/ComputerDB/js/**" security="none" />
+	<http pattern="/ComputerDB/JSONWriter" security="none" />
 	
 	<http auto-config="true" create-session="stateless">
 		<intercept-url pattern="/ComputerDB/Logs" access="ROLE_ADMIN"/>

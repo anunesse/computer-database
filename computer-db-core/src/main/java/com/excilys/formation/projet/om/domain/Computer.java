@@ -1,5 +1,7 @@
 package com.excilys.formation.projet.om.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,10 +13,14 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 @Entity
 @Table(name="computer")
-public class Computer {
+public class Computer implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue
 	private long id;
@@ -34,29 +40,34 @@ public class Computer {
 	@ManyToOne(targetEntity=com.excilys.formation.projet.om.domain.Company.class)
 	private Company company;
 	
-	
+	@JsonGetter
 	public Company getCompany() {
 		return company;
 	}
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
+	@JsonGetter
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
+	@JsonGetter
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	@JsonGetter
+	//@JsonSerialize(using=DateSerializer.class)
 	public DateTime getIntroduced() {
 		return introduced;
 	}
+	@JsonGetter
+	//@JsonSerialize(using=DateSerializer.class)
 	public DateTime getDiscontinued() {
 		return discontinued;
 	}
@@ -66,16 +77,13 @@ public class Computer {
 	public void setDiscontinued(DateTime discontinued) {
 		this.discontinued = discontinued;
 	}
-	
 	public Computer() {
 		super();
 	}
-	
 	public Computer(long id) {
 		super();
 		this.id = id;
 	}
-
 	public Computer(String name, DateTime Introduced,
 			DateTime Discontinued, Company company) {
 		this.name = name;
@@ -110,5 +118,4 @@ public class Computer {
 				+ introduced + ", discontinued=" + discontinued
 				+ "]";
 	}
-	
 }

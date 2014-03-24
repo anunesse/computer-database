@@ -283,35 +283,12 @@
 			<version>${org.apache.cxf.version}</version>
 		</dependency>
 		
-		<!-- JAX-WS -->	
+		<!-- Jackson Databinding -->
 		<dependency>
-			<groupId>org.jvnet.jax-ws-commons.spring</groupId>
-			<artifactId>jaxws-spring</artifactId>
-			<version>${jaxws-spring.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-context</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.xml.stream.buffer</groupId>
-					<artifactId>streambuffer</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.jvnet.staxex</groupId>
-					<artifactId>stax-ex</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>woodstox-core-asl</artifactId>
-					<groupId>org.codehaus.woodstox</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.3.2</version>
 		</dependency>
-
 		
 	</dependencies>
 </dependencyManagement>

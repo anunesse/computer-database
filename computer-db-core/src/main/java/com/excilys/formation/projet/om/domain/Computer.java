@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
+//May use : Class JodaSerializers.DateTimeSerializer to serialize datetime
 @Entity
 @Table(name="computer")
 public class Computer implements Serializable{
@@ -62,7 +63,7 @@ public class Computer implements Serializable{
 		this.name = name;
 	}
 	@JsonGetter
-	//@JsonSerialize(using=DateSerializer.class)
+	//@JsonSerialize(using=JdkDeserializers.DateTimeSerializer.class)
 	public DateTime getIntroduced() {
 		return introduced;
 	}
